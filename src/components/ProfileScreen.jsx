@@ -1,7 +1,6 @@
 import { CheckCircle, Share2, Linkedin } from 'lucide-react';
 
 const ProfileScreen = ({ image, isActive, t }) => {
-  // SÉCURITÉ CRITIQUE
   const translate = typeof t === 'function' ? t : (key) => key;
 
   return (
@@ -10,12 +9,13 @@ const ProfileScreen = ({ image, isActive, t }) => {
       <div className="p-6 -mt-10 text-left">
         <div className="flex justify-between items-end mb-6">
           <div className="relative">
+            {/* Photo : Fondatrice Sportive */}
             <img 
-              src={image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80'} 
-              alt="Fondateur" 
+              src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&h=400&q=80" 
+              alt="Fondatrice Stride" 
               className="w-20 h-20 rounded-2xl object-cover border-4 border-white shadow-xl" 
             />
-            <div className="absolute -bottom-1 -right-1 bg-emerald-500 border-2 border-white w-6 h-6 rounded-full flex items-center justify-center text-white">
+            <div className="absolute -bottom-1 -right-1 bg-orange-500 border-2 border-white w-6 h-6 rounded-full flex items-center justify-center text-white">
                <CheckCircle size={12} />
             </div>
           </div>
@@ -27,23 +27,25 @@ const ProfileScreen = ({ image, isActive, t }) => {
         
         <div className="space-y-6">
           <div>
-            <h2 className="text-xl font-black text-slate-900 tracking-tight">Marc Lehmann</h2>
-            <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">CEO & Fondateur • SolarPath AG</p>
+            <h2 className="text-xl font-black text-slate-900 tracking-tight">Sarah Jenkins</h2>
+            <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">CTO & Co-Fondatrice • Stride</p>
           </div>
 
           <div className="space-y-3">
             <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{translate('data_executive')}</h3>
-            <p className="text-sm text-slate-600 leading-relaxed font-medium">{translate('data_bio')}</p>
+            <p className="text-sm text-slate-600 leading-relaxed font-medium">
+              Stride démocratise l'analyse de foulée professionnelle. Nos capteurs IoT réduisent les blessures de 40% chez les marathoniens amateurs.
+            </p>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-100/50">
-              <p className="text-[9px] text-emerald-600 font-black uppercase mb-1">{translate('data_funding')}</p>
-              <p className="text-lg font-black text-emerald-700">750k CHF</p>
+            <div className="bg-orange-50 p-4 rounded-2xl border border-orange-100">
+              <p className="text-[9px] text-orange-600 font-black uppercase mb-1">{translate('data_funding')}</p>
+              <p className="text-lg font-black text-orange-700">400k CHF</p>
             </div>
             <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
               <p className="text-[9px] text-slate-400 font-black uppercase mb-1">{translate('data_min')}</p>
-              <p className="text-lg font-black text-slate-900">200k+</p>
+              <p className="text-lg font-black text-slate-900">25k+</p>
             </div>
           </div>
 
