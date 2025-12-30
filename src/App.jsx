@@ -92,7 +92,7 @@ const App = () => {
               </div>
               
               {/* Components Screens */}
-              <VideoScreen isActive={activeScreen === 'video'} t={t} image="/edited-image.png" />
+              <VideoScreen isActive={activeScreen === 'video'} t={t} image="https://image.rewardful.com/X4z3s4d6/345470/header.jpeg" />
               <ProfileScreen isActive={activeScreen === 'profile'} t={t} />
             </div>
           </div>
