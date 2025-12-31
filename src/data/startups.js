@@ -3,14 +3,17 @@ export const startups = [
     id: 1,
     name: "ZenSpace",
     vision: { fr: "Architecture Durable", en: "Sustainable Architecture" },
-    sector: { fr: "PropTech • Seed", en: "PropTech • Seed" },
-    funding: "600k CHF",
-    minTicket: "50k+",
+    // Les 4 KPIs Clés
+    kpis: {
+      amount: "600k CHF",
+      valuation: "4M CHF",
+      stage: "Seed",
+      sector: { fr: "PropTech", en: "PropTech" }
+    },
     pitch: {
       fr: "Installez votre bureau autonome en pleine nature. 100% autonome en énergie, zéro béton, monté en 24h.",
       en: "Install your autonomous office in the middle of nature. 100% energy independent, zero concrete, assembled in 24h."
     },
-    // Vidéo Nature (Google)
     video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
     poster: "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=800&q=80",
     ceo: {
@@ -22,20 +25,23 @@ export const startups = [
         en: "Reinvent remote work with our sustainable 'Pods'. 120 units already sold. 8% rental yield."
       }
     },
-    color: "emerald"
+    color: "emerald",
+    minTicket: "50k+" // Gardé pour le profil détaillé
   },
   {
     id: 2,
     name: "FitPulse",
     vision: { fr: "Santé Mentale", en: "Mental Health" },
-    sector: { fr: "HealthTech • Seed", en: "HealthTech • Seed" },
-    funding: "450k CHF",
-    minTicket: "25k+",
+    kpis: {
+      amount: "450k CHF",
+      valuation: "3.5M CHF",
+      stage: "Pre-Seed",
+      sector: { fr: "HealthTech", en: "HealthTech" }
+    },
     pitch: {
       fr: "Retrouvez l'équilibre vie pro / vie perso. Notre IA crée des programmes de déconnexion pour toute la famille.",
       en: "Find your work-life balance. Our AI creates disconnection programs for the whole family."
     },
-    // Vidéo Lifestyle (Google)
     video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
     poster: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80",
     ceo: {
@@ -47,20 +53,23 @@ export const startups = [
         en: "Mental health is the challenge of 2025. FitPulse has attracted 30k families in 6 months."
       }
     },
-    color: "purple"
+    color: "purple",
+    minTicket: "25k+"
   },
   {
     id: 3,
     name: "MarathonOS",
     vision: { fr: "Trail Tech", en: "Trail Tech" },
-    sector: { fr: "SportTech • Series A", en: "SportTech • Series A" },
-    funding: "1.1M CHF",
-    minTicket: "100k+",
+    kpis: {
+      amount: "1.1M CHF",
+      valuation: "8M CHF",
+      stage: "Series A",
+      sector: { fr: "SportTech", en: "SportTech" }
+    },
     pitch: {
       fr: "Le terrain est infini. Notre GPS haute précision pour l'Ultra-Trail fonctionne sans réseau, partout.",
       en: "The terrain is infinite. Our high-precision GPS for Ultra-Trail works offline, everywhere."
     },
-    // On réutilise la vidéo nature car elle marche bien pour le trail aussi
     video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", 
     poster: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=800&q=80",
     ceo: {
@@ -72,6 +81,7 @@ export const startups = [
         en: "MarathonOS secures mountain runs. Fall detection algorithm validated on the UTMB."
       }
     },
-    color: "orange"
+    color: "orange",
+    minTicket: "100k+"
   }
 ];
