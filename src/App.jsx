@@ -25,8 +25,8 @@ const App = () => {
   return (
     <>
       {/* --- MENU DE DÉMO --- */}
-      <div className="fixed top-4 left-4 z-[100] group">
-        <div className="bg-slate-900/90 backdrop-blur text-white text-[10px] font-bold p-1.5 rounded-xl shadow-2xl flex gap-1 opacity-40 hover:opacity-100 transition-opacity border border-white/10">
+      <div className="fixed top-4 left-4 md:top-4 md:left-4 bottom-auto md:bottom-auto z-[100] group max-md:top-auto max-md:bottom-4 max-md:left-1/2 max-md:-translate-x-1/2">
+        <div className="bg-slate-900/90 backdrop-blur text-white text-[10px] font-bold p-1.5 rounded-xl shadow-2xl flex gap-1 opacity-60 hover:opacity-100 transition-opacity border border-white/10">
           <button 
             onClick={() => setCurrentPage('landing')} 
             className={`px-3 py-2 rounded-lg transition-all ${currentPage === 'landing' ? 'bg-emerald-600 text-white' : 'hover:bg-white/10 text-slate-300'}`}
