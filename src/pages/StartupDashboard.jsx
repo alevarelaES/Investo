@@ -3,9 +3,11 @@ import {
   LayoutDashboard, BarChart3, FileText, Settings, Bell, 
   Eye, Users, Clock, MousePointerClick, ArrowUpRight, Menu, X
 } from 'lucide-react';
+import translations from '../data/translations';
 
-const StartupDashboard = () => {
+const StartupDashboard = ({ lang = 'fr' }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const t = (key) => translations[lang]?.[key] || translations['fr'][key] || key;
 
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans text-slate-900">
@@ -33,14 +35,14 @@ const StartupDashboard = () => {
         </div>
 
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2 mt-4">Mon Espace</div>
-          <MenuItem icon={LayoutDashboard} label="Vue d'ensemble" active />
-          <MenuItem icon={BarChart3} label="Analyses Détaillées" />
-          <MenuItem icon={Bell} label="Notifications" badge="5" />
+          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2 mt-4">{t('startup_my_space')}</div>
+          <MenuItem icon={LayoutDashboard} label={t('startup_overview')} active />
+          <MenuItem icon={BarChart3} label={t('startup_detailed_analytics')} />
+          <MenuItem icon={Bell} label={t('inv_notifications')} badge="5" />
           
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2 mt-8">Levée de Fonds</div>
-          <MenuItem icon={FileText} label="Ma Data Room" />
-          <MenuItem icon={Settings} label="Configuration Pitch" />
+          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2 mt-8">{t('startup_fundraising')}</div>
+          <MenuItem icon={FileText} label={t('startup_my_data_room')} />
+          <MenuItem icon={Settings} label={t('startup_pitch_config')} />
         </nav>
 
         <div className="p-4 border-t border-slate-100">
@@ -64,8 +66,8 @@ const StartupDashboard = () => {
               <Menu size={20} className="text-slate-600" />
             </button>
             <div>
-              <h1 className="text-lg lg:text-xl font-black text-slate-900">Bonjour, Clara 👋</h1>
-              <p className="text-[10px] lg:text-xs text-slate-500 font-medium">Votre pitch est en ligne depuis 12 jours.</p>
+              <h1 className="text-lg lg:text-xl font-black text-slate-900">{t('startup_hello')}, Clara 👋</h1>
+              <p className="text-[10px] lg:text-xs text-slate-500 font-medium">{t('startup_pitch_online')} 12 {t('startup_days')}.</p>
             </div>
           </div>
           <div className="flex items-center gap-2 lg:gap-4">
@@ -80,19 +82,19 @@ const StartupDashboard = () => {
           
           {/* STATS CARDS */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
-            <StatCard icon={Eye} label="Vues Totales" value="1,240" trend="+12%" color="blue" />
-            <StatCard icon={Users} label="Investisseurs" value="86" trend="+5%" color="purple" />
-            <StatCard icon={Clock} label="Temps Moyen" value="1m 12s" sub="sur 1m 30s" color="orange" />
-            <StatCard icon={MousePointerClick} label="Clics Profil" value="24" trend="+8%" color="emerald" />
+            <StatCard icon={Eye} label={t('startup_total_views')} value="1,240" trend="+12%" color="blue" />
+            <StatCard icon={Users} label={t('startup_investors')} value="86" trend="+5%" color="purple" />
+            <StatCard icon={Clock} label={t('startup_avg_time')} value="1m 12s" sub="sur 1m 30s" color="orange" />
+            <StatCard icon={MousePointerClick} label={t('startup_profile_clicks')} value="24" trend="+8%" color="emerald" />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* GRAPHIQUE SIMULÉ (Engagement) */}
             <div className="lg:col-span-2 bg-white p-4 lg:p-6 rounded-2xl border border-slate-200 shadow-sm">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
-                <h3 className="font-bold text-slate-900">Performance du Pitch</h3>
+                <h3 className="font-bold text-slate-900">{t('startup_pitch_performance')}</h3>
                 <select className="bg-slate-50 border border-slate-200 text-xs font-bold rounded-lg px-3 py-2 outline-none w-full sm:w-auto">
-                  <option>7 derniers jours</option>
+                  <option>{t('startup_last_7_days')}</option>
                 </select>
               </div>
               {/* Simulation visuelle de graph */}
@@ -104,20 +106,20 @@ const StartupDashboard = () => {
                 ))}
               </div>
               <div className="flex justify-between mt-3 lg:mt-4 text-[9px] lg:text-xs text-slate-400 font-bold uppercase tracking-widest">
-                <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+                <span>{t('day_mon')}</span><span>{t('day_tue')}</span><span>{t('day_wed')}</span><span>{t('day_thu')}</span><span>{t('day_fri')}</span><span>{t('day_sat')}</span><span>{t('day_sun')}</span>
               </div>
             </div>
 
             {/* ACTIVITÉ RÉCENTE */}
             <div className="bg-white p-4 lg:p-6 rounded-2xl border border-slate-200 shadow-sm">
-              <h3 className="font-bold text-slate-900 mb-4 lg:mb-6">Dernières Visites</h3>
+              <h3 className="font-bold text-slate-900 mb-4 lg:mb-6">{t('startup_recent_visits')}</h3>
               <div className="space-y-3 lg:space-y-4">
-                <ActivityItem name="Jean Dupont" role="Family Office" time="Il y a 2h" type="view" />
-                <ActivityItem name="Tech Ventures" role="VC Fund" time="Il y a 5h" type="click" />
-                <ActivityItem name="Sarah L." role="Business Angel" time="Il y a 1j" type="view" />
-                <ActivityItem name="Marc O." role="Investisseur" time="Il y a 1j" type="match" />
+                <ActivityItem name="Jean Dupont" role="Family Office" time={`${t('startup_ago')} 2${t('startup_hours')}`} type="view" />
+                <ActivityItem name="Tech Ventures" role="VC Fund" time={`${t('startup_ago')} 5${t('startup_hours')}`} type="click" />
+                <ActivityItem name="Sarah L." role="Business Angel" time={`${t('startup_ago')} 1${t('startup_day')}`} type="view" />
+                <ActivityItem name="Marc O." role={t('startup_investors').slice(0, -1)} time={`${t('startup_ago')} 1${t('startup_day')}`} type="match" />
               </div>
-              <button className="w-full mt-4 lg:mt-6 py-2.5 lg:py-3 border border-slate-200 rounded-xl text-[10px] lg:text-xs font-bold uppercase tracking-widest hover:bg-slate-50">Voir tout</button>
+              <button className="w-full mt-4 lg:mt-6 py-2.5 lg:py-3 border border-slate-200 rounded-xl text-[10px] lg:text-xs font-bold uppercase tracking-widest hover:bg-slate-50">{t('startup_view_all')}</button>
             </div>
           </div>
 

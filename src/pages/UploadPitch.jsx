@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { UploadCloud, FileVideo, DollarSign, TrendingUp, Layers, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
+import translations from '../data/translations';
 
-const UploadPitch = () => {
+const UploadPitch = ({ lang = 'fr' }) => {
   const [step, setStep] = useState(1);
+  const t = (key) => translations[lang]?.[key] || translations['fr'][key] || key;
   const [formData, setFormData] = useState({
     name: '',
     vision: '',
@@ -37,7 +39,7 @@ const UploadPitch = () => {
           <span className="font-black tracking-tight uppercase text-sm lg:text-base">Investo <span className="text-slate-400 text-[10px] lg:text-xs ml-1 lg:ml-2 hidden sm:inline">Studio</span></span>
         </div>
         <div className="text-[10px] lg:text-xs font-bold text-slate-400 uppercase tracking-widest">
-          Étape {step}/3
+          {t('upload_step')} {step}/3
         </div>
       </header>
 
@@ -58,26 +60,26 @@ const UploadPitch = () => {
             {step === 1 && (
               <div className="space-y-5 lg:space-y-6 animate-in slide-in-from-right duration-500">
                 <div className="mb-6 lg:mb-8">
-                  <h2 className="text-2xl lg:text-3xl font-black text-slate-900 mb-2">Commençons par les bases.</h2>
-                  <p className="text-sm lg:text-base text-slate-500 font-medium">Présentez votre startup en quelques mots pour le sourcing.</p>
+                  <h2 className="text-2xl lg:text-3xl font-black text-slate-900 mb-2">{t('upload_step1_title')}</h2>
+                  <p className="text-sm lg:text-base text-slate-500 font-medium">{t('upload_step1_desc')}</p>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Nom de la Startup</label>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">{t('upload_name_label')}</label>
                     <input 
                       type="text" 
-                      placeholder="Ex: PayFlow" 
+                      placeholder={t('upload_name_placeholder')} 
                       className="w-full bg-slate-50 border border-slate-200 rounded-lg lg:rounded-xl px-3 lg:px-4 py-2.5 lg:py-3 font-bold text-sm lg:text-base focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">La Vision (One-liner)</label>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">{t('upload_vision_label')}</label>
                     <input 
                       type="text" 
-                      placeholder="Ex: Le Stripe de l'Afrique de l'Ouest" 
+                      placeholder={t('upload_vision_placeholder')} 
                       className="w-full bg-slate-50 border border-slate-200 rounded-lg lg:rounded-xl px-3 lg:px-4 py-2.5 lg:py-3 font-bold text-sm lg:text-base focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
                       value={formData.vision}
                       onChange={(e) => setFormData({...formData, vision: e.target.value})}
@@ -85,7 +87,7 @@ const UploadPitch = () => {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
                     <div>
-                      <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Secteur</label>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">{t('upload_sector_label')}</label>
                       <select 
                         className="w-full bg-slate-50 border border-slate-200 rounded-lg lg:rounded-xl px-3 lg:px-4 py-2.5 lg:py-3 font-bold text-sm lg:text-base outline-none"
                         value={formData.sector}
@@ -99,7 +101,7 @@ const UploadPitch = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Stade</label>
+                      <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">{t('upload_stage_label')}</label>
                       <select 
                         className="w-full bg-slate-50 border border-slate-200 rounded-lg lg:rounded-xl px-3 lg:px-4 py-2.5 lg:py-3 font-bold text-sm lg:text-base outline-none"
                         value={formData.stage}
@@ -120,8 +122,8 @@ const UploadPitch = () => {
             {step === 2 && (
               <div className="space-y-5 lg:space-y-6 animate-in slide-in-from-right duration-500">
                 <div className="mb-6 lg:mb-8">
-                  <h2 className="text-2xl lg:text-3xl font-black text-slate-900 mb-2">Les Chiffres Clés.</h2>
-                  <p className="text-sm lg:text-base text-slate-500 font-medium">Ces données généreront votre "Smart Card" investisseur.</p>
+                  <h2 className="text-2xl lg:text-3xl font-black text-slate-900 mb-2">{t('upload_step2_title')}</h2>
+                  <p className="text-sm lg:text-base text-slate-500 font-medium">{t('upload_step2_desc')}</p>
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 lg:gap-6">
@@ -130,10 +132,10 @@ const UploadPitch = () => {
                       <DollarSign size={18} className="lg:w-5 lg:h-5" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-emerald-700 uppercase tracking-widest mb-2">Montant Recherché</label>
+                      <label className="block text-[10px] font-bold text-emerald-700 uppercase tracking-widest mb-2">{t('upload_amount_label')}</label>
                       <input 
                         type="text" 
-                        placeholder="Ex: 500k CHF" 
+                        placeholder={t('upload_amount_placeholder')} 
                         className="w-full bg-white border border-emerald-200 rounded-lg lg:rounded-xl px-3 lg:px-4 py-2.5 lg:py-3 font-black text-base lg:text-lg focus:ring-2 focus:ring-emerald-500 outline-none transition-all placeholder:font-medium placeholder:text-slate-300"
                         value={formData.amount}
                         onChange={(e) => setFormData({...formData, amount: e.target.value})}
@@ -146,10 +148,10 @@ const UploadPitch = () => {
                       <TrendingUp size={18} className="lg:w-5 lg:h-5" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Valorisation (Pre-Money)</label>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">{t('upload_valuation_label')}</label>
                       <input 
                         type="text" 
-                        placeholder="Ex: 4M CHF" 
+                        placeholder={t('upload_valuation_placeholder')} 
                         className="w-full bg-white border border-slate-200 rounded-lg lg:rounded-xl px-3 lg:px-4 py-2.5 lg:py-3 font-black text-base lg:text-lg focus:ring-2 focus:ring-slate-400 outline-none transition-all placeholder:font-medium placeholder:text-slate-300"
                         value={formData.valuation}
                         onChange={(e) => setFormData({...formData, valuation: e.target.value})}
@@ -159,7 +161,7 @@ const UploadPitch = () => {
                 </div>
                 
                 <div className="text-center text-[10px] lg:text-xs text-slate-400 font-medium italic">
-                  * Ces données seront vérifiées lors de la Due Diligence.
+                  {t('upload_data_verified')}
                 </div>
               </div>
             )}
@@ -168,8 +170,8 @@ const UploadPitch = () => {
             {step === 3 && (
               <div className="space-y-5 lg:space-y-6 animate-in slide-in-from-right duration-500">
                 <div className="mb-6 lg:mb-8">
-                  <h2 className="text-2xl lg:text-3xl font-black text-slate-900 mb-2">Le Pitch Vidéo.</h2>
-                  <p className="text-sm lg:text-base text-slate-500 font-medium">Format vertical (9:16) requis. Max 90 secondes.</p>
+                  <h2 className="text-2xl lg:text-3xl font-black text-slate-900 mb-2">{t('upload_step3_title')}</h2>
+                  <p className="text-sm lg:text-base text-slate-500 font-medium">{t('upload_step3_desc')}</p>
                 </div>
 
                 <div className="border-2 border-dashed border-slate-200 rounded-2xl lg:rounded-3xl p-6 lg:p-10 flex flex-col items-center justify-center text-center bg-slate-50 hover:bg-slate-100 hover:border-emerald-400 transition-all cursor-pointer relative group">
@@ -181,15 +183,15 @@ const UploadPitch = () => {
                             <CheckCircle size={24} className="lg:w-8 lg:h-8" />
                         </div>
                         <p className="font-bold text-emerald-700 text-sm lg:text-base">{formData.videoFile.name}</p>
-                        <p className="text-[10px] lg:text-xs text-emerald-500 font-medium mt-1">Prêt à l'envoi</p>
+                        <p className="text-[10px] lg:text-xs text-emerald-500 font-medium mt-1">{t('upload_ready')}</p>
                     </div>
                   ) : (
                     <>
                         <div className="w-12 lg:w-16 h-12 lg:h-16 bg-white shadow-sm text-slate-400 rounded-xl lg:rounded-2xl flex items-center justify-center mb-3 lg:mb-4 group-hover:text-emerald-500 group-hover:scale-110 transition-all">
                             <UploadCloud size={24} className="lg:w-8 lg:h-8" />
                         </div>
-                        <p className="font-bold text-slate-700 text-base lg:text-lg">Glissez votre vidéo ici</p>
-                        <p className="text-[10px] lg:text-xs text-slate-400 font-medium mt-1 lg:mt-2">ou cliquez pour parcourir</p>
+                        <p className="font-bold text-slate-700 text-base lg:text-lg">{t('upload_drag_video')}</p>
+                        <p className="text-[10px] lg:text-xs text-slate-400 font-medium mt-1 lg:mt-2">{t('upload_click_browse')}</p>
                         <div className="mt-4 lg:mt-6 flex gap-2 lg:gap-3 flex-wrap justify-center">
                             <span className="px-2 py-1 bg-white border border-slate-200 rounded text-[9px] lg:text-[10px] font-bold text-slate-400">MP4</span>
                             <span className="px-2 py-1 bg-white border border-slate-200 rounded text-[9px] lg:text-[10px] font-bold text-slate-400">MOV</span>
@@ -205,7 +207,7 @@ const UploadPitch = () => {
             <div className="mt-8 lg:mt-12 flex justify-between items-center pt-6 lg:pt-8 border-t border-slate-100">
               {step > 1 ? (
                 <button onClick={prevStep} className="flex items-center gap-1.5 lg:gap-2 text-slate-400 hover:text-slate-600 font-bold text-xs lg:text-sm transition-colors">
-                  <ArrowLeft size={14} className="lg:w-4 lg:h-4" /> Précédent
+                  <ArrowLeft size={14} className="lg:w-4 lg:h-4" /> {t('upload_previous')}
                 </button>
               ) : (
                 <div></div>
@@ -213,11 +215,11 @@ const UploadPitch = () => {
 
               {step < 3 ? (
                 <button onClick={nextStep} className="bg-slate-900 text-white px-5 lg:px-8 py-2.5 lg:py-3 rounded-lg lg:rounded-xl font-bold text-xs lg:text-sm flex items-center gap-1.5 lg:gap-2 hover:bg-emerald-600 transition-all shadow-lg shadow-slate-900/20">
-                  Suivant <ArrowRight size={14} className="lg:w-4 lg:h-4" />
+                  {t('upload_next')} <ArrowRight size={14} className="lg:w-4 lg:h-4" />
                 </button>
               ) : (
                 <button className="bg-emerald-600 text-white px-6 lg:px-10 py-2.5 lg:py-3 rounded-lg lg:rounded-xl font-bold text-xs lg:text-sm flex items-center gap-1.5 lg:gap-2 hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-600/30">
-                  Soumettre <CheckCircle size={14} className="lg:w-4 lg:h-4" />
+                  {t('upload_submit')} <CheckCircle size={14} className="lg:w-4 lg:h-4" />
                 </button>
               )}
             </div>

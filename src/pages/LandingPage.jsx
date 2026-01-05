@@ -10,8 +10,8 @@ import WaitlistModal from '../components/WaitlistModal';
 import { startups } from '../data/startups';
 
 // On récupère la fonction 'onLogin' passée par App.jsx
-const LandingPage = ({ onLogin }) => {
-  const [lang, setLang] = useState('fr');
+const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
+  const [lang, setLang] = useState(initialLang);
   const [scrolled, setScrolled] = useState(false);
   const [activeScreen, setActiveScreen] = useState('video');
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -23,6 +23,11 @@ const LandingPage = ({ onLogin }) => {
 
   const currentStartup = startups[currentIndex];
   const t = (key) => translations[lang]?.[key] || translations['fr'][key] || key;
+
+  const handleLangChange = (newLang) => {
+    setLang(newLang);
+    if (onLangChange) onLangChange(newLang);
+  };
 
   const nextStartup = () => setCurrentIndex((prev) => (prev + 1) % startups.length);
   const prevStartup = () => setCurrentIndex((prev) => (prev - 1 + startups.length) % startups.length);
@@ -71,9 +76,9 @@ const LandingPage = ({ onLogin }) => {
             </div>
             
             <div className={`flex gap-2 border-r pr-4 mr-2 ${darkMode ? 'border-slate-600' : 'border-slate-200'}`}>
-               <button onClick={() => setLang('fr')} className={`text-[10px] font-bold ${lang === 'fr' ? 'text-emerald-500' : (darkMode ? 'text-slate-500' : 'text-slate-300')}`}>FR</button>
+               <button onClick={() => handleLangChange('fr')} className={`text-[10px] font-bold ${lang === 'fr' ? 'text-emerald-500' : (darkMode ? 'text-slate-500' : 'text-slate-300')}`}>FR</button>
                <span className={darkMode ? 'text-slate-600' : 'text-slate-200'}>|</span>
-               <button onClick={() => setLang('en')} className={`text-[10px] font-bold ${lang === 'en' ? 'text-emerald-500' : (darkMode ? 'text-slate-500' : 'text-slate-300')}`}>EN</button>
+               <button onClick={() => handleLangChange('en')} className={`text-[10px] font-bold ${lang === 'en' ? 'text-emerald-500' : (darkMode ? 'text-slate-500' : 'text-slate-300')}`}>EN</button>
             </div>
 
             {/* Toggle Dark/Light Mode */}
@@ -90,7 +95,7 @@ const LandingPage = ({ onLogin }) => {
               onClick={onLogin}
               className={`text-[10px] font-black uppercase tracking-widest hover:text-emerald-500 transition-colors flex items-center gap-2 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}
             >
-              <LogIn size={14} /> Connexion
+              <LogIn size={14} /> {t('login')}
             </button>
 
             <button onClick={() => openModal('investor')} className="bg-emerald-600 text-white px-7 py-3 rounded-xl hover:bg-emerald-500 transition-all font-bold tracking-widest text-[10px]">
@@ -127,8 +132,8 @@ const LandingPage = ({ onLogin }) => {
             </div>
             
             <div className={`flex gap-4 py-2 border-t ${darkMode ? 'border-slate-700' : 'border-slate-100'}`}>
-               <button onClick={() => setLang('fr')} className={`text-[11px] font-bold ${lang === 'fr' ? 'text-emerald-500' : (darkMode ? 'text-slate-500' : 'text-slate-400')}`}>Français</button>
-               <button onClick={() => setLang('en')} className={`text-[11px] font-bold ${lang === 'en' ? 'text-emerald-500' : (darkMode ? 'text-slate-500' : 'text-slate-400')}`}>English</button>
+               <button onClick={() => handleLangChange('fr')} className={`text-[11px] font-bold ${lang === 'fr' ? 'text-emerald-500' : (darkMode ? 'text-slate-500' : 'text-slate-400')}`}>Français</button>
+               <button onClick={() => handleLangChange('en')} className={`text-[11px] font-bold ${lang === 'en' ? 'text-emerald-500' : (darkMode ? 'text-slate-500' : 'text-slate-400')}`}>English</button>
             </div>
 
             <div className={`flex flex-col gap-3 pt-2 border-t ${darkMode ? 'border-slate-700' : 'border-slate-100'}`}>
@@ -136,7 +141,7 @@ const LandingPage = ({ onLogin }) => {
                 onClick={() => { onLogin(); setMobileMenuOpen(false); }}
                 className={`text-[11px] font-black uppercase tracking-widest hover:text-emerald-500 transition-colors flex items-center gap-2 py-2 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}
               >
-                <LogIn size={16} /> Connexion
+                <LogIn size={16} /> {t('login')}
               </button>
 
               <button 
@@ -151,49 +156,49 @@ const LandingPage = ({ onLogin }) => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-24 px-4 md:px-6 overflow-hidden min-h-[90vh] flex items-center">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <section className="relative pt-24 lg:pt-28 pb-16 lg:pb-20 px-4 md:px-6 overflow-hidden min-h-[85vh] flex items-center">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           
-          <div className="space-y-8 md:space-y-10 relative z-10 text-left order-1 lg:order-none">
-            <div className={`inline-flex items-center gap-3 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] ${darkMode ? 'bg-emerald-900/30 border border-emerald-800 text-emerald-400' : 'bg-emerald-50 border border-emerald-100 text-emerald-700'}`}>
-              <Zap size={12} className="animate-pulse" />
+          <div className="space-y-6 lg:space-y-8 relative z-10 text-left order-1 lg:order-none">
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.2em] ${darkMode ? 'bg-emerald-900/30 border border-emerald-800 text-emerald-400' : 'bg-emerald-50 border border-emerald-100 text-emerald-700'}`}>
+              <Zap size={10} className="animate-pulse" />
               {t('hero_badge')}
             </div>
-            <h1 className={`text-5xl md:text-6xl lg:text-8xl font-black leading-[0.9] tracking-tighter uppercase ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+            <h1 className={`text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[0.9] tracking-tighter uppercase ${darkMode ? 'text-white' : 'text-slate-900'}`}>
               {t('hero_title_1')} <br />
               <span className="text-emerald-500">{t('hero_title_2')}</span> <br/>
               {t('hero_title_3')}
             </h1>
-            <p className={`text-lg md:text-xl max-w-lg leading-relaxed font-medium ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>
+            <p className={`text-base lg:text-lg max-w-md leading-relaxed font-medium ${darkMode ? 'text-slate-400' : 'text-slate-400'}`}>
               {t('hero_desc')}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button onClick={() => openModal('startup')} className="bg-emerald-600 text-white font-black uppercase tracking-widest text-[10px] px-10 py-5 rounded-2xl flex items-center justify-center gap-3 shadow-2xl shadow-emerald-600/30 active:scale-95 transition-transform hover:bg-emerald-500">
-                {t('btn_pitch')} <ArrowRight size={18} />
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <button onClick={() => openModal('startup')} className="bg-emerald-600 text-white font-black uppercase tracking-widest text-[9px] px-6 lg:px-8 py-3.5 lg:py-4 rounded-xl flex items-center justify-center gap-2 shadow-xl shadow-emerald-600/30 active:scale-95 transition-transform hover:bg-emerald-500">
+                {t('btn_pitch')} <ArrowRight size={14} />
               </button>
-              <button onClick={() => openModal('investor')} className={`px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-[10px] active:scale-95 transition-transform ${darkMode ? 'bg-slate-800 border-2 border-slate-700 text-white hover:bg-slate-700' : 'bg-white border-2 border-slate-100 text-slate-900 hover:bg-slate-50'}`}>
+              <button onClick={() => openModal('investor')} className={`px-6 lg:px-8 py-3.5 lg:py-4 rounded-xl font-black uppercase tracking-widest text-[9px] active:scale-95 transition-transform ${darkMode ? 'bg-slate-800 border-2 border-slate-700 text-white hover:bg-slate-700' : 'bg-white border-2 border-slate-100 text-slate-900 hover:bg-slate-50'}`}>
                 {t('btn_sourcing')}
               </button>
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-[400px] order-2 lg:order-none mt-8 lg:mt-0">
-            <div className="absolute right-4 bottom-36 flex flex-col gap-3 z-30 lg:-right-20 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2">
-              <button onClick={prevStartup} className={`p-3 lg:p-4 backdrop-blur-md rounded-full shadow-md hover:shadow-lg hover:text-emerald-500 transition-all group ${darkMode ? 'bg-slate-800/80 lg:bg-slate-800 text-slate-400 border border-slate-700' : 'bg-white/20 lg:bg-white text-slate-500 lg:text-slate-400 border border-slate-200/60 lg:border-slate-100'}`}>
-                <ChevronUp size={24} className="group-hover:-translate-y-1 transition-transform"/>
+          <div className="relative mx-auto w-full max-w-[340px] lg:max-w-[360px] order-2 lg:order-none mt-6 lg:mt-0">
+            <div className="absolute right-2 bottom-28 flex flex-col gap-2 z-30 lg:-right-16 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2">
+              <button onClick={prevStartup} className={`p-2.5 lg:p-3 backdrop-blur-md rounded-full shadow-md hover:shadow-lg hover:text-emerald-500 transition-all group ${darkMode ? 'bg-slate-800/80 lg:bg-slate-800 text-slate-400 border border-slate-700' : 'bg-white/20 lg:bg-white text-slate-500 lg:text-slate-400 border border-slate-200/60 lg:border-slate-100'}`}>
+                <ChevronUp size={20} className="group-hover:-translate-y-1 transition-transform"/>
               </button>
-              <button onClick={nextStartup} className={`p-3 lg:p-4 backdrop-blur-md rounded-full shadow-md hover:shadow-lg hover:text-emerald-500 transition-all group ${darkMode ? 'bg-slate-800/80 lg:bg-slate-800 text-slate-400 border border-slate-700' : 'bg-white/20 lg:bg-white text-slate-500 lg:text-slate-400 border border-slate-200/60 lg:border-slate-100'}`}>
-                <ChevronDown size={24} className="group-hover:translate-y-1 transition-transform"/>
+              <button onClick={nextStartup} className={`p-2.5 lg:p-3 backdrop-blur-md rounded-full shadow-md hover:shadow-lg hover:text-emerald-500 transition-all group ${darkMode ? 'bg-slate-800/80 lg:bg-slate-800 text-slate-400 border border-slate-700' : 'bg-white/20 lg:bg-white text-slate-500 lg:text-slate-400 border border-slate-200/60 lg:border-slate-100'}`}>
+                <ChevronDown size={20} className="group-hover:translate-y-1 transition-transform"/>
               </button>
             </div>
 
-            <div className="bg-[#050505] border-0 lg:border-[14px] border-[#1a1a1a] rounded-3xl lg:rounded-[4rem] h-[70vh] lg:h-[780px] shadow-2xl overflow-hidden relative transition-all duration-300">
-              <div className="absolute top-0 w-full pt-6 lg:pt-12 pb-6 px-8 flex justify-center items-center z-50 pointer-events-none">
-                <div className="bg-white/10 backdrop-blur-xl p-1 rounded-2xl border border-white/10 flex pointer-events-auto shadow-lg">
-                  <button onClick={() => setActiveScreen('video')} className={`px-4 lg:px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeScreen === 'video' ? 'bg-white text-black' : 'text-white/60'}`}>
+            <div className="bg-[#050505] border-0 lg:border-[12px] border-[#1a1a1a] rounded-[2rem] lg:rounded-[3rem] h-[60vh] lg:h-[640px] shadow-2xl overflow-hidden relative transition-all duration-300">
+              <div className="absolute top-0 w-full pt-4 lg:pt-8 pb-4 px-6 flex justify-center items-center z-50 pointer-events-none">
+                <div className="bg-white/10 backdrop-blur-xl p-1 rounded-xl border border-white/10 flex pointer-events-auto shadow-lg">
+                  <button onClick={() => setActiveScreen('video')} className={`px-3 lg:px-5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${activeScreen === 'video' ? 'bg-white text-black' : 'text-white/60'}`}>
                     {t('simulator_pitch')}
                   </button>
-                  <button onClick={() => setActiveScreen('profile')} className={`px-4 lg:px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeScreen === 'profile' ? 'bg-white text-black' : 'text-white/60'}`}>
+                  <button onClick={() => setActiveScreen('profile')} className={`px-3 lg:px-5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${activeScreen === 'profile' ? 'bg-white text-black' : 'text-white/60'}`}>
                     {t('simulator_data')}
                   </button>
                 </div>
@@ -206,72 +211,72 @@ const LandingPage = ({ onLogin }) => {
       </section>
 
       {/* Section Dual Profiles (CONTENU COMPLET RESTAURÉ) */}
-      <section id="avantages" className={`py-24 px-6 ${darkMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 space-y-4">
-             <p className="text-emerald-500 font-black text-[10px] uppercase tracking-[0.3em]">{t('dual_badge')}</p>
-             <h2 className={`text-3xl md:text-5xl font-black uppercase tracking-tighter ${darkMode ? 'text-white' : 'text-slate-900'}`}>{t('dual_title')}</h2>
+      <section id="avantages" className={`py-16 lg:py-20 px-6 ${darkMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 space-y-3">
+             <p className="text-emerald-500 font-black text-[9px] uppercase tracking-[0.3em]">{t('dual_badge')}</p>
+             <h2 className={`text-2xl md:text-4xl font-black uppercase tracking-tighter ${darkMode ? 'text-white' : 'text-slate-900'}`}>{t('dual_title')}</h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6">
             {/* Carte Startups */}
-            <div className={`p-8 md:p-12 rounded-[2.5rem] shadow-xl flex flex-col items-start text-left ${darkMode ? 'bg-slate-700 border border-slate-600' : 'bg-white shadow-slate-200/50 border border-slate-100'}`}>
-               <div className="w-16 h-16 bg-emerald-500 rounded-3xl flex items-center justify-center text-white mb-8 shadow-lg shadow-emerald-200 rotate-3">
-                 <Zap size={32} fill="white" />
+            <div className={`p-6 md:p-8 rounded-2xl shadow-lg flex flex-col items-start text-left ${darkMode ? 'bg-slate-700 border border-slate-600' : 'bg-white shadow-slate-200/50 border border-slate-100'}`}>
+               <div className="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-emerald-200 rotate-3">
+                 <Zap size={24} fill="white" />
                </div>
-               <h3 className={`text-2xl md:text-3xl font-black uppercase tracking-tight mb-8 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{t('dual_startup_title')}</h3>
-               <div className="space-y-8 w-full">
-                  <div className="flex gap-5">
-                     <div className="mt-1 text-emerald-500 shrink-0"><Eye size={24} /></div>
+               <h3 className={`text-xl md:text-2xl font-black uppercase tracking-tight mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{t('dual_startup_title')}</h3>
+               <div className="space-y-5 w-full">
+                  <div className="flex gap-4">
+                     <div className="mt-1 text-emerald-500 shrink-0"><Eye size={20} /></div>
                      <div>
-                        <h4 className={`font-bold text-sm uppercase tracking-wider mb-1 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{t('dual_s_1_title')}</h4>
-                        <p className={`font-medium text-sm leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t('dual_s_1_desc')}</p>
+                        <h4 className={`font-bold text-xs uppercase tracking-wider mb-1 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{t('dual_s_1_title')}</h4>
+                        <p className={`font-medium text-xs leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t('dual_s_1_desc')}</p>
                      </div>
                   </div>
-                  <div className="flex gap-5">
-                     <div className="mt-1 text-emerald-500 shrink-0"><TrendingUp size={24} /></div>
+                  <div className="flex gap-4">
+                     <div className="mt-1 text-emerald-500 shrink-0"><TrendingUp size={20} /></div>
                      <div>
-                        <h4 className={`font-bold text-sm uppercase tracking-wider mb-1 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{t('dual_s_2_title')}</h4>
-                        <p className={`font-medium text-sm leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t('dual_s_2_desc')}</p>
+                        <h4 className={`font-bold text-xs uppercase tracking-wider mb-1 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{t('dual_s_2_title')}</h4>
+                        <p className={`font-medium text-xs leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t('dual_s_2_desc')}</p>
                      </div>
                   </div>
-                  <div className="flex gap-5">
-                     <div className="mt-1 text-emerald-500 shrink-0"><MessageCircle size={24} /></div>
+                  <div className="flex gap-4">
+                     <div className="mt-1 text-emerald-500 shrink-0"><MessageCircle size={20} /></div>
                      <div>
-                        <h4 className={`font-bold text-sm uppercase tracking-wider mb-1 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{t('dual_s_3_title')}</h4>
-                        <p className={`font-medium text-sm leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t('dual_s_3_desc')}</p>
+                        <h4 className={`font-bold text-xs uppercase tracking-wider mb-1 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{t('dual_s_3_title')}</h4>
+                        <p className={`font-medium text-xs leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t('dual_s_3_desc')}</p>
                      </div>
                   </div>
                </div>
             </div>
 
             {/* Carte Investisseurs */}
-            <div className="bg-[#0A0F1C] p-8 md:p-12 rounded-[2.5rem] shadow-2xl shadow-slate-900/20 flex flex-col items-start text-left relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-900/20 blur-[100px] rounded-full pointer-events-none"></div>
-               <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-slate-900 mb-8 shadow-lg -rotate-3 z-10">
-                 <Target size={32} />
+            <div className="bg-[#0A0F1C] p-6 md:p-8 rounded-2xl shadow-xl shadow-slate-900/20 flex flex-col items-start text-left relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-900/20 blur-[80px] rounded-full pointer-events-none"></div>
+               <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-900 mb-6 shadow-lg -rotate-3 z-10">
+                 <Target size={24} />
                </div>
-               <h3 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tight mb-8 z-10">{t('dual_investor_title')}</h3>
-               <div className="space-y-8 w-full z-10">
-                  <div className="flex gap-5">
-                     <div className="mt-1 text-emerald-400 shrink-0"><CheckCircle size={24} /></div>
+               <h3 className="text-xl md:text-2xl font-black text-white uppercase tracking-tight mb-6 z-10">{t('dual_investor_title')}</h3>
+               <div className="space-y-5 w-full z-10">
+                  <div className="flex gap-4">
+                     <div className="mt-1 text-emerald-400 shrink-0"><CheckCircle size={20} /></div>
                      <div>
-                        <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-1">{t('dual_i_1_title')}</h4>
-                        <p className="text-slate-400 font-medium text-sm leading-relaxed">{t('dual_i_1_desc')}</p>
+                        <h4 className="font-bold text-xs uppercase tracking-wider text-white mb-1">{t('dual_i_1_title')}</h4>
+                        <p className="text-slate-400 font-medium text-xs leading-relaxed">{t('dual_i_1_desc')}</p>
                      </div>
                   </div>
-                  <div className="flex gap-5">
-                     <div className="mt-1 text-emerald-400 shrink-0"><Clock size={24} /></div>
+                  <div className="flex gap-4">
+                     <div className="mt-1 text-emerald-400 shrink-0"><Clock size={20} /></div>
                      <div>
-                        <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-1">{t('dual_i_2_title')}</h4>
-                        <p className="text-slate-400 font-medium text-sm leading-relaxed">{t('dual_i_2_desc')}</p>
+                        <h4 className="font-bold text-xs uppercase tracking-wider text-white mb-1">{t('dual_i_2_title')}</h4>
+                        <p className="text-slate-400 font-medium text-xs leading-relaxed">{t('dual_i_2_desc')}</p>
                      </div>
                   </div>
-                  <div className="flex gap-5">
-                     <div className="mt-1 text-emerald-400 shrink-0"><Lock size={24} /></div>
+                  <div className="flex gap-4">
+                     <div className="mt-1 text-emerald-400 shrink-0"><Lock size={20} /></div>
                      <div>
-                        <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-1">{t('dual_i_3_title')}</h4>
-                        <p className="text-slate-400 font-medium text-sm leading-relaxed">{t('dual_i_3_desc')}</p>
+                        <h4 className="font-bold text-xs uppercase tracking-wider text-white mb-1">{t('dual_i_3_title')}</h4>
+                        <p className="text-slate-400 font-medium text-xs leading-relaxed">{t('dual_i_3_desc')}</p>
                      </div>
                   </div>
                </div>
@@ -281,20 +286,20 @@ const LandingPage = ({ onLogin }) => {
       </section>
 
       {/* Stats */}
-      <section id="stats" className={`py-24 px-6 ${darkMode ? 'bg-slate-900' : 'bg-white'}`}>
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      <section id="stats" className={`py-16 lg:py-20 px-6 ${darkMode ? 'bg-slate-900' : 'bg-white'}`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
              {[
-               { label: t('pulse_stat_1'), value: "450k CHF", icon: <TrendingUp size={20}/> },
-               { label: t('pulse_stat_2'), value: "12", icon: <Play size={20}/> },
-               { label: t('pulse_stat_3'), value: "86", icon: <Users size={20}/> },
-               { label: t('pulse_stat_4'), value: "BioTech", icon: <Globe size={20}/> }
+               { label: t('pulse_stat_1'), value: "450k CHF", icon: <TrendingUp size={16}/> },
+               { label: t('pulse_stat_2'), value: "12", icon: <Play size={16}/> },
+               { label: t('pulse_stat_3'), value: "86", icon: <Users size={16}/> },
+               { label: t('pulse_stat_4'), value: "BioTech", icon: <Globe size={16}/> }
              ].map((stat, i) => (
-               <div key={i} className={`p-6 md:p-8 rounded-[2rem] space-y-4 text-left ${darkMode ? 'bg-slate-800 border border-slate-700' : 'bg-slate-50 border border-slate-100'}`}>
-                  <div className={`w-10 h-10 rounded-xl shadow-sm flex items-center justify-center text-emerald-500 ${darkMode ? 'bg-slate-700' : 'bg-white'}`}>{stat.icon}</div>
+               <div key={i} className={`p-4 md:p-6 rounded-xl space-y-3 text-left ${darkMode ? 'bg-slate-800 border border-slate-700' : 'bg-slate-50 border border-slate-100'}`}>
+                  <div className={`w-8 h-8 rounded-lg shadow-sm flex items-center justify-center text-emerald-500 ${darkMode ? 'bg-slate-700' : 'bg-white'}`}>{stat.icon}</div>
                   <div>
-                    <p className={`text-2xl md:text-3xl font-black ${darkMode ? 'text-white' : 'text-slate-900'}`}>{stat.value}</p>
-                    <p className={`text-[10px] font-bold uppercase tracking-widest ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>{stat.label}</p>
+                    <p className={`text-xl md:text-2xl font-black ${darkMode ? 'text-white' : 'text-slate-900'}`}>{stat.value}</p>
+                    <p className={`text-[9px] font-bold uppercase tracking-widest ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>{stat.label}</p>
                   </div>
                </div>
              ))}
@@ -302,9 +307,9 @@ const LandingPage = ({ onLogin }) => {
         </div>
       </section>
 
-      <footer className={`py-12 border-t ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100'}`}>
-        <div className="max-w-7xl mx-auto px-6 text-center">
-            <p className={`text-[10px] font-bold uppercase tracking-widest ${darkMode ? 'text-slate-600' : 'text-slate-300'}`}>{t('footer_copy')}</p>
+      <footer className={`py-8 border-t ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100'}`}>
+        <div className="max-w-6xl mx-auto px-6 text-center">
+            <p className={`text-[9px] font-bold uppercase tracking-widest ${darkMode ? 'text-slate-600' : 'text-slate-300'}`}>{t('footer_copy')}</p>
         </div>
       </footer>
     </div>

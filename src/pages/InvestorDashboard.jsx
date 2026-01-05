@@ -4,9 +4,11 @@ import {
   Filter, Download, ChevronRight, Lock, Eye, CheckCircle, XCircle, Menu, X 
 } from 'lucide-react';
 import { startups } from '../data/startups';
+import translations from '../data/translations';
 
-const InvestorDashboard = () => {
+const InvestorDashboard = ({ lang = 'fr' }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const t = (key) => translations[lang]?.[key] || translations['fr'][key] || key;
 
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans text-slate-900">
@@ -34,14 +36,14 @@ const InvestorDashboard = () => {
         </div>
 
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 px-2 mt-4">Sourcing</div>
+          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 px-2 mt-4">{t('inv_sourcing')}</div>
           <MenuItem icon={LayoutDashboard} label="Deal Flow" active />
-          <MenuItem icon={PieChart} label="Portfolio" />
-          <MenuItem icon={Bell} label="Notifications" badge="3" />
+          <MenuItem icon={PieChart} label={t('inv_portfolio')} />
+          <MenuItem icon={Bell} label={t('inv_notifications')} badge="3" />
           
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 px-2 mt-8">Diligence</div>
-          <MenuItem icon={FileText} label="Data Rooms" />
-          <MenuItem icon={Settings} label="Paramètres" />
+          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 px-2 mt-8">{t('inv_diligence')}</div>
+          <MenuItem icon={FileText} label={t('inv_data_rooms')} />
+          <MenuItem icon={Settings} label={t('inv_settings')} />
         </nav>
 
         <div className="p-4 border-t border-white/10">
@@ -66,7 +68,7 @@ const InvestorDashboard = () => {
             </button>
             <div className="flex items-center gap-4 text-slate-400 bg-slate-100 px-3 lg:px-4 py-2 rounded-xl w-full max-w-[200px] lg:max-w-[384px]">
               <Search size={18} className="shrink-0" />
-              <input type="text" placeholder="Rechercher..." className="bg-transparent text-sm font-medium w-full focus:outline-none text-slate-900" />
+              <input type="text" placeholder={t('search_placeholder')} className="bg-transparent text-sm font-medium w-full focus:outline-none text-slate-900" />
             </div>
           </div>
           <div className="flex gap-2 lg:gap-4">
@@ -78,25 +80,25 @@ const InvestorDashboard = () => {
           
           <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4 mb-6 lg:mb-8">
             <div>
-              <h1 className="text-2xl lg:text-3xl font-black text-slate-900 mb-1 lg:mb-2">Deal Flow Actif</h1>
-              <p className="text-sm lg:text-base text-slate-500 font-medium">Vos startups sélectionnées en attente d'analyse.</p>
+              <h1 className="text-2xl lg:text-3xl font-black text-slate-900 mb-1 lg:mb-2">{t('inv_deal_flow')}</h1>
+              <p className="text-sm lg:text-base text-slate-500 font-medium">{t('inv_deal_flow_desc')}</p>
             </div>
             <div className="flex gap-2 lg:gap-3">
               <button className="flex items-center gap-2 px-3 lg:px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs lg:text-sm font-bold text-slate-600 hover:bg-slate-50">
-                <Filter size={16} /> <span className="hidden sm:inline">Filtres</span>
+                <Filter size={16} /> <span className="hidden sm:inline">{t('inv_filters')}</span>
               </button>
               <button className="flex items-center gap-2 px-3 lg:px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs lg:text-sm font-bold text-slate-600 hover:bg-slate-50">
-                <Download size={16} /> <span className="hidden sm:inline">Export</span>
+                <Download size={16} /> <span className="hidden sm:inline">{t('inv_export')}</span>
               </button>
             </div>
           </div>
 
           {/* KPI CARDS */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6 mb-6 lg:mb-10">
-            <KpiCard label="Deals Revus" value="124" trend="+12%" />
-            <KpiCard label="Watchlist" value="12" active />
-            <KpiCard label="Data Rooms Ouvertes" value="5" />
-            <KpiCard label="Mises en Relation" value="2" />
+            <KpiCard label={t('inv_deals_reviewed')} value="124" trend="+12%" />
+            <KpiCard label={t('inv_watchlist')} value="12" active />
+            <KpiCard label={t('inv_data_rooms_open')} value="5" />
+            <KpiCard label={t('inv_connections')} value="2" />
           </div>
 
           {/* TABLEAU "FINTECH STYLE" - VERSION MOBILE CARDS */}
@@ -106,13 +108,13 @@ const InvestorDashboard = () => {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-200 text-[10px] uppercase tracking-widest text-slate-500">
-                    <th className="p-5 font-bold">Startup</th>
-                    <th className="p-5 font-bold">Secteur</th>
-                    <th className="p-5 font-bold">Stade</th>
-                    <th className="p-5 font-bold text-right">Valuation</th>
-                    <th className="p-5 font-bold text-right">Objectif</th>
-                    <th className="p-5 font-bold text-center">Status</th>
-                    <th className="p-5 font-bold text-center">Action</th>
+                    <th className="p-5 font-bold text-left">{t('inv_startup')}</th>
+                    <th className="p-5 font-bold text-left">{t('inv_sector')}</th>
+                    <th className="p-5 font-bold text-left">{t('inv_stage')}</th>
+                    <th className="p-5 font-bold text-right">{t('inv_valuation')}</th>
+                    <th className="p-5 font-bold text-right">{t('inv_target')}</th>
+                    <th className="p-5 font-bold text-center">{t('inv_status')}</th>
+                    <th className="p-5 font-bold text-center">{t('inv_action')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -141,7 +143,7 @@ const InvestorDashboard = () => {
                       <td className="p-5 text-sm font-medium text-emerald-600 text-right">{startup.kpis.amount}</td>
                       <td className="p-5 text-center">
                         <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold border border-slate-200">
-                          <Lock size={10} /> Data Room
+                          <Lock size={10} /> {t('inv_data_room')}
                         </span>
                       </td>
                       <td className="p-5 text-center">
@@ -187,11 +189,11 @@ const InvestorDashboard = () => {
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <div>
-                      <span className="text-slate-500 text-xs">Valuation:</span>
+                      <span className="text-slate-500 text-xs">{t('inv_valuation')}:</span>
                       <span className="font-bold text-slate-900 ml-1">{startup.kpis.valuation}</span>
                     </div>
                     <div>
-                      <span className="text-slate-500 text-xs">Objectif:</span>
+                      <span className="text-slate-500 text-xs">{t('inv_target')}:</span>
                       <span className="font-bold text-emerald-600 ml-1">{startup.kpis.amount}</span>
                     </div>
                   </div>
