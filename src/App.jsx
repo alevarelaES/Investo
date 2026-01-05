@@ -1,33 +1,62 @@
 import React, { useState } from 'react';
 import LandingPage from './pages/LandingPage';
 import InvestorDashboard from './pages/InvestorDashboard';
+import StartupDashboard from './pages/StartupDashboard';
+import UploadPitch from './pages/UploadPitch'; // <--- 1. Import
 
 const App = () => {
-  // État simple pour naviguer (Pour le MVP)
-  // 'landing' = Site Public | 'dashboard' = Espace Investisseur
+  // 4 états possibles : 'landing', 'investor', 'startup', 'upload'
   const [currentPage, setCurrentPage] = useState('landing');
 
-  // Fonction pour simuler la connexion
   const handleLogin = () => {
-    setCurrentPage('dashboard');
+    setCurrentPage('investor'); 
     window.scrollTo(0, 0);
+  };
+
+  const renderPage = () => {
+    switch(currentPage) {
+      case 'investor': return <InvestorDashboard />;
+      case 'startup': return <StartupDashboard />;
+      case 'upload': return <UploadPitch />; // <--- 2. Case
+      default: return <LandingPage onLogin={handleLogin} />;
+    }
   };
 
   return (
     <>
-      {/* Bouton secret temporaire pour switcher (en haut à gauche) */}
-      <div className="fixed top-2 left-2 z-[100] opacity-0 hover:opacity-100 transition-opacity bg-black/80 text-white text-[10px] p-2 rounded cursor-pointer flex gap-2">
-        <button onClick={() => setCurrentPage('landing')} className="hover:text-emerald-400">Landing</button>
-        <span>|</span>
-        <button onClick={() => setCurrentPage('dashboard')} className="hover:text-emerald-400">Dashboard</button>
+      {/* --- MENU DE DÉMO --- */}
+      <div className="fixed top-4 left-4 z-[100] group">
+        <div className="bg-slate-900/90 backdrop-blur text-white text-[10px] font-bold p-1.5 rounded-xl shadow-2xl flex gap-1 opacity-40 hover:opacity-100 transition-opacity border border-white/10">
+          <button 
+            onClick={() => setCurrentPage('landing')} 
+            className={`px-3 py-2 rounded-lg transition-all ${currentPage === 'landing' ? 'bg-emerald-600 text-white' : 'hover:bg-white/10 text-slate-300'}`}
+          >
+            Vitrine
+          </button>
+          <div className="w-px bg-white/10 my-1"></div>
+          <button 
+            onClick={() => setCurrentPage('investor')} 
+            className={`px-3 py-2 rounded-lg transition-all ${currentPage === 'investor' ? 'bg-emerald-600 text-white' : 'hover:bg-white/10 text-slate-300'}`}
+          >
+            Investisseur
+          </button>
+          <button 
+            onClick={() => setCurrentPage('startup')} 
+            className={`px-3 py-2 rounded-lg transition-all ${currentPage === 'startup' ? 'bg-emerald-600 text-white' : 'hover:bg-white/10 text-slate-300'}`}
+          >
+            Startup
+          </button>
+          {/* Nouveau bouton Upload */}
+          <button 
+            onClick={() => setCurrentPage('upload')} 
+            className={`px-3 py-2 rounded-lg transition-all ${currentPage === 'upload' ? 'bg-emerald-600 text-white' : 'hover:bg-white/10 text-slate-300'}`}
+          >
+            + Upload
+          </button>
+        </div>
       </div>
 
-      {currentPage === 'landing' ? (
-        // On passe la fonction de "login" à la Landing Page si besoin
-        <LandingPage onLogin={handleLogin} /> 
-      ) : (
-        <InvestorDashboard />
-      )}
+      {renderPage()}
     </>
   );
 };

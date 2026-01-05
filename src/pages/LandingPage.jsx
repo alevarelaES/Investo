@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Play, TrendingUp, Users, ArrowRight, Zap, Globe, ChevronUp, ChevronDown, 
-  Eye, Target, CheckCircle, Clock, Lock, MessageCircle 
+  Eye, Target, CheckCircle, Clock, Lock, MessageCircle, LogIn
 } from 'lucide-react';
-import translations from './data/translations';
-import VideoScreen from './components/VideoScreen';
-import ProfileScreen from './components/ProfileScreen';
-import WaitlistModal from './components/WaitlistModal'; // <--- 1. IMPORT
-import { startups } from './data/startups';
+import translations from '../data/translations';
+import VideoScreen from '../components/VideoScreen';
+import ProfileScreen from '../components/ProfileScreen';
+import WaitlistModal from '../components/WaitlistModal';
+import { startups } from '../data/startups';
 
-const LandingPage = () => {
+// On récupère la fonction 'onLogin' passée par App.jsx
+const LandingPage = ({ onLogin }) => {
   const [lang, setLang] = useState('fr');
   const [scrolled, setScrolled] = useState(false);
   const [activeScreen, setActiveScreen] = useState('video');
   const [currentIndex, setCurrentIndex] = useState(0);
   
-  // <--- 2. NOUVEAUX ÉTATS POUR LA MODAL
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState('startup'); // 'startup' ou 'investor'
+  const [modalType, setModalType] = useState('startup');
 
   const currentStartup = startups[currentIndex];
   const t = (key) => translations[lang]?.[key] || translations['fr'][key] || key;
@@ -25,7 +25,6 @@ const LandingPage = () => {
   const nextStartup = () => setCurrentIndex((prev) => (prev + 1) % startups.length);
   const prevStartup = () => setCurrentIndex((prev) => (prev - 1 + startups.length) % startups.length);
 
-  // Fonction pour ouvrir la modal
   const openModal = (type) => {
     setModalType(type);
     setIsModalOpen(true);
@@ -40,7 +39,6 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-[#FDFDFD] text-slate-900 font-sans text-left overflow-x-hidden">
       
-      {/* <--- 3. LE COMPOSANT MODAL EST ICI (Invisible par défaut) */}
       <WaitlistModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
@@ -63,12 +61,21 @@ const LandingPage = () => {
               <a href="#avantages" className="hover:text-emerald-600 transition-colors">{t('nav_startups')}</a>
               <a href="#stats" className="hover:text-emerald-600 transition-colors">{t('nav_investors')}</a>
             </div>
-            <div className="flex gap-2 mr-4">
+            
+            <div className="flex gap-2 border-r border-slate-200 pr-4 mr-2">
                <button onClick={() => setLang('fr')} className={`text-[10px] font-bold ${lang === 'fr' ? 'text-emerald-600' : 'text-slate-300'}`}>FR</button>
                <span className="text-slate-200">|</span>
                <button onClick={() => setLang('en')} className={`text-[10px] font-bold ${lang === 'en' ? 'text-emerald-600' : 'text-slate-300'}`}>EN</button>
             </div>
-            {/* Bouton Espace Membre -> Ouvre Modal Investor */}
+
+            {/* BOUTON CONNEXION (Pour accéder au Dashboard) */}
+            <button 
+              onClick={onLogin}
+              className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-emerald-600 transition-colors flex items-center gap-2"
+            >
+              <LogIn size={14} /> Connexion
+            </button>
+
             <button onClick={() => openModal('investor')} className="bg-slate-900 text-white px-7 py-3 rounded-xl hover:bg-emerald-600 transition-all font-bold tracking-widest text-[10px]">
               {t('nav_member')}
             </button>
@@ -94,22 +101,12 @@ const LandingPage = () => {
               {t('hero_desc')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              
-              {/* <--- 4. BRANCHEMENT DES BOUTONS HERO */}
-              <button 
-                onClick={() => openModal('startup')} // Clic -> Ouvre Startup
-                className="bg-emerald-600 text-white font-black uppercase tracking-widest text-[10px] px-10 py-5 rounded-2xl flex items-center justify-center gap-3 shadow-2xl shadow-emerald-600/30 active:scale-95 transition-transform"
-              >
+              <button onClick={() => openModal('startup')} className="bg-emerald-600 text-white font-black uppercase tracking-widest text-[10px] px-10 py-5 rounded-2xl flex items-center justify-center gap-3 shadow-2xl shadow-emerald-600/30 active:scale-95 transition-transform">
                 {t('btn_pitch')} <ArrowRight size={18} />
               </button>
-              
-              <button 
-                onClick={() => openModal('investor')} // Clic -> Ouvre Investisseur
-                className="bg-white border-2 border-slate-100 text-slate-900 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-slate-50 active:scale-95 transition-transform"
-              >
+              <button onClick={() => openModal('investor')} className="bg-white border-2 border-slate-100 text-slate-900 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-slate-50 active:scale-95 transition-transform">
                 {t('btn_sourcing')}
               </button>
-
             </div>
           </div>
 
@@ -141,7 +138,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Section Dual Profiles */}
+      {/* Section Dual Profiles (CONTENU COMPLET RESTAURÉ) */}
       <section id="avantages" className="py-24 bg-slate-50 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 space-y-4">
@@ -164,7 +161,20 @@ const LandingPage = () => {
                         <p className="text-slate-500 font-medium text-sm leading-relaxed">{t('dual_s_1_desc')}</p>
                      </div>
                   </div>
-                  {/* ... Rest of content ... */}
+                  <div className="flex gap-5">
+                     <div className="mt-1 text-emerald-600 shrink-0"><TrendingUp size={24} /></div>
+                     <div>
+                        <h4 className="font-bold text-sm uppercase tracking-wider text-slate-900 mb-1">{t('dual_s_2_title')}</h4>
+                        <p className="text-slate-500 font-medium text-sm leading-relaxed">{t('dual_s_2_desc')}</p>
+                     </div>
+                  </div>
+                  <div className="flex gap-5">
+                     <div className="mt-1 text-emerald-600 shrink-0"><MessageCircle size={24} /></div>
+                     <div>
+                        <h4 className="font-bold text-sm uppercase tracking-wider text-slate-900 mb-1">{t('dual_s_3_title')}</h4>
+                        <p className="text-slate-500 font-medium text-sm leading-relaxed">{t('dual_s_3_desc')}</p>
+                     </div>
+                  </div>
                </div>
             </div>
 
@@ -176,14 +186,34 @@ const LandingPage = () => {
                </div>
                <h3 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tight mb-8 z-10">{t('dual_investor_title')}</h3>
                <div className="space-y-8 w-full z-10">
-                  {/* ... Rest of content ... */}
+                  <div className="flex gap-5">
+                     <div className="mt-1 text-emerald-400 shrink-0"><CheckCircle size={24} /></div>
+                     <div>
+                        <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-1">{t('dual_i_1_title')}</h4>
+                        <p className="text-slate-400 font-medium text-sm leading-relaxed">{t('dual_i_1_desc')}</p>
+                     </div>
+                  </div>
+                  <div className="flex gap-5">
+                     <div className="mt-1 text-emerald-400 shrink-0"><Clock size={24} /></div>
+                     <div>
+                        <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-1">{t('dual_i_2_title')}</h4>
+                        <p className="text-slate-400 font-medium text-sm leading-relaxed">{t('dual_i_2_desc')}</p>
+                     </div>
+                  </div>
+                  <div className="flex gap-5">
+                     <div className="mt-1 text-emerald-400 shrink-0"><Lock size={24} /></div>
+                     <div>
+                        <h4 className="font-bold text-sm uppercase tracking-wider text-white mb-1">{t('dual_i_3_title')}</h4>
+                        <p className="text-slate-400 font-medium text-sm leading-relaxed">{t('dual_i_3_desc')}</p>
+                     </div>
+                  </div>
                </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats - inchangé */}
+      {/* Stats */}
       <section id="stats" className="py-24 bg-white px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
