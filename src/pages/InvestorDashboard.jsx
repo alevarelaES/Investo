@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import { 
   LayoutDashboard, PieChart, FileText, Settings, Bell, Search, 
-  Filter, Download, ChevronRight, Lock, Eye, CheckCircle, XCircle, Menu, X 
+  Filter, Download, ChevronRight, Lock, Eye, CheckCircle, XCircle, Menu, X,
+  Target, TrendingUp, Layers, Tag, Bookmark, UserPlus, Send, FolderLock
 } from 'lucide-react';
 import { startups } from '../data/startups';
 import translations from '../data/translations';
+import VideoScreen from '../components/VideoScreen';
 
 const InvestorDashboard = ({ lang = 'fr' }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedStartup, setSelectedStartup] = useState(null);
+  const [activeTab, setActiveTab] = useState('pitch'); // 'pitch' ou 'data'
   const t = (key) => translations[lang]?.[key] || translations['fr'][key] || key;
+
+  // Reset tab quand on ferme le panel
+  const handleClosePanel = () => {
+    setSelectedStartup(null);
+    setActiveTab('pitch');
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans text-slate-900">
@@ -119,7 +129,7 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {startups.map((startup) => (
-                    <tr key={startup.id} className="hover:bg-slate-50/80 transition-colors group">
+                    <tr key={startup.id} className="hover:bg-slate-50/80 transition-colors group cursor-pointer" onClick={() => setSelectedStartup(startup)}>
                       <td className="p-5">
                         <div className="flex items-center gap-3">
                           <img src={startup.ceo.photo} alt="" className="w-10 h-10 rounded-lg object-cover shadow-sm" />
@@ -157,44 +167,43 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
               </table>
             </div>
 
-            {/* Version Mobile: Cards */}
+            {/* Version Mobile: Cards améliorées */}
             <div className="lg:hidden divide-y divide-slate-100">
               {startups.map((startup) => (
-                <div key={startup.id} className="p-4 hover:bg-slate-50/80 transition-colors">
-                  <div className="flex items-start gap-3 mb-3">
-                    <img src={startup.ceo.photo} alt="" className="w-12 h-12 rounded-xl object-cover shadow-sm" />
+                <div key={startup.id} className="p-4 hover:bg-slate-50/80 transition-colors cursor-pointer active:bg-slate-100" onClick={() => setSelectedStartup(startup)}>
+                  {/* Header: Photo + Nom + Flèche */}
+                  <div className="flex items-center gap-3 mb-3">
+                    <img src={startup.ceo.photo} alt="" className="w-11 h-11 rounded-xl object-cover shadow-sm shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <p className="font-bold text-slate-900">{startup.name}</p>
-                          <p className="text-xs text-slate-500 line-clamp-1">{startup.vision.fr || startup.vision}</p>
-                        </div>
-                        <button className="p-2 hover:bg-emerald-50 text-emerald-600 rounded-lg transition-colors shrink-0">
-                          <ChevronRight size={18} />
-                        </button>
-                      </div>
+                      <p className="font-bold text-slate-900 text-[15px]">{startup.name}</p>
+                      <p className="text-xs text-slate-500 truncate">{startup.vision[lang] || startup.vision.fr}</p>
                     </div>
+                    <ChevronRight size={20} className="text-slate-300 shrink-0" />
                   </div>
-                  <div className="flex flex-wrap gap-2 mb-3">
+                  
+                  {/* Badges: Secteur + Stage */}
+                  <div className="flex gap-2 mb-3">
                     <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
                       startup.color === 'emerald' ? 'bg-emerald-100 text-emerald-700' : 
                       startup.color === 'purple' ? 'bg-purple-100 text-purple-700' : 
                       'bg-orange-100 text-orange-700'
                     }`}>
-                      {typeof startup.kpis.sector === 'object' ? startup.kpis.sector.fr : startup.kpis.sector}
+                      {startup.kpis.sector[lang] || startup.kpis.sector.fr}
                     </span>
                     <span className="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600">
                       {startup.kpis.stage}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <div>
-                      <span className="text-slate-500 text-xs">{t('inv_valuation')}:</span>
-                      <span className="font-bold text-slate-900 ml-1">{startup.kpis.valuation}</span>
+                  
+                  {/* KPIs: 2 colonnes bien alignées */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-slate-50 rounded-lg p-2">
+                      <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400">{lang === 'fr' ? 'Valorisation' : 'Valuation'}</p>
+                      <p className="text-sm font-black text-slate-900">{startup.kpis.valuation}</p>
                     </div>
-                    <div>
-                      <span className="text-slate-500 text-xs">{t('inv_target')}:</span>
-                      <span className="font-bold text-emerald-600 ml-1">{startup.kpis.amount}</span>
+                    <div className="bg-emerald-50 rounded-lg p-2">
+                      <p className="text-[9px] font-bold uppercase tracking-widest text-emerald-600/70">{lang === 'fr' ? 'Objectif' : 'Target'}</p>
+                      <p className="text-sm font-black text-emerald-700">{startup.kpis.amount}</p>
                     </div>
                   </div>
                 </div>
@@ -203,6 +212,331 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
           </div>
         </div>
       </main>
+
+      {/* SIDE PANEL - Overlay (Desktop uniquement) */}
+      {selectedStartup && (
+        <div 
+          className="hidden lg:block fixed inset-0 bg-black/50 z-50 transition-opacity duration-300"
+          onClick={handleClosePanel}
+        />
+      )}
+
+      {/* ============================================= */}
+      {/* MOBILE : Expérience Fullscreen avec Tabs */}
+      {/* ============================================= */}
+      <div 
+        className={`lg:hidden fixed inset-0 bg-black z-50 transform transition-transform duration-300 ease-out ${
+          selectedStartup ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        {selectedStartup && (
+          <div className="relative h-full w-full flex flex-col">
+            
+            {/* Header avec Tabs */}
+            <div className="absolute top-0 left-0 right-0 z-30 p-4 flex items-center justify-between">
+              {/* Bouton fermer */}
+              <button 
+                onClick={handleClosePanel}
+                className="p-2 bg-black/40 hover:bg-black/60 rounded-full transition-colors backdrop-blur-sm"
+              >
+                <X size={22} className="text-white" />
+              </button>
+              
+              {/* Tabs Le Pitch / La Data */}
+              <div className="flex bg-black/40 backdrop-blur-md rounded-full p-1">
+                <button 
+                  onClick={() => setActiveTab('pitch')}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    activeTab === 'pitch' 
+                      ? 'bg-white text-slate-900' 
+                      : 'text-white/80 hover:text-white'
+                  }`}
+                >
+                  {lang === 'fr' ? 'Le Pitch' : 'Pitch'}
+                </button>
+                <button 
+                  onClick={() => setActiveTab('data')}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    activeTab === 'data' 
+                      ? 'bg-white text-slate-900' 
+                      : 'text-white/80 hover:text-white'
+                  }`}
+                >
+                  {lang === 'fr' ? 'La Data' : 'Data'}
+                </button>
+              </div>
+              
+              {/* Spacer pour équilibrer */}
+              <div className="w-10"></div>
+            </div>
+
+            {/* CONTENU : Pitch (VideoScreen) */}
+            <div className={`absolute inset-0 transition-opacity duration-300 ${activeTab === 'pitch' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}>
+              <VideoScreen 
+                isActive={activeTab === 'pitch'} 
+                t={t} 
+                startup={selectedStartup} 
+                lang={lang} 
+              />
+            </div>
+
+            {/* CONTENU : Data (Infos détaillées) */}
+            <div className={`absolute inset-0 bg-slate-50 transition-opacity duration-300 ${activeTab === 'data' ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}>
+              <div className="h-full pt-16 pb-20 overflow-y-auto">
+                <div className="p-5">
+                  
+                  {/* Header Startup */}
+                  <div className="flex items-center gap-4 mb-6">
+                    <img 
+                      src={selectedStartup.ceo.photo} 
+                      alt={selectedStartup.ceo.name} 
+                      className="w-16 h-16 rounded-2xl object-cover shadow-lg" 
+                    />
+                    <div>
+                      <h2 className="text-xl font-black text-slate-900">{selectedStartup.name}</h2>
+                      <p className="text-sm text-slate-500">{selectedStartup.vision[lang] || selectedStartup.vision.fr}</p>
+                    </div>
+                  </div>
+
+                  {/* KPIs Grid */}
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                    <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-600/70 mb-1">{lang === 'fr' ? 'Recherche' : 'Target'}</p>
+                      <p className="text-xl font-black text-emerald-700">{selectedStartup.kpis.amount}</p>
+                    </div>
+                    <div className="p-4 bg-white rounded-xl border border-slate-200">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">{lang === 'fr' ? 'Valorisation' : 'Valuation'}</p>
+                      <p className="text-xl font-black text-slate-900">{selectedStartup.kpis.valuation}</p>
+                    </div>
+                    <div className="p-4 bg-white rounded-xl border border-slate-200">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">{lang === 'fr' ? 'Stade' : 'Stage'}</p>
+                      <p className="text-xl font-black text-slate-900">{selectedStartup.kpis.stage}</p>
+                    </div>
+                    <div className="p-4 bg-white rounded-xl border border-slate-200">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">{lang === 'fr' ? 'Ticket min.' : 'Min. Ticket'}</p>
+                      <p className="text-xl font-black text-slate-900">{selectedStartup.minTicket}</p>
+                    </div>
+                  </div>
+
+                  {/* Pitch Text */}
+                  <div className="bg-white rounded-xl p-4 border border-slate-200 mb-6">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">{lang === 'fr' ? 'Le Pitch' : 'The Pitch'}</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">
+                      "{selectedStartup.pitch[lang] || selectedStartup.pitch.fr}"
+                    </p>
+                  </div>
+
+                  {/* CEO */}
+                  <div className="bg-white rounded-xl p-4 border border-slate-200">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">{lang === 'fr' ? 'Le Fondateur' : 'The Founder'}</p>
+                    <div className="flex items-center gap-3 mb-3">
+                      <img 
+                        src={selectedStartup.ceo.photo} 
+                        alt={selectedStartup.ceo.name} 
+                        className="w-12 h-12 rounded-full object-cover border-2 border-slate-100 shadow-md" 
+                      />
+                      <div>
+                        <p className="font-bold text-slate-900">{selectedStartup.ceo.name}</p>
+                        <p className="text-xs text-slate-500">{selectedStartup.ceo.role[lang] || selectedStartup.ceo.role.fr}</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      {selectedStartup.ceo.bio[lang] || selectedStartup.ceo.bio.fr}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions TikTok Style - Colonne droite (visible sur tab Pitch) */}
+            <div className={`absolute right-3 bottom-28 z-20 flex flex-col items-center gap-5 transition-opacity duration-300 ${activeTab === 'pitch' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+              
+              {/* 1. Photo CEO + Bouton Watchlist (comme Follow TikTok) */}
+              <button className="flex flex-col items-center gap-1 group relative">
+                <div className="relative">
+                  <img 
+                    src={selectedStartup.ceo.photo} 
+                    alt={selectedStartup.ceo.name}
+                    className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-lg group-active:scale-90 transition-all"
+                  />
+                  {/* Bouton + (style TikTok) */}
+                  <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-black">
+                    <span className="text-white text-xs font-bold leading-none">+</span>
+                  </div>
+                </div>
+              </button>
+              
+              {/* 2. Data Room (CTA Principal) */}
+              <button className="flex flex-col items-center gap-1 group">
+                <div className="w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/20 group-active:scale-90 transition-all">
+                  <FolderLock size={24} className="text-white drop-shadow-md" />
+                </div>
+                <span className="text-[11px] font-bold text-white drop-shadow-lg">24</span>
+              </button>
+              
+              {/* 3. Demander Intro */}
+              <button className="flex flex-col items-center gap-1 group">
+                <div className="w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/20 group-active:scale-90 transition-all">
+                  <UserPlus size={24} className="text-white drop-shadow-md" />
+                </div>
+                <span className="text-[11px] font-bold text-white drop-shadow-lg">8</span>
+              </button>
+              
+              {/* 4. Bookmark/Watchlist */}
+              <button className="flex flex-col items-center gap-1 group">
+                <div className="w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/20 group-active:scale-90 transition-all">
+                  <Bookmark size={24} className="text-white drop-shadow-md" />
+                </div>
+                <span className="text-[11px] font-bold text-white drop-shadow-lg">156</span>
+              </button>
+              
+              {/* 5. Envoyer/Partager */}
+              <button className="flex flex-col items-center gap-1 group">
+                <div className="w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/20 group-active:scale-90 transition-all">
+                  <Send size={22} className="text-white drop-shadow-md" />
+                </div>
+                <span className="text-[11px] font-bold text-white drop-shadow-lg">42</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ============================================= */}
+      {/* DESKTOP : Layout 2 colonnes */}
+      {/* ============================================= */}
+      <div 
+        className={`hidden lg:block fixed inset-y-0 right-0 w-[800px] xl:w-[900px] bg-slate-100 shadow-2xl z-50 transform transition-transform duration-300 ease-out ${
+          selectedStartup ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        {selectedStartup && (
+          <div className="h-full flex flex-row">
+            
+            {/* COLONNE GAUCHE : Vidéo TikTok (format vertical 9:16) */}
+            <div className="relative bg-black w-[320px] xl:w-[360px] shrink-0 flex items-center justify-center">
+              <div className="relative h-[90%] aspect-[9/16] max-w-full">
+                <video
+                  className="w-full h-full object-cover rounded-2xl"
+                  src={selectedStartup.video}
+                  poster={selectedStartup.poster}
+                  controls
+                  playsInline
+                />
+              </div>
+            </div>
+
+            {/* COLONNE DROITE : Infos */}
+            <div className="flex-1 flex flex-col h-full overflow-hidden bg-white">
+              
+              {/* Header sticky */}
+              <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-white shrink-0">
+                <div className="flex items-center gap-3">
+                  <img 
+                    src={selectedStartup.ceo.photo} 
+                    alt={selectedStartup.ceo.name} 
+                    className="w-10 h-10 rounded-lg object-cover shadow-sm" 
+                  />
+                  <div>
+                    <h2 className="font-bold text-slate-900">{selectedStartup.name}</h2>
+                    <p className="text-xs text-slate-500">{selectedStartup.ceo.name} • {selectedStartup.ceo.role[lang] || selectedStartup.ceo.role.fr}</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={handleClosePanel}
+                  className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                >
+                  <X size={20} className="text-slate-500" />
+                </button>
+              </div>
+
+              {/* Contenu scrollable */}
+              <div className="flex-1 overflow-y-auto p-4 lg:p-5">
+                
+                {/* Badge + Vision */}
+                <div className="flex items-center gap-2 mb-3">
+                  <span className={`text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wider ${
+                    selectedStartup.color === 'emerald' ? 'bg-emerald-100 text-emerald-700' : 
+                    selectedStartup.color === 'purple' ? 'bg-purple-100 text-purple-700' : 
+                    'bg-orange-100 text-orange-700'
+                  }`}>
+                    {selectedStartup.kpis.sector[lang]}
+                  </span>
+                  <span className="text-xs font-medium text-slate-500">{selectedStartup.vision[lang] || selectedStartup.vision.fr}</span>
+                </div>
+
+                {/* Pitch */}
+                <p className="text-sm text-slate-700 leading-relaxed mb-5">
+                  "{selectedStartup.pitch[lang] || selectedStartup.pitch.fr}"
+                </p>
+
+                {/* KPIs - Grille 2x2 */}
+                <div className="grid grid-cols-2 gap-3 mb-5">
+                  <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-100">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-emerald-600/70 mb-1">{lang === 'fr' ? 'Recherche' : 'Target'}</p>
+                    <p className="text-lg font-black text-emerald-700">{selectedStartup.kpis.amount}</p>
+                  </div>
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">{lang === 'fr' ? 'Valorisation' : 'Valuation'}</p>
+                    <p className="text-lg font-black text-slate-900">{selectedStartup.kpis.valuation}</p>
+                  </div>
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">{lang === 'fr' ? 'Stade' : 'Stage'}</p>
+                    <p className="text-lg font-black text-slate-900">{selectedStartup.kpis.stage}</p>
+                  </div>
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">{lang === 'fr' ? 'Ticket min.' : 'Min. Ticket'}</p>
+                    <p className="text-lg font-black text-slate-900">{selectedStartup.minTicket}</p>
+                  </div>
+                </div>
+
+                {/* CEO / À propos */}
+                <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                  <div className="flex items-center gap-3 mb-3">
+                    <img 
+                      src={selectedStartup.ceo.photo} 
+                      alt={selectedStartup.ceo.name} 
+                      className="w-11 h-11 rounded-full object-cover border-2 border-white shadow-md" 
+                    />
+                    <div>
+                      <p className="font-bold text-slate-900 text-sm">{selectedStartup.ceo.name}</p>
+                      <p className="text-xs text-slate-500">{selectedStartup.ceo.role[lang] || selectedStartup.ceo.role.fr}</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    {selectedStartup.ceo.bio[lang] || selectedStartup.ceo.bio.fr}
+                  </p>
+                </div>
+              </div>
+
+              {/* Actions B2B - Sticky en bas */}
+              <div className="p-4 border-t border-slate-200 bg-white shrink-0">
+                {/* Action principale */}
+                <button className="w-full bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-emerald-700 transition-colors text-sm shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 mb-3">
+                  <FolderLock size={18} />
+                  {lang === 'fr' ? 'Demander accès Data Room' : 'Request Data Room Access'}
+                </button>
+                
+                {/* Actions secondaires B2B */}
+                <div className="grid grid-cols-3 gap-2">
+                  <button className="flex flex-col items-center gap-1.5 p-3 border border-slate-200 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-colors group">
+                    <Bookmark size={18} className="text-slate-400 group-hover:text-emerald-600" />
+                    <span className="text-[10px] font-bold text-slate-500 group-hover:text-slate-700">{lang === 'fr' ? 'Watchlist' : 'Watchlist'}</span>
+                  </button>
+                  <button className="flex flex-col items-center gap-1.5 p-3 border border-slate-200 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-colors group">
+                    <UserPlus size={18} className="text-slate-400 group-hover:text-blue-600" />
+                    <span className="text-[10px] font-bold text-slate-500 group-hover:text-slate-700">{lang === 'fr' ? 'Demander Intro' : 'Request Intro'}</span>
+                  </button>
+                  <button className="flex flex-col items-center gap-1.5 p-3 border border-slate-200 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-colors group">
+                    <Send size={18} className="text-slate-400 group-hover:text-purple-600" />
+                    <span className="text-[10px] font-bold text-slate-500 group-hover:text-slate-700">{lang === 'fr' ? 'Envoyer' : 'Share'}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
@@ -227,5 +561,24 @@ const KpiCard = ({ label, value, trend, active }) => (
     </div>
   </div>
 );
+
+const SidePanelKpiCard = ({ icon: Icon, label, value, color }) => {
+  const colors = {
+    emerald: 'bg-emerald-50 text-emerald-600 border-emerald-100',
+    blue: 'bg-blue-50 text-blue-600 border-blue-100',
+    purple: 'bg-purple-50 text-purple-600 border-purple-100',
+    orange: 'bg-orange-50 text-orange-600 border-orange-100',
+  };
+  
+  return (
+    <div className={`p-4 rounded-xl border ${colors[color]} bg-white`}>
+      <div className="flex items-center gap-2 mb-2">
+        <Icon size={14} className={colors[color].split(' ')[1]} />
+        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{label}</span>
+      </div>
+      <p className="text-lg font-black text-slate-900">{value}</p>
+    </div>
+  );
+};
 
 export default InvestorDashboard;
