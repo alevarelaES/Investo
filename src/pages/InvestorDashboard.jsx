@@ -349,53 +349,38 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
             </div>
 
             {/* Actions TikTok Style - Colonne droite (visible sur tab Pitch) */}
-            <div className={`absolute right-3 bottom-28 z-20 flex flex-col items-center gap-5 transition-opacity duration-300 ${activeTab === 'pitch' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+            <div className={`absolute right-3 bottom-28 z-20 flex flex-col items-center gap-4 transition-opacity duration-300 ${activeTab === 'pitch' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
               
-              {/* 1. Photo CEO + Bouton Watchlist (comme Follow TikTok) */}
-              <button className="flex flex-col items-center gap-1 group relative">
-                <div className="relative">
-                  <img 
-                    src={selectedStartup.ceo.photo} 
-                    alt={selectedStartup.ceo.name}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-lg group-active:scale-90 transition-all"
-                  />
-                  {/* Bouton + (style TikTok) */}
-                  <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-black">
-                    <span className="text-white text-xs font-bold leading-none">+</span>
-                  </div>
+              {/* 1. Data Room (CTA Principal - vert) */}
+              <button className="flex flex-col items-center justify-center gap-0.5 group w-14">
+                <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center group-hover:bg-emerald-400 group-active:scale-90 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
+                  <FolderLock size={24} className="text-white" />
                 </div>
+                <span className="text-[13px] font-bold text-white [text-shadow:_0_1px_4px_rgb(0_0_0_/_80%)] w-full text-center">24</span>
               </button>
               
-              {/* 2. Data Room (CTA Principal) */}
-              <button className="flex flex-col items-center gap-1 group">
-                <div className="w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/20 group-active:scale-90 transition-all">
-                  <FolderLock size={24} className="text-white drop-shadow-md" />
+              {/* 2. Demander Intro */}
+              <button className="flex flex-col items-center justify-center gap-0.5 group w-14">
+                <div className="w-12 h-12 flex items-center justify-center group-active:scale-90 transition-all">
+                  <UserPlus size={28} fill="white" stroke="white" strokeWidth={0} className="translate-x-1 [filter:_drop-shadow(0_1px_3px_rgb(0_0_0_/_60%))]" />
                 </div>
-                <span className="text-[11px] font-bold text-white drop-shadow-lg">24</span>
+                <span className="text-[13px] font-bold text-white [text-shadow:_0_1px_4px_rgb(0_0_0_/_80%)] w-full text-center">8</span>
               </button>
               
-              {/* 3. Demander Intro */}
-              <button className="flex flex-col items-center gap-1 group">
-                <div className="w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/20 group-active:scale-90 transition-all">
-                  <UserPlus size={24} className="text-white drop-shadow-md" />
+              {/* 3. Bookmark/Watchlist */}
+              <button className="flex flex-col items-center justify-center gap-0.5 group w-14">
+                <div className="w-12 h-12 flex items-center justify-center group-active:scale-90 transition-all">
+                  <Bookmark size={28} fill="white" stroke="white" strokeWidth={0} className="[filter:_drop-shadow(0_1px_3px_rgb(0_0_0_/_60%))]" />
                 </div>
-                <span className="text-[11px] font-bold text-white drop-shadow-lg">8</span>
+                <span className="text-[13px] font-bold text-white [text-shadow:_0_1px_4px_rgb(0_0_0_/_80%)] w-full text-center">156</span>
               </button>
               
-              {/* 4. Bookmark/Watchlist */}
-              <button className="flex flex-col items-center gap-1 group">
-                <div className="w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/20 group-active:scale-90 transition-all">
-                  <Bookmark size={24} className="text-white drop-shadow-md" />
+              {/* 4. Envoyer/Partager */}
+              <button className="flex flex-col items-center justify-center gap-0.5 group w-14">
+                <div className="w-12 h-12 flex items-center justify-center group-active:scale-90 transition-all">
+                  <Send size={26} fill="white" stroke="white" strokeWidth={0} className="[filter:_drop-shadow(0_1px_3px_rgb(0_0_0_/_60%))]" />
                 </div>
-                <span className="text-[11px] font-bold text-white drop-shadow-lg">156</span>
-              </button>
-              
-              {/* 5. Envoyer/Partager */}
-              <button className="flex flex-col items-center gap-1 group">
-                <div className="w-11 h-11 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white/20 group-active:scale-90 transition-all">
-                  <Send size={22} className="text-white drop-shadow-md" />
-                </div>
-                <span className="text-[11px] font-bold text-white drop-shadow-lg">42</span>
+                <span className="text-[13px] font-bold text-white [text-shadow:_0_1px_4px_rgb(0_0_0_/_80%)] w-full text-center">42</span>
               </button>
             </div>
           </div>

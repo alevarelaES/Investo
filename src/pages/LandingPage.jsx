@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Play, TrendingUp, Users, ArrowRight, Zap, Globe, ChevronUp, ChevronDown, 
-  Eye, Target, CheckCircle, Clock, Lock, MessageCircle, LogIn, Sun, Moon, Menu, X
+  Eye, Target, CheckCircle, Clock, Lock, MessageCircle, LogIn, Sun, Moon, Menu, X,
+  FolderLock, UserPlus, Bookmark, Send
 } from 'lucide-react';
 import translations from '../data/translations';
 import VideoScreen from '../components/VideoScreen';
@@ -183,6 +184,7 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
           </div>
 
           <div className="relative mx-auto w-full max-w-[340px] lg:max-w-[360px] order-2 lg:order-none mt-6 lg:mt-0">
+            {/* Boutons Prev/Next - À droite sur desktop */}
             <div className="absolute right-2 bottom-28 flex flex-col gap-2 z-30 lg:-right-16 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2">
               <button onClick={prevStartup} className={`p-2.5 lg:p-3 backdrop-blur-md rounded-full shadow-md hover:shadow-lg hover:text-emerald-500 transition-all group ${darkMode ? 'bg-slate-800/80 lg:bg-slate-800 text-slate-400 border border-slate-700' : 'bg-white/20 lg:bg-white text-slate-500 lg:text-slate-400 border border-slate-200/60 lg:border-slate-100'}`}>
                 <ChevronUp size={20} className="group-hover:-translate-y-1 transition-transform"/>
@@ -192,7 +194,8 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
               </button>
             </div>
 
-            <div className="bg-[#050505] border-0 lg:border-[12px] border-[#1a1a1a] rounded-[2rem] lg:rounded-[3rem] h-[60vh] lg:h-[640px] shadow-2xl overflow-hidden relative transition-all duration-300">
+            <div className="bg-[#050505] border-0 lg:border-[12px] border-[#1a1a1a] rounded-[2rem] lg:rounded-[3rem] h-[70vh] lg:h-[720px] shadow-2xl overflow-hidden relative transition-all duration-300">
+              {/* Tabs en haut */}
               <div className="absolute top-0 w-full pt-4 lg:pt-8 pb-4 px-6 flex justify-center items-center z-50 pointer-events-none">
                 <div className="bg-white/10 backdrop-blur-xl p-1 rounded-xl border border-white/10 flex pointer-events-auto shadow-lg">
                   <button onClick={() => setActiveScreen('video')} className={`px-3 lg:px-5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${activeScreen === 'video' ? 'bg-white text-black' : 'text-white/60'}`}>
@@ -203,6 +206,42 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
                   </button>
                 </div>
               </div>
+
+              {/* Actions TikTok Style - À DROITE dans le simulateur */}
+              <div className={`absolute right-2 lg:right-3 bottom-32 lg:bottom-36 flex flex-col items-center gap-3 z-40 transition-opacity duration-300 ${activeScreen === 'video' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                {/* Data Room */}
+                <button className="flex flex-col items-center justify-center gap-0.5 group w-14">
+                  <div className="w-11 h-11 rounded-full bg-emerald-500 flex items-center justify-center group-active:scale-90 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
+                    <FolderLock size={22} className="text-white" />
+                  </div>
+                  <span className="text-[13px] font-bold text-white [text-shadow:_0_1px_4px_rgb(0_0_0_/_80%)] w-full text-center">24</span>
+                </button>
+                
+                {/* Intro */}
+                <button className="flex flex-col items-center justify-center gap-0.5 group w-14">
+                  <div className="w-11 h-11 flex items-center justify-center group-active:scale-90 transition-all">
+                    <UserPlus size={28} fill="white" stroke="white" strokeWidth={0} className="translate-x-1 [filter:_drop-shadow(0_1px_3px_rgb(0_0_0_/_60%))]" />
+                  </div>
+                  <span className="text-[13px] font-bold text-white [text-shadow:_0_1px_4px_rgb(0_0_0_/_80%)] w-full text-center">8</span>
+                </button>
+                
+                {/* Bookmark */}
+                <button className="flex flex-col items-center justify-center gap-0.5 group w-14">
+                  <div className="w-11 h-11 flex items-center justify-center group-active:scale-90 transition-all">
+                    <Bookmark size={28} fill="white" stroke="white" strokeWidth={0} className="[filter:_drop-shadow(0_1px_3px_rgb(0_0_0_/_60%))]" />
+                  </div>
+                  <span className="text-[13px] font-bold text-white [text-shadow:_0_1px_4px_rgb(0_0_0_/_80%)] w-full text-center">156</span>
+                </button>
+                
+                {/* Share */}
+                <button className="flex flex-col items-center justify-center gap-0.5 group w-14">
+                  <div className="w-11 h-11 flex items-center justify-center group-active:scale-90 transition-all">
+                    <Send size={26} fill="white" stroke="white" strokeWidth={0} className="[filter:_drop-shadow(0_1px_3px_rgb(0_0_0_/_60%))]" />
+                  </div>
+                  <span className="text-[13px] font-bold text-white [text-shadow:_0_1px_4px_rgb(0_0_0_/_80%)] w-full text-center">42</span>
+                </button>
+              </div>
+
               <VideoScreen isActive={activeScreen === 'video'} t={t} startup={currentStartup} lang={lang} />
               <ProfileScreen isActive={activeScreen === 'profile'} t={t} startup={currentStartup} lang={lang} />
             </div>
