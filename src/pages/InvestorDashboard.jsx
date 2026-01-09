@@ -7,11 +7,13 @@ import {
 import { startups } from '../data/startups';
 import translations from '../data/translations';
 import VideoScreen from '../components/VideoScreen';
+import ProfileSettings from '../components/ProfileSettings';
 
 const InvestorDashboard = ({ lang = 'fr' }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedStartup, setSelectedStartup] = useState(null);
   const [activeTab, setActiveTab] = useState('pitch'); // 'pitch' ou 'data'
+  const [showProfileSettings, setShowProfileSettings] = useState(false);
   const t = (key) => translations[lang]?.[key] || translations['fr'][key] || key;
 
   // Reset tab quand on ferme le panel
@@ -23,14 +25,22 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans text-slate-900">
       
+      {/* Profile Settings Modal */}
+      {showProfileSettings && (
+        <ProfileSettings 
+          onClose={() => setShowProfileSettings(false)} 
+          lang={lang} 
+        />
+      )}
+      
       {/* Overlay Mobile */}
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setSidebarOpen(false)}></div>
       )}
 
-      {/* SIDEBAR (Navigation Gauche) */}
-      <aside className={`w-64 bg-[#0A0F1C] text-white flex flex-col fixed h-full border-r border-slate-800 z-40 transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
-        <div className="p-6 flex items-center justify-between border-b border-white/10">
+      {/* SIDEBAR (Navigation Gauche) - Light Mode */}
+      <aside className={`w-64 bg-white text-slate-900 flex flex-col fixed h-full border-r border-slate-200 z-40 transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+        <div className="p-6 flex items-center justify-between border-b border-slate-100">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-900/50 relative overflow-hidden">
               <svg viewBox="0 0 24 24" className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -45,23 +55,23 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
           </button>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 px-2 mt-4">{t('inv_sourcing')}</div>
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">onClick={() => setShowProfileSettings(true)} 
+          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2 mt-4">{t('inv_sourcing')}</div>
           <MenuItem icon={LayoutDashboard} label="Deal Flow" active />
           <MenuItem icon={PieChart} label={t('inv_portfolio')} />
           <MenuItem icon={Bell} label={t('inv_notifications')} badge="3" />
           
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 px-2 mt-8">{t('inv_diligence')}</div>
+          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2 mt-8">{t('inv_diligence')}</div>
           <MenuItem icon={FileText} label={t('inv_data_rooms')} />
           <MenuItem icon={Settings} label={t('inv_settings')} />
         </nav>
 
-        <div className="p-4 border-t border-white/10">
-          <div className="flex items-center gap-3 p-2 rounded-xl bg-white/5 border border-white/5">
-            <div className="w-8 h-8 bg-emerald-900/50 rounded-full flex items-center justify-center text-emerald-400 font-bold text-xs">JD</div>
+        <div className="p-4 border-t border-slate-100">
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold text-xs">JD</div>
             <div className="flex-1 overflow-hidden">
-              <p className="text-sm font-bold truncate">Jean Dupont</p>
-              <p className="text-[10px] text-slate-400 truncate">Family Office</p>
+              <p className="text-sm font-bold truncate text-slate-900">Jean Dupont</p>
+              <p className="text-[10px] text-slate-500 truncate">Family Office</p>
             </div>
           </div>
         </div>
@@ -527,13 +537,16 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
 };
 
 // Petits composants internes pour alléger le code
-const MenuItem = ({ icon: Icon, label, active, badge }) => (
-  <button className={`w-full flex items-center justify-between p-3 rounded-xl transition-all ${active ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/20' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}>
+const MenuItem = ({ icon: Icon, label, active, badge, onClick }) => (
+  <button 
+    onClick={onClick}
+    className={`w-full flex items-center justify-between p-3 rounded-xl transition-all ${active ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200/30' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}
+  >
     <div className="flex items-center gap-3">
       <Icon size={18} />
       <span className="text-xs font-bold">{label}</span>
     </div>
-    {badge && <span className="px-1.5 py-0.5 bg-emerald-500 text-white text-[9px] font-bold rounded">{badge}</span>}
+    {badge && <span className="px-1.5 py-0.5 bg-rose-500 text-white text-[9px] font-bold rounded">{badge}</span>}
   </button>
 );
 

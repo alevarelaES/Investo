@@ -4,13 +4,23 @@ import {
   Eye, Users, Clock, MousePointerClick, ArrowUpRight, Menu, X
 } from 'lucide-react';
 import translations from '../data/translations';
+import ProfileSettings from '../components/ProfileSettings';
 
 const StartupDashboard = ({ lang = 'fr' }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showProfileSettings, setShowProfileSettings] = useState(false);
   const t = (key) => translations[lang]?.[key] || translations['fr'][key] || key;
 
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans text-slate-900">
+      
+      {/* Profile Settings Modal */}
+      {showProfileSettings && (
+        <ProfileSettings 
+          onClose={() => setShowProfileSettings(false)} 
+          lang={lang} 
+        />
+      )}
       
       {/* Overlay Mobile */}
       {sidebarOpen && (
@@ -42,7 +52,7 @@ const StartupDashboard = ({ lang = 'fr' }) => {
           
           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2 mt-8">{t('startup_fundraising')}</div>
           <MenuItem icon={FileText} label={t('startup_my_data_room')} />
-          <MenuItem icon={Settings} label={t('startup_pitch_config')} />
+          <MenuItem icon={Settings} label={t('startup_pitch_config')} onClick={() => setShowProfileSettings(true)} />
         </nav>
 
         <div className="p-4 border-t border-slate-100">
@@ -130,8 +140,11 @@ const StartupDashboard = ({ lang = 'fr' }) => {
 };
 
 // Composants UI internes
-const MenuItem = ({ icon: Icon, label, active, badge }) => (
-  <button className={`w-full flex items-center justify-between p-3 rounded-xl transition-all ${active ? 'bg-slate-900 text-white' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}>
+const MenuItem = ({ icon: Icon, label, active, badge, onClick }) => (
+  <button 
+    onClick={onClick}
+    className={`w-full flex items-center justify-between p-3 rounded-xl transition-all ${active ? 'bg-slate-900 text-white' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}
+  >
     <div className="flex items-center gap-3">
       <Icon size={18} />
       <span className="text-xs font-bold">{label}</span>

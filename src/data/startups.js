@@ -3,7 +3,6 @@ export const startups = [
     id: 1,
     name: "ZenSpace",
     vision: { fr: "Architecture Durable", en: "Sustainable Architecture" },
-    // Les 4 KPIs Clés
     kpis: {
       amount: "600k CHF",
       valuation: "4M CHF",
@@ -26,7 +25,7 @@ export const startups = [
       }
     },
     color: "emerald",
-    minTicket: "50k+" // Gardé pour le profil détaillé
+    minTicket: "50k+"
   },
   {
     id: 2,
@@ -83,5 +82,89 @@ export const startups = [
     },
     color: "orange",
     minTicket: "100k+"
+  },
+  {
+    id: 4,
+    name: "AgroSens",
+    vision: { fr: "Agriculture 4.0", en: "Agriculture 4.0" },
+    kpis: {
+      amount: "750k CHF",
+      valuation: "5.5M CHF",
+      stage: "Seed",
+      sector: { fr: "AgriTech", en: "AgriTech" }
+    },
+    pitch: {
+      fr: "Capteurs intelligents pour optimiser l'irrigation. Économisez 40% d'eau tout en augmentant les rendements de 25%.",
+      en: "Smart sensors to optimize irrigation. Save 40% water while increasing yields by 25%."
+    },
+    video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    poster: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=800&q=80",
+    ceo: {
+      name: "Marc Petit",
+      role: { fr: "CTO & Co-Fondateur", en: "CTO & Co-Founder" },
+      photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80",
+      bio: {
+        fr: "2500 hectares équipés en Suisse romande. Lauréat du Prix Innovation AgriTech 2025.",
+        en: "2500 hectares equipped in French-speaking Switzerland. Winner of the 2025 AgriTech Innovation Award."
+      }
+    },
+    color: "green",
+    minTicket: "75k+"
+  },
+  {
+    id: 5,
+    name: "QuantShield",
+    vision: { fr: "Cybersécurité Quantique", en: "Quantum Cybersecurity" },
+    kpis: {
+      amount: "2M CHF",
+      valuation: "12M CHF",
+      stage: "Series A",
+      sector: { fr: "CyberSec", en: "CyberSec" }
+    },
+    pitch: {
+      fr: "Protection cryptographique post-quantique pour les institutions financières. Conformité réglementaire garantie.",
+      en: "Post-quantum cryptographic protection for financial institutions. Regulatory compliance guaranteed."
+    },
+    video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    poster: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
+    ceo: {
+      name: "Dr. Anna Weber",
+      role: { fr: "CEO & Cryptographe", en: "CEO & Cryptographer" },
+      photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&h=400&q=80",
+      bio: {
+        fr: "Ancienne EPFL, 3 brevets déposés. 8 banques suisses clientes dont 2 cantonnales.",
+        en: "Former EPFL, 3 patents filed. 8 Swiss banks as clients including 2 cantonal banks."
+      }
+    },
+    color: "blue",
+    minTicket: "150k+"
+  },
+  {
+    id: 6,
+    name: "BioCycle",
+    vision: { fr: "Économie Circulaire", en: "Circular Economy" },
+    kpis: {
+      amount: "950k CHF",
+      valuation: "6.8M CHF",
+      stage: "Seed",
+      sector: { fr: "CleanTech", en: "CleanTech" }
+    },
+    pitch: {
+      fr: "Transformez vos déchets organiques en compost premium en 48h. Solution clé en main pour collectivités et entreprises.",
+      en: "Turn your organic waste into premium compost in 48h. Turnkey solution for municipalities and businesses."
+    },
+    video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+    poster: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80",
+    ceo: {
+      name: "Thomas Nguyen",
+      role: { fr: "Fondateur & Ingénieur", en: "Founder & Engineer" },
+      photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&h=400&q=80",
+      bio: {
+        fr: "15 communes partenaires. 200 tonnes de déchets valorisés par mois. Expansion en France prévue Q3 2026.",
+        en: "15 partner municipalities. 200 tons of waste valorized per month. Expansion to France planned Q3 2026."
+      }
+    },
+    color: "teal",
+    minTicket: "60k+"
   }
 ];
