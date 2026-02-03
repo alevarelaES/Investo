@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   LayoutDashboard, BarChart3, FileText, Settings, Bell, 
-  Eye, Users, Clock, MousePointerClick, ArrowUpRight, Menu, X
+  Eye, Users, Clock, MousePointerClick, Menu, X, Play, Plus
 } from 'lucide-react';
 import translations from '../data/translations';
 import ProfileSettings from '../components/ProfileSettings';
@@ -14,7 +14,6 @@ const StartupDashboard = ({ lang = 'fr' }) => {
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans text-slate-900">
       
-      {/* Profile Settings Modal */}
       {showProfileSettings && (
         <ProfileSettings 
           onClose={() => setShowProfileSettings(false)} 
@@ -22,12 +21,11 @@ const StartupDashboard = ({ lang = 'fr' }) => {
         />
       )}
       
-      {/* Overlay Mobile */}
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setSidebarOpen(false)}></div>
       )}
 
-      {/* SIDEBAR (Navigation Gauche - Version Startup) */}
+      {/* SIDEBAR */}
       <aside className={`w-64 bg-white border-r border-slate-200 flex flex-col fixed h-full z-40 transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
         <div className="p-6 flex items-center justify-between border-b border-slate-100">
           <div className="flex items-center gap-3">
@@ -69,7 +67,6 @@ const StartupDashboard = ({ lang = 'fr' }) => {
       {/* MAIN CONTENT */}
       <main className="flex-1 lg:ml-64">
         
-        {/* Header */}
         <header className="h-16 lg:h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-20">
           <div className="flex items-center gap-3">
             <button className="lg:hidden p-2 hover:bg-slate-100 rounded-lg" onClick={() => setSidebarOpen(true)}>
@@ -80,15 +77,9 @@ const StartupDashboard = ({ lang = 'fr' }) => {
               <p className="text-[10px] lg:text-xs text-slate-500 font-medium">{t('startup_pitch_online')} 12 {t('startup_days')}.</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 lg:gap-4">
-             <span className="bg-emerald-100 text-emerald-700 px-2 lg:px-3 py-1 rounded-full text-[10px] lg:text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 lg:gap-2">
-                <span className="w-1.5 lg:w-2 h-1.5 lg:h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                Live
-             </span>
-          </div>
         </header>
 
-        <div className="p-4 lg:p-8 max-w-7xl mx-auto space-y-6 lg:space-y-8">
+        <div className="p-4 lg:p-8 max-w-7xl mx-auto space-y-8">
           
           {/* STATS CARDS */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
@@ -98,87 +89,43 @@ const StartupDashboard = ({ lang = 'fr' }) => {
             <StatCard icon={MousePointerClick} label={t('startup_profile_clicks')} value="24" trend="+8%" color="emerald" />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-            {/* GRAPHIQUE SIMULÉ (Engagement) */}
-            <div className="lg:col-span-2 bg-white p-4 lg:p-6 rounded-2xl border border-slate-200 shadow-sm">
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
-                <h3 className="font-bold text-slate-900">{t('startup_pitch_performance')}</h3>
-                <select className="bg-slate-50 border border-slate-200 text-xs font-bold rounded-lg px-3 py-2 outline-none w-full sm:w-auto">
-                  <option>{t('startup_last_7_days')}</option>
-                </select>
-              </div>
-              {/* Simulation visuelle de graph */}
-              <div className="h-48 lg:h-64 flex items-end justify-between gap-1 lg:gap-2 px-2 lg:px-4">
-                {[40, 65, 45, 80, 55, 90, 70].map((h, i) => (
-                   <div key={i} className="w-full bg-slate-100 rounded-t-lg lg:rounded-t-xl relative group">
-                      <div style={{height: `${h}%`}} className="absolute bottom-0 w-full bg-emerald-500 rounded-t-lg lg:rounded-t-xl transition-all group-hover:bg-emerald-600"></div>
-                   </div>
-                ))}
-              </div>
-              <div className="flex justify-between mt-3 lg:mt-4 text-[9px] lg:text-xs text-slate-400 font-bold uppercase tracking-widest">
-                <span>{t('day_mon')}</span><span>{t('day_tue')}</span><span>{t('day_wed')}</span><span>{t('day_thu')}</span><span>{t('day_fri')}</span><span>{t('day_sat')}</span><span>{t('day_sun')}</span>
-              </div>
-            </div>
-
+          {/* SECTION PUBLICATION (Documents & Vidéos) */}
           <div className="grid lg:grid-cols-2 gap-8">
-          {/* ESPACE PUBLICATION (Point 3) */}
-            
-            {/* Publication Vidéo Pitch */}
-            <div className="bg-white p-8 rounded-[2rem] border-2 border-dashed border-slate-200 hover:border-emerald-400 transition-colors group">
-              <div className="flex justify-between items-start mb-6">
-                <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
-                  <Play size={24} />
-                </div>
-                <span className="text-[10px] font-black bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full uppercase tracking-widest">Actif</span>
+            {/* Publication Vidéo */}
+            <div className="bg-white p-8 rounded-[2rem] border-2 border-dashed border-slate-200 hover:border-emerald-400 transition-colors">
+              <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-6">
+                <Play size={24} />
               </div>
               <h3 className="text-xl font-black text-slate-900 mb-2">Pitch Vidéo</h3>
-              <p className="text-sm text-slate-500 mb-6 font-medium">Mettez à jour votre pitch vidéo vertical (9:16). Max 90 secondes.</p>
-              <button className="w-full py-4 border-2 border-emerald-600 text-emerald-600 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-emerald-600 hover:text-white transition-all">
+              <p className="text-sm text-slate-500 mb-6 font-medium">Format vertical (9:16). Max 90 secondes.</p>
+              <input type="file" accept="video/*" className="hidden" id="video-upload" />
+              <label htmlFor="video-upload" className="block w-full text-center py-4 border-2 border-emerald-600 text-emerald-600 rounded-2xl font-black uppercase tracking-widest text-xs cursor-pointer hover:bg-emerald-600 hover:text-white transition-all">
                 Remplacer la vidéo
-              </button>
+              </label>
             </div>
-          
-            {/* Publication Documents (PDF/Word) */}
+
+            {/* Gestion Documents PDF/Word */}
             <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
-              <div className="flex justify-between items-start mb-6">
-                <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
-                  <FileText size={24} />
-                </div>
-                <span className="text-[10px] font-black bg-slate-100 text-slate-500 px-3 py-1 rounded-full uppercase tracking-widest">Data Room</span>
+              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+                <FileText size={24} />
               </div>
-              <h3 className="text-xl font-black text-slate-900 mb-2">Documents Stratégiques</h3>
+              <h3 className="text-xl font-black text-slate-900 mb-2">Documents (PDF/Word)</h3>
               <p className="text-sm text-slate-500 mb-4 font-medium">Ajoutez vos PDF (Business Plan, Deck) ou Word.</p>
               
-              <div className="space-y-3 mb-6">
+              <input type="file" accept=".pdf,.doc,.docx" className="hidden" id="doc-upload" />
+              <label htmlFor="doc-upload" className="w-full mb-4 py-4 bg-slate-900 text-white rounded-2xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 cursor-pointer hover:bg-emerald-600 transition-all">
+                <Plus size={16} /> Ajouter un document
+              </label>
+
+              <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
                   <span className="text-xs font-bold text-slate-700 flex items-center gap-2"><FileText size={14}/> Pitch_Deck_2024.pdf</span>
-                  <button className="text-red-500 hover:bg-red-50 p-1 rounded"><X size={14}/></button>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
-                  <span className="text-xs font-bold text-slate-700 flex items-center gap-2"><FileText size={14}/> Financials_Q1.xlsx</span>
-                  <button className="text-red-500 hover:bg-red-50 p-1 rounded"><X size={14}/></button>
+                  <button className="text-red-500 p-1 rounded hover:bg-red-50"><X size={14}/></button>
                 </div>
               </div>
+            </div>
+          </div>
           
-              <button className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-emerald-600 transition-all flex items-center justify-center gap-2">
-                <Plus size={16} /> Ajouter un document
-              </button>
-            </div>
-          </div>
-            
-            {/* ACTIVITÉ RÉCENTE */}
-            <div className="bg-white p-4 lg:p-6 rounded-2xl border border-slate-200 shadow-sm">
-              <h3 className="font-bold text-slate-900 mb-4 lg:mb-6">{t('startup_recent_visits')}</h3>
-              <div className="space-y-3 lg:space-y-4">
-                <ActivityItem name="Jean Dupont" role="Family Office" time={`${t('startup_ago')} 2${t('startup_hours')}`} type="view" />
-                <ActivityItem name="Tech Ventures" role="VC Fund" time={`${t('startup_ago')} 5${t('startup_hours')}`} type="click" />
-                <ActivityItem name="Sarah L." role="Business Angel" time={`${t('startup_ago')} 1${t('startup_day')}`} type="view" />
-                <ActivityItem name="Marc O." role={t('startup_investors').slice(0, -1)} time={`${t('startup_ago')} 1${t('startup_day')}`} type="match" />
-              </div>
-              <button className="w-full mt-4 lg:mt-6 py-2.5 lg:py-3 border border-slate-200 rounded-xl text-[10px] lg:text-xs font-bold uppercase tracking-widest hover:bg-slate-50">{t('startup_view_all')}</button>
-            </div>
-          </div>
-
         </div>
       </main>
     </div>
@@ -218,16 +165,5 @@ const StatCard = ({ icon: Icon, label, value, trend, sub, color }) => {
     </div>
   );
 };
-
-const ActivityItem = ({ name, role, time, type }) => (
-  <div className="flex items-center gap-3">
-    <div className={`w-2 h-2 rounded-full ${type === 'match' ? 'bg-emerald-500' : type === 'click' ? 'bg-purple-500' : 'bg-slate-300'}`}></div>
-    <div className="flex-1">
-      <p className="text-sm font-bold text-slate-900">{name}</p>
-      <p className="text-[10px] text-slate-500 uppercase font-bold">{role}</p>
-    </div>
-    <span className="text-xs text-slate-400 font-medium">{time}</span>
-  </div>
-);
 
 export default StartupDashboard;
