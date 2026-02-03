@@ -255,7 +255,52 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
           </div>
         </div>
       </section>
-
+      
+{/* Section About Us Directe (Point 2) */}
+      <section className="py-24 px-6 bg-white border-t border-slate-100">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-700 border border-emerald-100">
+                <Users size={12} /> Qui sommes-nous
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-slate-900">
+                {t('about_title')}
+              </h2>
+              <p className="text-xl text-slate-500 leading-relaxed font-medium">
+                {t('about_desc')}
+              </p>
+              <div className="grid sm:grid-cols-2 gap-6 pt-4">
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                  <Shield className="text-emerald-500 mb-3" size={24} />
+                  <h4 className="font-bold text-sm uppercase mb-1">Sécurité Suisse</h4>
+                  <p className="text-xs text-slate-500">Données protégées et hébergées localement.</p>
+                </div>
+                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                  <FileText className="text-blue-500 mb-3" size={24} />
+                  <h4 className="font-bold text-sm uppercase mb-1">Audit Complet</h4>
+                  <p className="text-xs text-slate-500">Chaque dossier est vérifié par nos experts.</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Vidéo Explicative Intégrée */}
+            <div className="relative group rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video bg-slate-900">
+              <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=80" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" alt="Team"/>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <button className="w-20 h-20 bg-white text-emerald-600 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+                  <Play fill="currentColor" size={28} className="ml-1" />
+                </button>
+              </div>
+              <div className="absolute bottom-6 left-8 right-8 text-white">
+                <p className="font-black uppercase tracking-widest text-[10px] mb-1">Vidéo explicative</p>
+                <p className="text-lg font-bold">Découvrez le futur de l'investissement en 90s</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       <footer className="py-8 border-t bg-white border-slate-100">
         <div className="max-w-6xl mx-auto px-6 text-center">
             <p className="text-[9px] font-bold uppercase tracking-widest text-slate-300">{t('footer_copy')}</p>
