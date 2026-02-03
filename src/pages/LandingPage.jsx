@@ -3,7 +3,7 @@ import {
   Play, TrendingUp, Users, ArrowRight, Zap, Globe, ChevronUp, ChevronDown, 
   Eye, Target, CheckCircle, Clock, Lock, MessageCircle, LogIn, Menu, X,
   FolderLock, UserPlus, Bookmark, Send, BarChart3, Rocket, Building2, Shield, 
-  Award, PieChart, LineChart
+  Award, PieChart, LineChart, FileText
 } from 'lucide-react';
 import translations from '../data/translations';
 import VideoScreen from '../components/VideoScreen';
@@ -63,7 +63,6 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
                   <path d="M3 17l6-6 4 4 8-8" />
                   <path d="M17 7h4v4" />
                 </svg>
-                <div className="absolute inset-0 bg-white/10 rounded-xl"></div>
             </div>
             <span className="text-xl font-black tracking-tight uppercase text-slate-900">Invest<span className="text-emerald-500">o</span></span>
           </div>
@@ -71,7 +70,7 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
           <div className="hidden md:flex items-center gap-6">
             <div className="flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] mr-4 text-slate-500">
               <a href="#deal-flow" className="hover:text-emerald-500 transition-colors">{t('nav_startups')}</a>
-              <a href="#market-trends" className="hover:text-emerald-500 transition-colors">{t('nav_investors')}</a>
+              <a href="#about" className="hover:text-emerald-500 transition-colors">{t('nav_about') || "A Propos"}</a>
             </div>
             
             <div className="flex gap-2 border-r border-slate-200 pr-4 mr-2">
@@ -100,18 +99,11 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
           <div className="backdrop-blur-md border-t px-6 py-4 space-y-4 bg-white/95 border-slate-200">
             <div className="flex flex-col gap-4 text-[11px] font-black uppercase tracking-[0.2em] text-slate-600">
               <a href="#deal-flow" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 transition-colors py-2">{t('nav_startups')}</a>
-              <a href="#market-trends" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 transition-colors py-2">{t('nav_investors')}</a>
-            </div>
-            <div className="flex gap-4 py-2 border-t border-slate-100">
-               <button onClick={() => handleLangChange('fr')} className={`text-[11px] font-bold ${lang === 'fr' ? 'text-emerald-500' : 'text-slate-400'}`}>Français</button>
-               <button onClick={() => handleLangChange('en')} className={`text-[11px] font-bold ${lang === 'en' ? 'text-emerald-500' : 'text-slate-400'}`}>English</button>
+              <a href="#about" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 transition-colors py-2">{t('nav_about') || "A Propos"}</a>
             </div>
             <div className="flex flex-col gap-3 pt-2 border-t border-slate-100">
               <button onClick={() => { onLogin(); setMobileMenuOpen(false); }} className="text-[11px] font-black uppercase tracking-widest hover:text-emerald-500 transition-colors flex items-center gap-2 py-2 text-slate-600">
                 <LogIn size={16} /> {t('login')}
-              </button>
-              <button onClick={() => { openModal('investor'); setMobileMenuOpen(false); }} className="bg-emerald-600 text-white px-6 py-3 rounded-xl hover:bg-emerald-500 transition-all font-bold tracking-widest text-[11px] w-full shadow-lg shadow-emerald-600/20">
-                {t('nav_member')}
               </button>
             </div>
           </div>
@@ -133,12 +125,8 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
               <button onClick={() => openModal('startup')} className="bg-emerald-600 text-white font-black uppercase tracking-widest text-[9px] px-6 lg:px-8 py-3.5 lg:py-4 rounded-xl flex items-center justify-center gap-2 shadow-xl shadow-emerald-600/30 active:scale-95 transition-transform hover:bg-emerald-500">
                 {t('btn_pitch')} <ArrowRight size={14} />
               </button>
-              <button onClick={() => openModal('investor')} className="px-6 lg:px-8 py-3.5 lg:py-4 rounded-xl font-black uppercase tracking-widest text-[9px] active:scale-95 transition-transform bg-white border-2 border-slate-200 text-slate-900 hover:bg-slate-50">
-                {t('btn_sourcing')}
-              </button>
             </div>
           </div>
-
           <div className="relative mx-auto w-full max-w-[340px] lg:max-w-[360px] order-2 lg:order-none mt-6 lg:mt-0">
             <div className="absolute right-2 bottom-28 flex flex-col gap-2 z-30 lg:-right-16 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2">
               <button onClick={prevStartup} className="p-2.5 lg:p-3 backdrop-blur-md rounded-full shadow-md hover:shadow-lg hover:text-emerald-500 transition-all group bg-white text-slate-400 border border-slate-200">
@@ -149,24 +137,14 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
               </button>
             </div>
             <div className="bg-[#050505] border-0 lg:border-[12px] border-[#1a1a1a] rounded-[2rem] lg:rounded-[3rem] h-[70vh] lg:h-[720px] shadow-2xl overflow-hidden relative transition-all duration-300">
-              <div className="absolute top-0 w-full pt-4 lg:pt-8 pb-4 px-6 flex justify-center items-center z-50 pointer-events-none">
-                <div className="bg-white/10 backdrop-blur-xl p-1 rounded-xl border border-white/10 flex pointer-events-auto shadow-lg">
-                  <button onClick={() => setActiveScreen('video')} className={`px-3 lg:px-5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${activeScreen === 'video' ? 'bg-white text-black' : 'text-white/60'}`}>{t('simulator_pitch')}</button>
-                  <button onClick={() => setActiveScreen('profile')} className={`px-3 lg:px-5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${activeScreen === 'profile' ? 'bg-white text-black' : 'text-white/60'}`}>{t('simulator_data')}</button>
-                </div>
-              </div>
-              <div className={`absolute right-2 lg:right-3 bottom-32 lg:bottom-36 flex flex-col items-center gap-3 z-40 transition-opacity duration-300 ${activeScreen === 'video' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                <button className="flex flex-col items-center justify-center gap-0.5 group w-14">
-                  <div className="w-11 h-11 rounded-full bg-emerald-500 flex items-center justify-center group-active:scale-90 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.3)]"><FolderLock size={22} className="text-white" /></div>
-                  <span className="text-[13px] font-bold text-white [text-shadow:_0_1px_4px_rgb(0_0_0_/_80%)] w-full text-center">24</span>
-                </button>
-                <button className="flex flex-col items-center justify-center gap-0.5 group w-14">
-                  <div className="w-11 h-11 flex items-center justify-center group-active:scale-90 transition-all"><UserPlus size={28} fill="white" stroke="white" strokeWidth={0} className="translate-x-1 [filter:_drop-shadow(0_1px_3px_rgb(0_0_0_/_60%))]" /></div>
-                  <span className="text-[13px] font-bold text-white [text-shadow:_0_1px_4px_rgb(0_0_0_/_80%)] w-full text-center">8</span>
-                </button>
-              </div>
-              <VideoScreen isActive={activeScreen === 'video'} t={t} startup={currentStartup} lang={lang} />
-              <ProfileScreen isActive={activeScreen === 'profile'} t={t} startup={currentStartup} lang={lang} />
+               <div className="absolute top-0 w-full pt-4 lg:pt-8 pb-4 px-6 flex justify-center items-center z-50 pointer-events-none">
+                 <div className="bg-white/10 backdrop-blur-xl p-1 rounded-xl border border-white/10 flex pointer-events-auto shadow-lg">
+                   <button onClick={() => setActiveScreen('video')} className={`px-3 lg:px-5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${activeScreen === 'video' ? 'bg-white text-black' : 'text-white/60'}`}>{t('simulator_pitch')}</button>
+                   <button onClick={() => setActiveScreen('profile')} className={`px-3 lg:px-5 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${activeScreen === 'profile' ? 'bg-white text-black' : 'text-white/60'}`}>{t('simulator_data')}</button>
+                 </div>
+               </div>
+               <VideoScreen isActive={activeScreen === 'video'} t={t} startup={currentStartup} lang={lang} />
+               <ProfileScreen isActive={activeScreen === 'profile'} t={t} startup={currentStartup} lang={lang} />
             </div>
           </div>
         </div>
@@ -179,7 +157,7 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
              <p className="text-emerald-500 font-black text-[9px] uppercase tracking-[0.3em]">{lang === 'fr' ? 'Données Marché' : 'Market Data'}</p>
              <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-slate-900">{lang === 'fr' ? 'Tendances du Marché Suisse' : 'Swiss Market Trends'}</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center"><TrendingUp size={16} className="text-emerald-600" /></div>
@@ -191,15 +169,30 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center"><Rocket size={16} className="text-blue-600" /></div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{lang === 'fr' ? 'Startups actives' : 'Active Startups'}</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Startups</span>
               </div>
               <p className="text-2xl font-black text-slate-900">1,240</p>
+            </div>
+            {/* Autres cartes... */}
+            <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+               <div className="flex items-center gap-2 mb-3">
+                 <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center"><Building2 size={16} className="text-purple-600" /></div>
+                 <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Valuation</span>
+               </div>
+               <p className="text-2xl font-black text-slate-900">6.2M CHF</p>
+            </div>
+            <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+               <div className="flex items-center gap-2 mb-3">
+                 <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center"><Award size={16} className="text-orange-600" /></div>
+                 <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Succès</span>
+               </div>
+               <p className="text-2xl font-black text-slate-900">68%</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Deal Flow */}
+      {/* Deal Flow Section */}
       <section id="deal-flow" className="py-16 lg:py-20 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 space-y-3">
@@ -212,7 +205,9 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
                 <div className="relative h-48 overflow-hidden bg-slate-100">
                   <img src={startup.poster} alt={startup.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute top-3 left-3">
-                    <span className="text-[9px] font-black px-2 py-1 rounded uppercase tracking-wider bg-white text-slate-900 border border-slate-200">{startup.kpis.sector[lang]}</span>
+                    <span className="text-[9px] font-black px-2 py-1 rounded uppercase tracking-wider bg-white text-slate-900 border border-slate-200">
+                      {typeof startup.kpis.sector === 'object' ? startup.kpis.sector[lang] : startup.kpis.sector}
+                    </span>
                   </div>
                 </div>
                 <div className="p-5">
@@ -229,35 +224,8 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
         </div>
       </section>
 
-      {/* NOUVEAU : Testimonials Section */}
-      <section className="py-20 px-6 bg-slate-900 text-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-emerald-400 font-black text-[9px] uppercase tracking-[0.3em] mb-4">Trust</p>
-          <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-12">{t('testi_title')}</h2>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10 text-left">
-              <div className="text-emerald-400 text-4xl font-serif mb-4">"</div>
-              <p className="text-lg font-medium leading-relaxed mb-6">{t('testi_1_msg')}</p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center font-bold">TL</div>
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400">{t('testi_1_author')}</p>
-              </div>
-            </div>
-            <div className="bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10 text-left">
-              <div className="text-emerald-400 text-4xl font-serif mb-4">"</div>
-              <p className="text-lg font-medium leading-relaxed mb-6">{t('testi_2_msg')}</p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center font-bold">SM</div>
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400">{t('testi_2_author')}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-{/* Section About Us Directe (Point 2) */}
-      <section className="py-24 px-6 bg-white border-t border-slate-100">
+      {/* SECTION ABOUT US (INTEGRÉE) */}
+      <section id="about" className="py-24 px-6 bg-slate-50 border-t border-slate-100">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
@@ -271,12 +239,12 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
                 {t('about_desc')}
               </p>
               <div className="grid sm:grid-cols-2 gap-6 pt-4">
-                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
                   <Shield className="text-emerald-500 mb-3" size={24} />
                   <h4 className="font-bold text-sm uppercase mb-1">Sécurité Suisse</h4>
                   <p className="text-xs text-slate-500">Données protégées et hébergées localement.</p>
                 </div>
-                <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+                <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
                   <FileText className="text-blue-500 mb-3" size={24} />
                   <h4 className="font-bold text-sm uppercase mb-1">Audit Complet</h4>
                   <p className="text-xs text-slate-500">Chaque dossier est vérifié par nos experts.</p>
@@ -284,7 +252,6 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
               </div>
             </div>
             
-            {/* Vidéo Explicative Intégrée */}
             <div className="relative group rounded-[2.5rem] overflow-hidden shadow-2xl aspect-video bg-slate-900">
               <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=80" className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" alt="Team"/>
               <div className="absolute inset-0 flex items-center justify-center">
@@ -292,15 +259,11 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
                   <Play fill="currentColor" size={28} className="ml-1" />
                 </button>
               </div>
-              <div className="absolute bottom-6 left-8 right-8 text-white">
-                <p className="font-black uppercase tracking-widest text-[10px] mb-1">Vidéo explicative</p>
-                <p className="text-lg font-bold">Découvrez le futur de l'investissement en 90s</p>
-              </div>
             </div>
           </div>
         </div>
       </section>
-      
+
       <footer className="py-8 border-t bg-white border-slate-100">
         <div className="max-w-6xl mx-auto px-6 text-center">
             <p className="text-[9px] font-bold uppercase tracking-widest text-slate-300">{t('footer_copy')}</p>
