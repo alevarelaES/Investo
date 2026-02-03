@@ -120,6 +120,52 @@ const StartupDashboard = ({ lang = 'fr' }) => {
               </div>
             </div>
 
+          <div className="grid lg:grid-cols-2 gap-8">
+          {/* ESPACE PUBLICATION (Point 3) */}
+            
+            {/* Publication Vidéo Pitch */}
+            <div className="bg-white p-8 rounded-[2rem] border-2 border-dashed border-slate-200 hover:border-emerald-400 transition-colors group">
+              <div className="flex justify-between items-start mb-6">
+                <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center">
+                  <Play size={24} />
+                </div>
+                <span className="text-[10px] font-black bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full uppercase tracking-widest">Actif</span>
+              </div>
+              <h3 className="text-xl font-black text-slate-900 mb-2">Pitch Vidéo</h3>
+              <p className="text-sm text-slate-500 mb-6 font-medium">Mettez à jour votre pitch vidéo vertical (9:16). Max 90 secondes.</p>
+              <button className="w-full py-4 border-2 border-emerald-600 text-emerald-600 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-emerald-600 hover:text-white transition-all">
+                Remplacer la vidéo
+              </button>
+            </div>
+          
+            {/* Publication Documents (PDF/Word) */}
+            <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
+              <div className="flex justify-between items-start mb-6">
+                <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center">
+                  <FileText size={24} />
+                </div>
+                <span className="text-[10px] font-black bg-slate-100 text-slate-500 px-3 py-1 rounded-full uppercase tracking-widest">Data Room</span>
+              </div>
+              <h3 className="text-xl font-black text-slate-900 mb-2">Documents Stratégiques</h3>
+              <p className="text-sm text-slate-500 mb-4 font-medium">Ajoutez vos PDF (Business Plan, Deck) ou Word.</p>
+              
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                  <span className="text-xs font-bold text-slate-700 flex items-center gap-2"><FileText size={14}/> Pitch_Deck_2024.pdf</span>
+                  <button className="text-red-500 hover:bg-red-50 p-1 rounded"><X size={14}/></button>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+                  <span className="text-xs font-bold text-slate-700 flex items-center gap-2"><FileText size={14}/> Financials_Q1.xlsx</span>
+                  <button className="text-red-500 hover:bg-red-50 p-1 rounded"><X size={14}/></button>
+                </div>
+              </div>
+          
+              <button className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-emerald-600 transition-all flex items-center justify-center gap-2">
+                <Plus size={16} /> Ajouter un document
+              </button>
+            </div>
+          </div>
+            
             {/* ACTIVITÉ RÉCENTE */}
             <div className="bg-white p-4 lg:p-6 rounded-2xl border border-slate-200 shadow-sm">
               <h3 className="font-bold text-slate-900 mb-4 lg:mb-6">{t('startup_recent_visits')}</h3>
