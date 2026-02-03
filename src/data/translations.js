@@ -3,7 +3,6 @@ const translations = {
     nav_startups: "Startups",
     nav_investors: "Investisseurs",
     nav_member: "ESPACE MEMBRE",
-    nav_about: "À Propos",
     hero_badge: "L'innovation financière en mouvement",
     hero_title_1: "Voyez",
     hero_title_2: "Le Futur",
@@ -15,7 +14,7 @@ const translations = {
     simulator_data: "La Data",
     pitch_status: "Pitch Actif",
     
-    // NOUVEAUX TEXTES
+    // NOUVEAUX TEXTES (Section Dual)
     dual_badge: "Propulsion & Sourcing",
     dual_title: "Deux Profils, Une Ambition.",
     dual_startup_title: "Pour les Startups",
@@ -130,35 +129,16 @@ const translations = {
     day_sat: "Sam",
     day_sun: "Dim",
 
-    // --- AJOUTS V2 ---
-    testi_title: "Ils ont levé avec Investo",
-    testi_1_msg: "Le format vidéo a tout changé. Nous avons eu 3 rendez-vous qualifiés en 24h.",
-    testi_1_author: "Thomas L., CEO GreenTech",
-    testi_2_msg: "Le gain de temps est phénoménal pour le sourcing. La qualité est au rendez-vous.",
-    testi_2_author: "Sarah M., VC Partner",
-
+    // --- AJOUTS POUR LA VERSION V2 ---
     about_title: "Notre Mission",
     about_desc: "Connecter l'innovation et le capital avec transparence et rapidité.",
-    about_video_title: "Comment ça marche ?",
-    about_conditions: "Conditions d'utilisation",
-    about_conditions_txt: "L'accès aux Data Rooms est strictement réservé aux investisseurs qualifiés (KYC validé).",
-    
     verified_badge: "KYC VÉRIFIÉ",
-    audit_badge: "AUDITÉ",
-    risk_low: "Risque Modéré",
-
-    edit_title: "Éditer mon Profil",
-    edit_save: "Enregistrer les modifications",
-    lbl_name: "Nom Startup",
-    lbl_vision: "Vision",
-    lbl_valuation: "Valorisation",
-    lbl_target: "Objectif (Montant)",
+    audit_badge: "AUDITÉ"
   },
   en: {
     nav_startups: "Startups",
     nav_investors: "Investors",
     nav_member: "MEMBER AREA",
-    nav_about: "About & Terms",
     hero_badge: "Financial innovation in motion",
     hero_title_1: "See",
     hero_title_2: "The Future",
@@ -170,6 +150,7 @@ const translations = {
     simulator_data: "The Data",
     pitch_status: "Active Pitch",
 
+    // NEW TEXTS (Dual Section)
     dual_badge: "Propulsion & Sourcing",
     dual_title: "Two Profiles, One Ambition.",
     dual_startup_title: "For Startups",
@@ -199,9 +180,11 @@ const translations = {
     pulse_stat_4: "Hot Sector",
     footer_copy: "© 2024 Investo SA • Lausanne",
 
+    // Navigation & Common
     login: "Login",
     search_placeholder: "Search...",
     
+    // Investor Dashboard
     inv_deal_flow: "Active Deal Flow",
     inv_deal_flow_desc: "Your selected startups awaiting analysis.",
     inv_sourcing: "Sourcing",
@@ -225,6 +208,7 @@ const translations = {
     inv_action: "Action",
     inv_data_room: "Data Room",
     
+    // Startup Dashboard
     startup_hello: "Hello",
     startup_pitch_online: "Your pitch has been online for",
     startup_days: "days",
@@ -246,6 +230,7 @@ const translations = {
     startup_hours: "hours",
     startup_day: "day",
     
+    // Upload Pitch
     upload_step: "Step",
     upload_step1_title: "Let's start with the basics.",
     upload_step1_desc: "Introduce your startup in a few words for sourcing.",
@@ -271,6 +256,7 @@ const translations = {
     upload_next: "Next",
     upload_submit: "Submit",
     
+    // Days of week
     day_mon: "Mon",
     day_tue: "Tue",
     day_wed: "Wed",
@@ -279,25 +265,11 @@ const translations = {
     day_sat: "Sat",
     day_sun: "Sun",
 
-    testi_title: "They raised with Investo",
-    testi_1_msg: "Video format changed everything. 3 qualified meetings in 24h.",
-    testi_1_author: "Thomas L., CEO GreenTech",
-    testi_2_msg: "Video format changed everything. 3 qualified meetings in 24h.",
-    testi_2_author: "Sarah M., VC Partner",
+    // --- V2 UPDATES ---
     about_title: "Our Mission",
     about_desc: "Connect innovation and capital with transparency.",
-    about_video_title: "How it works?",
-    about_conditions: "Terms of Service",
-    about_conditions_txt: "Access strictly for qualified investors.",
     verified_badge: "KYC VERIFIED",
-    audit_badge: "AUDITED",
-    risk_low: "Moderate Risk",
-    edit_title: "Edit Profile",
-    edit_save: "Save Changes",
-    lbl_name: "Startup Name",
-    lbl_vision: "Vision",
-    lbl_valuation: "Valuation",
-    lbl_target: "Target",
+    audit_badge: "AUDITED"
   }
 };
 
