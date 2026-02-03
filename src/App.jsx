@@ -4,17 +4,19 @@ import Login from './pages/Login';
 import InvestorDashboard from './pages/InvestorDashboard';
 import StartupDashboard from './pages/StartupDashboard';
 import UploadPitch from './pages/UploadPitch';
+import About from './pages/About'; 
 import translations from './data/translations';
 
 const App = () => {
-  // Pages: 'landing', 'login', 'investor', 'startup', 'upload'
+  // Pages: 'landing', 'login', 'investor', 'startup', 'upload', 'about'
   const [currentPage, setCurrentPage] = useState('landing');
   const [lang, setLang] = useState('fr');
   
-  const t = (key) => translations[lang]?.[key] || translations['fr'][key] || key;
+  // Simule un rôle pour "l'authentification"
+  const [userRole, setUserRole] = useState(null); 
 
   const handleLogin = (userType) => {
-    // Si userType est fourni depuis Login, utilise-le, sinon défaut à 'investor'
+    setUserRole(userType);
     if (userType === 'startup') {
       setCurrentPage('startup');
     } else {
@@ -42,6 +44,8 @@ const App = () => {
         return <StartupDashboard lang={lang} />;
       case 'upload': 
         return <UploadPitch lang={lang} />;
+      case 'about': 
+        return <About onBack={() => setCurrentPage('landing')} lang={lang} />;
       default: 
         return <LandingPage onLogin={handleGoToLogin} onLangChange={handleLangChange} initialLang={lang} />;
     }
@@ -59,10 +63,10 @@ const App = () => {
           Home
         </button>
         <button 
-          onClick={() => setCurrentPage('login')} 
-          className={`px-2 py-1 rounded transition-all ${currentPage === 'login' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}
+          onClick={() => setCurrentPage('about')} 
+          className={`px-2 py-1 rounded transition-all ${currentPage === 'about' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}
         >
-          Login
+          About
         </button>
         <button 
           onClick={() => setCurrentPage('investor')} 
@@ -75,12 +79,6 @@ const App = () => {
           className={`px-2 py-1 rounded transition-all ${currentPage === 'startup' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}
         >
           Startup
-        </button>
-        <button 
-          onClick={() => setCurrentPage('upload')} 
-          className={`px-2 py-1 rounded transition-all ${currentPage === 'upload' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}
-        >
-          +
         </button>
       </div>
 
