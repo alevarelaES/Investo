@@ -8,6 +8,7 @@ import {
 import translations from '../data/translations';
 import VideoScreen from '../components/VideoScreen';
 import ProfileScreen from '../components/ProfileScreen';
+import logo from '../assets/Logo.jpg';
 import WaitlistModal from '../components/WaitlistModal';
 import { startups } from '../data/startups';
 
@@ -43,16 +44,24 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  return (
+return (
     <div className="min-h-screen font-sans text-left overflow-x-hidden bg-slate-50 text-slate-900">
       
-      <WaitlistModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        type={modalType}
-        t={t}
-        lang={lang}
-      />
+      {/* ... WaitlistModal ... */}
+
+      {/* Navbar - Light Mode */}
+      <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 py-3' : 'bg-transparent py-6'}`}>
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            {/* REMPLACEZ L'ANCIEN BLOC DIV SVG PAR L'IMAGE */}
+            <img 
+              src={logo} 
+              alt="Logo Investo" 
+              className="w-9 h-9 rounded-xl shadow-lg shadow-emerald-200 object-cover" 
+            />
+            
+            <span className="text-xl font-black tracking-tight uppercase text-slate-900">Invest<span className="text-emerald-500">o</span></span>
+          </div>
 
       {/* Navbar */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 py-3' : 'bg-transparent py-6'}`}>
