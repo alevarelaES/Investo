@@ -10,8 +10,8 @@ import VideoScreen from '../components/VideoScreen';
 import ProfileScreen from '../components/ProfileScreen';
 import WaitlistModal from '../components/WaitlistModal';
 import { startups } from '../data/startups';
-import logo from '../assets/Logo.png'; // - Extension corrigée en .png
 
+// Light Mode institutionnel (fond slate-50, texte slate-900)
 const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
   const [lang, setLang] = useState(initialLang);
   const [scrolled, setScrolled] = useState(false);
@@ -46,6 +46,7 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
 
   return (
     <div className="min-h-screen font-sans text-left overflow-x-hidden bg-slate-50 text-slate-900">
+      
       <WaitlistModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
@@ -58,25 +59,19 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 py-3' : 'bg-transparent py-6'}`}>
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            {/* Logo Image */}
-            <img 
-              src={logo} 
-              alt="Logo Investo" 
-              className="w-9 h-9 rounded-xl shadow-lg shadow-emerald-200 object-cover" 
-            />
-            <span className="text-xl font-black tracking-tight uppercase text-slate-900">Invest<span className="text-emerald-500">o</span></span>
-          </div>
+            <div className="w-9 h-9 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-200 relative overflow-hidden">
+                <svg viewBox="0 0 24 24" className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 17l6-6 4 4 8-8" />
+                  <path d="M17 7h4v4" />
+                </svg>
+                <div className="absolute inset-0 bg-white/10 rounded-xl"></div>
+            </div>
 
           {/* Menu Desktop */}
           <div className="hidden md:flex items-center gap-6">
             <div className="flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] mr-4 text-slate-500">
-              {/* Accès direct à About Us */}
-              <a href="#avantages" className="hover:text-emerald-500 transition-colors">
-                {lang === 'fr' ? 'À Propos' : 'About Us'}
-              </a>
-              {/* Correction des accès Startups / Investisseurs */}
-              <a href="#market-trends" className="hover:text-emerald-500 transition-colors">{t('nav_startups')}</a>
-              <a href="#deal-flow" className="hover:text-emerald-500 transition-colors">{t('nav_investors')}</a>
+               <a href="#deal-flow" className="hover:text-emerald-500 transition-colors">{t('nav_startups')}</a>
+              <a href="#market-trends" className="hover:text-emerald-500 transition-colors">{t('nav_investors')}</a>
             </div>
             
             <div className="flex gap-2 border-r border-slate-200 pr-4 mr-2">
@@ -99,8 +94,11 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
 
           {/* Mobile Button */}
           <div className="flex md:hidden items-center gap-3">
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 rounded-lg border border-slate-200">
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg transition-colors border border-slate-200 hover:bg-slate-100"
+            >
+              {mobileMenuOpen ? <X size={20} className="text-slate-600" /> : <Menu size={20} className="text-slate-600" />}
             </button>
           </div>
         </div>
@@ -109,24 +107,34 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
         <div className={`md:hidden overflow-hidden transition-all duration-300 ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="backdrop-blur-md border-t px-6 py-4 space-y-4 bg-white/95 border-slate-200">
             <div className="flex flex-col gap-4 text-[11px] font-black uppercase tracking-[0.2em] text-slate-600">
-              <a href="#avantages" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 py-2">
-                {lang === 'fr' ? 'À Propos' : 'About Us'}
-              </a>
-              <a href="#market-trends" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 py-2">{t('nav_startups')}</a>
-              <a href="#deal-flow" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 py-2">{t('nav_investors')}</a>
+              <a href="#deal-flow" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 transition-colors py-2">{t('nav_startups')}</a>
+              <a href="#market-trends" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 transition-colors py-2">{t('nav_investors')}</a>
             </div>
-            {/* ... Reste du menu mobile ... */}
+            
+            <div className="flex gap-4 py-2 border-t border-slate-100">
+               <button onClick={() => handleLangChange('fr')} className={`text-[11px] font-bold ${lang === 'fr' ? 'text-emerald-500' : 'text-slate-400'}`}>Français</button>
+               <button onClick={() => handleLangChange('en')} className={`text-[11px] font-bold ${lang === 'en' ? 'text-emerald-500' : 'text-slate-400'}`}>English</button>
+            </div>
+
+            <div className="flex flex-col gap-3 pt-2 border-t border-slate-100">
+              <button 
+                onClick={() => { onLogin(); setMobileMenuOpen(false); }}
+                className="text-[11px] font-black uppercase tracking-widest hover:text-emerald-500 transition-colors flex items-center gap-2 py-2 text-slate-600"
+              >
+                <LogIn size={16} /> {t('login')}
+              </button>
+
+              <button 
+                onClick={() => { openModal('investor'); setMobileMenuOpen(false); }} 
+                className="bg-emerald-600 text-white px-6 py-3 rounded-xl hover:bg-emerald-500 transition-all font-bold tracking-widest text-[11px] w-full shadow-lg shadow-emerald-600/20"
+              >
+                {t('nav_member')}
+              </button>
+            </div>
+
           </div>
         </div>
       </nav>
-
-      {/* Hero Section et autres sections restent identiques */}
-      {/* ... */}
-    </div>
-  );
-};
-
-export default LandingPage;
 
       {/* Hero Section */}
       <section className="relative pt-24 lg:pt-28 pb-16 lg:pb-20 px-4 md:px-6 overflow-hidden min-h-[85vh] flex items-center bg-white">
