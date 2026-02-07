@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+yimport React, { useState, useEffect } from 'react';
 import { 
   Play, TrendingUp, Users, ArrowRight, Zap, Globe, ChevronUp, ChevronDown, 
   Eye, Target, CheckCircle, Clock, Lock, MessageCircle, LogIn, Menu, X,
@@ -44,19 +44,18 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+import React, { useState, useEffect } from 'react';
+// ... autres imports (lucide-react, translations, etc.)
+import logo from '../assets/Logo.png'; // - Correction de l'extension en .png
+
+const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
+  // ... (états et fonctions existants)
 
   return (
     <div className="min-h-screen font-sans text-left overflow-x-hidden bg-slate-50 text-slate-900">
-      
-      <WaitlistModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        type={modalType}
-        t={t}
-        lang={lang}
-      />
+      {/* ... WaitlistModal ... */}
 
-      {/* Navbar - Light Mode */}
+      {/* Navbar */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 py-3' : 'bg-transparent py-6'}`}>
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -71,24 +70,35 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
           {/* Menu Desktop */}
           <div className="hidden md:flex items-center gap-6">
             <div className="flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] mr-4 text-slate-500">
-              {/* Ajout "À Propos" vers la section Avantages (Qui sommes-nous) */}
+              {/* Lien direct vers About Us (Section Qui sommes-nous / avantages) */}
               <a href="#avantages" className="hover:text-emerald-500 transition-colors">
                 {lang === 'fr' ? 'À Propos' : 'About Us'}
               </a>
               
-              {/* Correction: Startups pointe vers Market Trends (Données) */}
-              <a href="#market-trends" className="hover:text-emerald-500 transition-colors">{t('nav_startups')}</a>
+              {/* CORRECTION : Startups vers Market Trends */}
+              <a href="#market-trends" className="hover:text-emerald-500 transition-colors">
+                {t('nav_startups')}
+              </a>
               
-              {/* Correction: Investisseurs pointe vers Deal Flow (Startups) */}
-              <a href="#deal-flow" className="hover:text-emerald-500 transition-colors">{t('nav_investors')}</a>
+              {/* CORRECTION : Investisseurs vers Deal Flow */}
+              <a href="#deal-flow" className="hover:text-emerald-500 transition-colors">
+                {t('nav_investors')}
+              </a>
             </div>
             
-            <div className="flex gap-2 border-r border-slate-200 pr-4 mr-2">
-               <button onClick={() => handleLangChange('fr')} className={`text-[10px] font-bold ${lang === 'fr' ? 'text-emerald-500' : 'text-slate-400'}`}>FR</button>
-               <span className="text-slate-200">|</span>
-               <button onClick={() => handleLangChange('en')} className={`text-[10px] font-bold ${lang === 'en' ? 'text-emerald-500' : 'text-slate-400'}`}>EN</button>
-            </div>
+            {/* ... Reste de la navbar (Langues, Login, Bouton Membre) */}
+          </div>
+          {/* ... (Menu mobile à mettre à jour avec les mêmes liens) */}
+        </div>
+      </nav>
+      
+      {/* ... (Le reste des sections comme Hero, Market Trends, etc.) */}
+    </div>
+  );
+};
 
+export default LandingPage;
+  
             {/* BOUTON CONNEXION */}
             <button 
               onClick={onLogin}
