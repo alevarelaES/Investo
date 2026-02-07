@@ -36,8 +36,15 @@ const App = () => {
 
   const renderPage = () => {
     switch(currentPage) {
-      case 'login': 
-        return <Login onLogin={handleLogin} onLangChange={handleLangChange} initialLang={lang} />;
+case 'login': 
+  return (
+    <Login 
+      onLogin={handleLogin} 
+      onLangChange={handleLangChange} 
+      initialLang={lang} 
+      onBack={() => setCurrentPage('landing')} // <--- AJOUTER CETTE LIGNE
+    />
+    );
       case 'investor': 
         return <InvestorDashboard lang={lang} />;
       case 'startup': 
