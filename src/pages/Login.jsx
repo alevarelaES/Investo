@@ -32,18 +32,20 @@ const Login = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
   };
 
 return (
+  
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
-      
-      {/* Logo & Langue en haut */}
-      <div className="fixed top-6 left-0 right-0 flex justify-between items-center px-6 max-w-6xl mx-auto">
-        <div className="flex items-center gap-3">
-          {/* REMPLACEZ L'ANCIEN BLOC DIV SVG PAR L'IMAGE */}
-          <img 
-              src={logo} 
-              alt="Logo Investo" 
-              className="w-9 h-9 rounded-xl shadow-lg shadow-emerald-200 object-cover" 
-          />
-          <span className="text-xl font-black tracking-tight uppercase text-slate-900">Invest<span className="text-emerald-500">o</span></span>
+          <div className="fixed top-6 left-0 right-0 flex justify-between items-center px-6 max-w-6xl mx-auto">
+            <div className="flex items-center gap-3">
+              <img 
+                src={logo} 
+                alt="Logo Investo" 
+                className="w-9 h-9 rounded-xl shadow-lg shadow-emerald-200 object-cover" 
+              />
+              <span className="text-xl font-black tracking-tight uppercase text-slate-900">Invest<span className="text-emerald-500">o</span></span>
+            </div>
+            {/* ... */}
+          </div>
+          {/* ... */}
         </div>
 
       {/* Formulaire Principal */}
