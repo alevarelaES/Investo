@@ -66,6 +66,8 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
                 </svg>
                 <div className="absolute inset-0 bg-white/10 rounded-xl"></div>
             </div>
+            <span className="text-xl font-black tracking-tight uppercase text-slate-900">Invest<span className="text-emerald-500">o</span></span>
+          </div>            
 
           {/* Menu Desktop */}
           <div className="hidden md:flex items-center gap-6">
