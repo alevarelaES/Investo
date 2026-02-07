@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowRight, Eye, EyeOff, LogIn, UserPlus } from 'lucide-react';
 import translations from '../data/translations';
-import logo from '../assets/Logo.jpg';
+import logo from '../assets/Logo.png';
 
 const Login = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
   const [lang, setLang] = useState(initialLang);
