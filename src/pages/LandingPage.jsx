@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Play, TrendingUp, Users, ArrowRight, Zap, Globe, ChevronUp, ChevronDown, 
   Eye, Target, CheckCircle, Clock, Lock, MessageCircle, LogIn, Menu, X,
-  FolderLock, UserPlus, Bookmark, Send, BarChart3, Rocket, Building2, Shield, 
+  FolderLock, UserPlus, Bookmark, Send, Rocket, Building2, Shield, 
   Award, PieChart, LineChart
 } from 'lucide-react';
 import translations from '../data/translations';
@@ -10,8 +10,8 @@ import VideoScreen from '../components/VideoScreen';
 import ProfileScreen from '../components/ProfileScreen';
 import WaitlistModal from '../components/WaitlistModal';
 import { startups } from '../data/startups';
-import logo from '../assets/Logo.png'; // Utilisation du logo PNG
 
+// Light Mode institutionnel (fond slate-50, texte slate-900)
 const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
   const [lang, setLang] = useState(initialLang);
   const [scrolled, setScrolled] = useState(false);
@@ -22,7 +22,13 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState('startup');
 
-  const currentStartup = startups[currentIndex];
+  // Synchroniser la langue locale si la prop change (depuis App)
+  useEffect(() => {
+    setLang(initialLang);
+  }, [initialLang]);
+
+  // Sécurité au cas où la liste startups serait vide
+  const currentStartup = startups && startups.length > 0 ? startups[currentIndex] : null;
   const t = (key) => translations[lang]?.[key] || translations['fr'][key] || key;
 
   const handleLangChange = (newLang) => {
@@ -30,8 +36,18 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
     if (onLangChange) onLangChange(newLang);
   };
 
-  const nextStartup = () => setCurrentIndex((prev) => (prev + 1) % startups.length);
-  const prevStartup = () => setCurrentIndex((prev) => (prev - 1 + startups.length) % startups.length);
+  const nextStartup = () => {
+    if (startups.length > 0) setCurrentIndex((prev) => (prev + 1) % startups.length);
+  };
+  
+  const prevStartup = () => {
+    if (startups.length > 0) setCurrentIndex((prev) => (prev - 1 + startups.length) % startups.length);
+  };
+
+  const openModal = (type) => {
+    setModalType(type);
+    setIsModalOpen(true);
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -39,79 +55,46 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  if (!currentStartup) return <div className="min-h-screen flex items-center justify-center">Chargement...</div>;
+
   return (
     <div className="min-h-screen font-sans text-left overflow-x-hidden bg-slate-50 text-slate-900">
-      <WaitlistModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} type={modalType} t={t} lang={lang} />
-
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 py-3' : 'bg-transparent py-6'}`}>
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <img src={logo} alt="Logo" className="w-9 h-9 rounded-xl object-cover" />
-            <span className="text-xl font-black tracking-tight uppercase">Invest<span className="text-emerald-500">o</span></span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-6">
-            <div className="flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">
-              <a href="#avantages" className="hover:text-emerald-500 transition-colors">{lang === 'fr' ? 'À Propos' : 'About Us'}</a>
-              <a href="#market-trends" className="hover:text-emerald-500 transition-colors">{t('nav_startups')}</a>
-              <a href="#deal-flow" className="hover:text-emerald-500 transition-colors">{t('nav_investors')}</a>
-            </div>
-            <button onClick={onLogin} className="text-[10px] font-black uppercase tracking-widest flex items-center gap-2"><LogIn size={14} /> {t('login')}</button>
-          </div>
-        </div>
-      </nav>
-      {/* ... Reste de votre contenu existant ... */}
-    </div>
-  );
-};
-
-export default LandingPage;
+      
+      <WaitlistModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        type={modalType}
+        t={t}
+        lang={lang}
+      />
 
       {/* Navbar */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 py-3' : 'bg-transparent py-6'}`}>
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <img 
-              src={logo} 
-              alt="Logo Investo" 
-              className="w-9 h-9 rounded-xl shadow-lg shadow-emerald-200 object-cover" 
-            />
+            <div className="w-9 h-9 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-200 relative overflow-hidden">
+                <svg viewBox="0 0 24 24" className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 17l6-6 4 4 8-8" />
+                  <path d="M17 7h4v4" />
+                </svg>
+                <div className="absolute inset-0 bg-white/10 rounded-xl"></div>
+            </div>
             <span className="text-xl font-black tracking-tight uppercase text-slate-900">Invest<span className="text-emerald-500">o</span></span>
-          </div>
+          </div>            
 
           {/* Menu Desktop */}
           <div className="hidden md:flex items-center gap-6">
             <div className="flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] mr-4 text-slate-500">
-              {/* Lien direct vers About Us (Section Qui sommes-nous / avantages) */}
-              <a href="#avantages" className="hover:text-emerald-500 transition-colors">
-                {lang === 'fr' ? 'À Propos' : 'About Us'}
-              </a>
-              
-              {/* CORRECTION : Startups vers Market Trends */}
-              <a href="#market-trends" className="hover:text-emerald-500 transition-colors">
-                {t('nav_startups')}
-              </a>
-              
-              {/* CORRECTION : Investisseurs vers Deal Flow */}
-              <a href="#deal-flow" className="hover:text-emerald-500 transition-colors">
-                {t('nav_investors')}
-              </a>
+               <a href="#deal-flow" className="hover:text-emerald-500 transition-colors">{t('nav_startups')}</a>
+              <a href="#market-trends" className="hover:text-emerald-500 transition-colors">{t('nav_investors')}</a>
             </div>
             
-            {/* ... Reste de la navbar (Langues, Login, Bouton Membre) */}
-          </div>
-          {/* ... (Menu mobile à mettre à jour avec les mêmes liens) */}
-        </div>
-      </nav>
-      
-      {/* ... (Le reste des sections comme Hero, Market Trends, etc.) */}
-    </div>
-  );
-};
+            <div className="flex gap-2 border-r border-slate-200 pr-4 mr-2">
+               <button onClick={() => handleLangChange('fr')} className={`text-[10px] font-bold ${lang === 'fr' ? 'text-emerald-500' : 'text-slate-400'}`}>FR</button>
+               <span className="text-slate-200">|</span>
+               <button onClick={() => handleLangChange('en')} className={`text-[10px] font-bold ${lang === 'en' ? 'text-emerald-500' : 'text-slate-400'}`}>EN</button>
+            </div>
 
-export default LandingPage;
-  
-            {/* BOUTON CONNEXION */}
             <button 
               onClick={onLogin}
               className="text-[10px] font-black uppercase tracking-widest hover:text-emerald-500 transition-colors flex items-center gap-2 text-slate-500"
@@ -124,7 +107,7 @@ export default LandingPage;
             </button>
           </div>
 
-          {/* Boutons Mobile */}
+          {/* Mobile Button */}
           <div className="flex md:hidden items-center gap-3">
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -135,15 +118,12 @@ export default LandingPage;
           </div>
         </div>
 
-        {/* Menu Mobile Déroulant */}
+        {/* Mobile Menu */}
         <div className={`md:hidden overflow-hidden transition-all duration-300 ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="backdrop-blur-md border-t px-6 py-4 space-y-4 bg-white/95 border-slate-200">
             <div className="flex flex-col gap-4 text-[11px] font-black uppercase tracking-[0.2em] text-slate-600">
-              <a href="#avantages" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 transition-colors py-2">
-                {lang === 'fr' ? 'À Propos' : 'About Us'}
-              </a>
-              <a href="#market-trends" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 transition-colors py-2">{t('nav_startups')}</a>
-              <a href="#deal-flow" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 transition-colors py-2">{t('nav_investors')}</a>
+              <a href="#deal-flow" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 transition-colors py-2">{t('nav_startups')}</a>
+              <a href="#market-trends" onClick={() => setMobileMenuOpen(false)} className="hover:text-emerald-500 transition-colors py-2">{t('nav_investors')}</a>
             </div>
             
             <div className="flex gap-4 py-2 border-t border-slate-100">
@@ -166,13 +146,13 @@ export default LandingPage;
                 {t('nav_member')}
               </button>
             </div>
+
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
       <section className="relative pt-24 lg:pt-28 pb-16 lg:pb-20 px-4 md:px-6 overflow-hidden min-h-[85vh] flex items-center bg-white">
-        {/* ... contenu inchangé ... */}
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           
           <div className="space-y-6 lg:space-y-8 relative z-10 text-left order-1 lg:order-none">
@@ -260,20 +240,15 @@ export default LandingPage;
         </div>
       </section>
 
-      {/* Le reste des sections (Market Trends, Deal Flow, Dual Profiles, Stats, Footer) reste inchangé... */}
-      {/* ... copie des autres sections ... */}
-      
       {/* Section Tendances du Marché */}
       <section id="market-trends" className="py-16 lg:py-20 px-6 bg-slate-100">
-         {/* ... contenu existant ... */}
-         <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 space-y-3">
              <p className="text-emerald-500 font-black text-[9px] uppercase tracking-[0.3em]">{lang === 'fr' ? 'Données Marché' : 'Market Data'}</p>
              <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-slate-900">{lang === 'fr' ? 'Tendances du Marché Suisse' : 'Swiss Market Trends'}</h2>
           </div>
-          {/* ... grid stats ... */}
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            {/* ... stats ... */}
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
@@ -284,8 +259,8 @@ export default LandingPage;
               <p className="text-2xl font-black text-slate-900">2.4 Mds CHF</p>
               <p className="text-xs text-emerald-600 font-bold mt-1">+18% vs 2025</p>
             </div>
-             {/* ... autres stats ... */}
-             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+
+            <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                   <Rocket size={16} className="text-blue-600" />
@@ -295,6 +270,7 @@ export default LandingPage;
               <p className="text-2xl font-black text-slate-900">1,240</p>
               <p className="text-xs text-slate-500 font-medium mt-1">{lang === 'fr' ? 'En Suisse romande' : 'In French Switzerland'}</p>
             </div>
+
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -305,6 +281,7 @@ export default LandingPage;
               <p className="text-2xl font-black text-slate-900">6.2M CHF</p>
               <p className="text-xs text-slate-500 font-medium mt-1">Seed Stage</p>
             </div>
+
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
@@ -316,7 +293,7 @@ export default LandingPage;
               <p className="text-xs text-emerald-600 font-bold mt-1">{lang === 'fr' ? 'Series A atteinte' : 'Series A reached'}</p>
             </div>
           </div>
-          {/* ... Top Secteurs ... */}
+
           <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
             <h3 className="font-black text-slate-900 mb-5 text-lg">{lang === 'fr' ? 'Secteurs en forte croissance' : 'High-growth Sectors'}</h3>
             <div className="grid md:grid-cols-3 gap-4">
@@ -349,18 +326,18 @@ export default LandingPage;
               </div>
             </div>
           </div>
-         </div>
+        </div>
       </section>
 
       {/* Section Deal Flow */}
       <section id="deal-flow" className="py-16 lg:py-20 px-6 bg-white">
-        {/* ... contenu existant ... */}
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 space-y-3">
              <p className="text-emerald-500 font-black text-[9px] uppercase tracking-[0.3em]">{lang === 'fr' ? 'Deal Flow' : 'Deal Flow'}</p>
              <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-slate-900">{lang === 'fr' ? 'Opportunités Actuelles' : 'Current Opportunities'}</h2>
              <p className="text-slate-500 font-medium">{lang === 'fr' ? '6 startups sélectionnées pour leur potentiel' : '6 startups selected for their potential'}</p>
           </div>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {startups.map((startup) => (
               <div key={startup.id} className="bg-white border-2 border-slate-200 rounded-2xl overflow-hidden hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-100/50 transition-all duration-300 group cursor-pointer">
@@ -379,6 +356,7 @@ export default LandingPage;
                     </span>
                   </div>
                 </div>
+                
                 <div className="p-5">
                   <div className="flex items-start justify-between mb-3">
                     <div>
@@ -387,9 +365,11 @@ export default LandingPage;
                     </div>
                     <img src={startup.ceo.photo} alt={startup.ceo.name} className="w-10 h-10 rounded-lg object-cover border-2 border-slate-100" />
                   </div>
+
                   <p className="text-sm text-slate-600 leading-relaxed mb-4 line-clamp-2">
                     {startup.pitch[lang] || startup.pitch.fr}
                   </p>
+
                   <div className="grid grid-cols-2 gap-2 mb-4">
                     <div className="bg-emerald-50 rounded-lg p-2 border border-emerald-100">
                       <p className="text-[9px] font-bold uppercase tracking-widest text-emerald-600/70">{lang === 'fr' ? 'Recherche' : 'Target'}</p>
@@ -400,6 +380,7 @@ export default LandingPage;
                       <p className="text-sm font-black text-slate-900">{startup.kpis.stage}</p>
                     </div>
                   </div>
+
                   <button className="w-full bg-slate-900 text-white py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest hover:bg-emerald-600 transition-colors flex items-center justify-center gap-2 group-hover:bg-emerald-600">
                     {lang === 'fr' ? 'Voir le pitch' : 'View pitch'} <ArrowRight size={14} />
                   </button>
@@ -410,16 +391,15 @@ export default LandingPage;
         </div>
       </section>
 
-      {/* Section Dual Profiles (CIBLE DU LIEN ABOUT US) */}
+      {/* Section Dual Profiles */}
       <section id="avantages" className="py-16 lg:py-20 px-6 bg-slate-50">
         <div className="max-w-6xl mx-auto">
-          {/* ... contenu existant ... */}
           <div className="text-center mb-12 space-y-3">
              <p className="text-emerald-500 font-black text-[9px] uppercase tracking-[0.3em]">{t('dual_badge')}</p>
              <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter text-slate-900">{t('dual_title')}</h2>
           </div>
+
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Carte Startups */}
             <div className="p-6 md:p-8 rounded-2xl shadow-lg flex flex-col items-start text-left bg-white shadow-slate-200/50 border border-slate-100">
                <div className="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-emerald-200 rotate-3">
                  <Zap size={24} fill="white" />
@@ -449,7 +429,7 @@ export default LandingPage;
                   </div>
                </div>
             </div>
-            {/* Carte Investisseurs */}
+
             <div className="bg-[#0A0F1C] p-6 md:p-8 rounded-2xl shadow-xl shadow-slate-900/20 flex flex-col items-start text-left relative overflow-hidden">
                <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-900/20 blur-[80px] rounded-full pointer-events-none"></div>
                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-900 mb-6 shadow-lg -rotate-3 z-10">
