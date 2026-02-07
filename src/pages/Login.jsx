@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowRight, Eye, EyeOff, LogIn, UserPlus } from 'lucide-react';
 import translations from '../data/translations';
+import logo from '../assets/Logo.png';
 
 const Login = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
   const [lang, setLang] = useState(initialLang);
@@ -31,19 +32,21 @@ const Login = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
-      
-      {/* Logo & Langue en haut */}
-      <div className="fixed top-6 left-0 right-0 flex justify-between items-center px-6 max-w-6xl mx-auto">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-200 relative overflow-hidden">
-            <svg viewBox="0 0 24 24" className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 17l6-6 4 4 8-8" />
-              <path d="M17 7h4v4" />
-            </svg>
-          </div>
-          <span className="text-xl font-black tracking-tight uppercase text-slate-900">Invest<span className="text-emerald-500">o</span></span>
-        </div>
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
+              <div className="fixed top-6 left-0 right-0 flex justify-between items-center px-6 max-w-6xl mx-auto">
+                <div className="flex items-center gap-3">
+                  {/* Logo remplacé par l'image .png */}
+                  <img 
+                    src={logo} 
+                    alt="Logo Investo" 
+                    className="w-9 h-9 rounded-xl shadow-lg shadow-emerald-200 object-cover" 
+                  />
+                  <span className="text-xl font-black tracking-tight uppercase text-slate-900">Invest<span className="text-emerald-500">o</span></span>
+                </div>
+                {/* ... */}
+              </div>
+              {/* ... */}
+            </div>
 
         <div className="flex gap-2 border-r border-slate-200 pr-4">
           <button onClick={() => handleLangChange('fr')} className={`text-[10px] font-bold ${lang === 'fr' ? 'text-emerald-500' : 'text-slate-300'}`}>FR</button>
