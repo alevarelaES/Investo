@@ -1,4 +1,4 @@
-yimport React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Play, TrendingUp, Users, ArrowRight, Zap, Globe, ChevronUp, ChevronDown, 
   Eye, Target, CheckCircle, Clock, Lock, MessageCircle, LogIn, Menu, X,
@@ -10,9 +10,8 @@ import VideoScreen from '../components/VideoScreen';
 import ProfileScreen from '../components/ProfileScreen';
 import WaitlistModal from '../components/WaitlistModal';
 import { startups } from '../data/startups';
-import logo from '../assets/Logo.png'; // Assurez-vous que le logo est bien importé
+import logo from '../assets/Logo.png'; // Utilisation du logo PNG
 
-// Light Mode institutionnel (fond slate-50, texte slate-900)
 const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
   const [lang, setLang] = useState(initialLang);
   const [scrolled, setScrolled] = useState(false);
@@ -34,26 +33,39 @@ const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
   const nextStartup = () => setCurrentIndex((prev) => (prev + 1) % startups.length);
   const prevStartup = () => setCurrentIndex((prev) => (prev - 1 + startups.length) % startups.length);
 
-  const openModal = (type) => {
-    setModalType(type);
-    setIsModalOpen(true);
-  };
-
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-import React, { useState, useEffect } from 'react';
-// ... autres imports (lucide-react, translations, etc.)
-import logo from '../assets/Logo.png'; // - Correction de l'extension en .png
-
-const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
-  // ... (états et fonctions existants)
 
   return (
     <div className="min-h-screen font-sans text-left overflow-x-hidden bg-slate-50 text-slate-900">
-      {/* ... WaitlistModal ... */}
+      <WaitlistModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} type={modalType} t={t} lang={lang} />
+
+      <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 py-3' : 'bg-transparent py-6'}`}>
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <img src={logo} alt="Logo" className="w-9 h-9 rounded-xl object-cover" />
+            <span className="text-xl font-black tracking-tight uppercase">Invest<span className="text-emerald-500">o</span></span>
+          </div>
+
+          <div className="hidden md:flex items-center gap-6">
+            <div className="flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">
+              <a href="#avantages" className="hover:text-emerald-500 transition-colors">{lang === 'fr' ? 'À Propos' : 'About Us'}</a>
+              <a href="#market-trends" className="hover:text-emerald-500 transition-colors">{t('nav_startups')}</a>
+              <a href="#deal-flow" className="hover:text-emerald-500 transition-colors">{t('nav_investors')}</a>
+            </div>
+            <button onClick={onLogin} className="text-[10px] font-black uppercase tracking-widest flex items-center gap-2"><LogIn size={14} /> {t('login')}</button>
+          </div>
+        </div>
+      </nav>
+      {/* ... Reste de votre contenu existant ... */}
+    </div>
+  );
+};
+
+export default LandingPage;
 
       {/* Navbar */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 py-3' : 'bg-transparent py-6'}`}>
