@@ -10,7 +10,7 @@ import VideoScreen from '../components/VideoScreen';
 import ProfileScreen from '../components/ProfileScreen';
 import WaitlistModal from '../components/WaitlistModal';
 import { startups } from '../data/startups';
-import logo from '../assets/Logo.jpg'; // Assurez-vous que le logo est bien importé
+import logo from '../assets/Logo.png'; // Assurez-vous que le logo est bien importé
 
 // Light Mode institutionnel (fond slate-50, texte slate-900)
 const LandingPage = ({ onLogin, onLangChange, initialLang = 'fr' }) => {
