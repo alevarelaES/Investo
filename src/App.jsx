@@ -4,17 +4,17 @@ import Login from './pages/Login';
 import InvestorDashboard from './pages/InvestorDashboard';
 import StartupDashboard from './pages/StartupDashboard';
 import UploadPitch from './pages/UploadPitch';
+import About from './pages/About'; // <--- IMPORT AJOUTÉ
 import translations from './data/translations';
 
 const App = () => {
-  // Pages: 'landing', 'login', 'investor', 'startup', 'upload'
+  // Pages: 'landing', 'login', 'investor', 'startup', 'upload', 'about'
   const [currentPage, setCurrentPage] = useState('landing');
   const [lang, setLang] = useState('fr');
   
   const t = (key) => translations[lang]?.[key] || translations['fr'][key] || key;
 
   const handleLogin = (userType) => {
-    // Si userType est fourni depuis Login, utilise-le, sinon défaut à 'investor'
     if (userType === 'startup') {
       setCurrentPage('startup');
     } else {
@@ -25,6 +25,11 @@ const App = () => {
 
   const handleGoToLogin = () => {
     setCurrentPage('login');
+    window.scrollTo(0, 0);
+  };
+
+  const handleNavigate = (page) => {
+    setCurrentPage(page);
     window.scrollTo(0, 0);
   };
 
@@ -42,47 +47,37 @@ const App = () => {
         return <StartupDashboard lang={lang} />;
       case 'upload': 
         return <UploadPitch lang={lang} />;
+      case 'about':
+        // <--- UTILISATION DU VRAI COMPOSANT ---
+        return (
+          <About 
+            onNavigate={handleNavigate} 
+            onLogin={handleGoToLogin} 
+            onLangChange={handleLangChange} 
+            initialLang={lang} 
+          />
+        );
       default: 
-        return <LandingPage onLogin={handleGoToLogin} onLangChange={handleLangChange} initialLang={lang} />;
+        return (
+          <LandingPage 
+            onLogin={handleGoToLogin} 
+            onLangChange={handleLangChange} 
+            onNavigate={handleNavigate}
+            initialLang={lang} 
+          />
+        );
     }
   };
 
   return (
     <>
-      {/* --- MENU DE DÉMO (Compact & Discret) --- */}
+      {/* --- MENU DE DÉMO (Inchangé) --- */}
       <div className="fixed bottom-3 right-3 z-[100] flex items-center gap-1 bg-slate-900/90 backdrop-blur-sm text-white text-[9px] font-bold px-1 py-1 rounded-lg shadow-lg border border-slate-700/30">
         <span className="px-2 py-1 text-slate-400 hidden sm:block">DEMO</span>
-        {/* Bouton Home renommé en About pour plus de clarté */}
-        <button 
-          onClick={() => setCurrentPage('landing')} 
-          className={`px-2 py-1 rounded transition-all ${currentPage === 'landing' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}
-        >
-          About
-        </button>
-        <button 
-          onClick={() => setCurrentPage('login')} 
-          className={`px-2 py-1 rounded transition-all ${currentPage === 'login' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}
-        >
-          Login
-        </button>
-        <button 
-          onClick={() => setCurrentPage('investor')} 
-          className={`px-2 py-1 rounded transition-all ${currentPage === 'investor' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}
-        >
-          Invest.
-        </button>
-        <button 
-          onClick={() => setCurrentPage('startup')} 
-          className={`px-2 py-1 rounded transition-all ${currentPage === 'startup' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}
-        >
-          Startup
-        </button>
-        <button 
-          onClick={() => setCurrentPage('upload')} 
-          className={`px-2 py-1 rounded transition-all ${currentPage === 'upload' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}
-        >
-          +
-        </button>
+        <button onClick={() => setCurrentPage('landing')} className={`px-2 py-1 rounded transition-all ${currentPage === 'landing' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}>Home</button>
+        <button onClick={() => setCurrentPage('about')} className={`px-2 py-1 rounded transition-all ${currentPage === 'about' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}>About</button>
+        <button onClick={() => setCurrentPage('investor')} className={`px-2 py-1 rounded transition-all ${currentPage === 'investor' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}>Invest.</button>
+        <button onClick={() => setCurrentPage('startup')} className={`px-2 py-1 rounded transition-all ${currentPage === 'startup' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}>Startup</button>
       </div>
 
       {renderPage()}
