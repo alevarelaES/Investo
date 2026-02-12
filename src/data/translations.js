@@ -14,6 +14,8 @@ const translations = {
     simulator_data: "La Data",
     pitch_status: "Pitch Actif",
 
+
+    
     // NOUVEAU : Section About / Explicative
     about_badge: "Notre Mission",
     about_title: "Réinventer le Capital-Risque",
@@ -135,6 +137,29 @@ const translations = {
     day_sat: "Sam",
     day_sun: "Dim",
 
+    // --- TEXTES PAGE ABOUT ---
+    about_badge: "Notre Mission",
+    about_title: "Réinventer le Capital-Risque", // Titre sur Landing Page
+    about_desc: "Investo replace l'humain au cœur de la décision d'investissement grâce à la vidéo.", // Desc sur Landing Page
+    about_video_btn: "Découvrir notre histoire",
+    
+    // Header Page About
+    about_header_title: "Plus qu'une plateforme, un écosystème.",
+    about_header_desc: "Nous connectons les visions audacieuses aux capitaux intelligents pour bâtir l'économie de demain.",
+    about_watch_video: "Regarder le manifesto",
+    
+    // Contenu Story
+    about_story_title: "Notre Histoire",
+    about_story_text_1: "Tout a commencé par un constat simple : le processus de levée de fonds est archaïque. Des pitch decks statiques, des emails ignorés et des opportunités manquées faute de 'réseau'. Nous avons voulu changer cela.",
+    about_story_text_2: "Investo est né de la volonté de démocratiser l'accès au capital-risque en Suisse. En utilisant le format vidéo court, nous permettons aux fondateurs de transmettre leur passion instantanément et aux investisseurs de ressentir l'énergie derrière les chiffres.",
+    
+    about_vision_title: "Vision Globale",
+    about_vision_desc: "Devenir la référence européenne de l'investissement Early-stage digitalisé.",
+    about_values_title: "Confiance & Transparence",
+    about_values_desc: "Nous vérifions chaque startup pour garantir un Deal Flow de qualité supérieure.",
+    
+    back_home: "Retour Accueil",
+
     // --- AJOUTS POUR LA VERSION V2 ---
     about_title: "Notre Mission",
     about_desc: "Connecter l'innovation et le capital avec transparence et rapidité.",
@@ -156,6 +181,29 @@ const translations = {
     simulator_data: "The Data",
     pitch_status: "Active Pitch",
 
+    // --- TEXTES PAGE ABOUT ---
+    about_badge: "Our Mission",
+    about_title: "Reinventing Venture Capital",
+    about_desc: "Investo puts people back at the heart of investment decisions through video.",
+    about_video_btn: "Watch our story",
+
+    // Header Page About
+    about_header_title: "More than a platform, an ecosystem.",
+    about_header_desc: "We connect bold visions with smart capital to build tomorrow's economy.",
+    about_watch_video: "Watch Manifesto",
+
+    // Contenu Story
+    about_story_title: "Our Story",
+    about_story_text_1: "It all started with a simple observation: the fundraising process is broken. Static pitch decks, ignored emails, and missed opportunities due to a lack of 'network'. We wanted to change that.",
+    about_story_text_2: "Investo was born from the desire to democratize access to venture capital in Switzerland. By using short video formats, we allow founders to convey their passion instantly and investors to feel the energy behind the numbers.",
+
+    about_vision_title: "Global Vision",
+    about_vision_desc: "To become the European benchmark for digitized Early-stage investment.",
+    about_values_title: "Trust & Transparency",
+    about_values_desc: "We verify every startup to ensure a superior quality Deal Flow.",
+
+    back_home: "Back Home",
+    
     // New about section
     about_badge: "Our Mission",
     about_title: "Reinventing Venture Capital",
