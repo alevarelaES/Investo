@@ -49,16 +49,16 @@ const App = () => {
 
   return (
     <>
-      {/* --- MENU DE DÉMO (Branche Développeur) --- */}
+      {/* --- MENU DE DÉMO (Compact & Discret) --- */}
       <div className="fixed bottom-3 right-3 z-[100] flex items-center gap-1 bg-slate-900/90 backdrop-blur-sm text-white text-[9px] font-bold px-1 py-1 rounded-lg shadow-lg border border-slate-700/30">
         <span className="px-2 py-1 text-slate-400 hidden sm:block">DEMO</span>
+        {/* Bouton Home renommé en About pour plus de clarté */}
         <button 
           onClick={() => setCurrentPage('landing')} 
           className={`px-2 py-1 rounded transition-all ${currentPage === 'landing' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}
         >
-          Home
+          About
         </button>
-        {/* Bouton Login ajouté ici */}
         <button 
           onClick={() => setCurrentPage('login')} 
           className={`px-2 py-1 rounded transition-all ${currentPage === 'login' ? 'bg-white text-slate-900' : 'hover:bg-slate-700 text-white'}`}
