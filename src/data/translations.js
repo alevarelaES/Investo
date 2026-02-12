@@ -13,6 +13,12 @@ const translations = {
     simulator_pitch: "Le Pitch",
     simulator_data: "La Data",
     pitch_status: "Pitch Actif",
+
+    // NOUVEAU : Section About / Explicative
+    about_badge: "Notre Mission",
+    about_title: "Réinventer le Capital-Risque",
+    about_desc: "Derrière chaque startup, il y a une équipe, une énergie et une histoire que les chiffres seuls ne peuvent raconter. Investo replace l'humain au cœur de la décision d'investissement grâce à la puissance de la vidéo.",
+    about_video_btn: "Découvrir notre histoire",
     
     // NOUVEAUX TEXTES (Section Dual)
     dual_badge: "Propulsion & Sourcing",
@@ -150,6 +156,12 @@ const translations = {
     simulator_data: "The Data",
     pitch_status: "Active Pitch",
 
+    // New about section
+    about_badge: "Our Mission",
+    about_title: "Reinventing Venture Capital",
+    about_desc: "Behind every startup is a team, an energy, and a story that numbers alone cannot tell. Investo puts people back at the heart of investment decisions through the power of video.",
+    about_video_btn: "Watch our story",
+    
     // NEW TEXTS (Dual Section)
     dual_badge: "Propulsion & Sourcing",
     dual_title: "Two Profiles, One Ambition.",
