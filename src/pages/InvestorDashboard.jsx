@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { 
-  LayoutDashboard, PieChart, FileText, Settings, Bell, Search, 
-  Filter, Download, ChevronRight, Lock, Eye, CheckCircle, Menu, X,
+  LayoutDashboard, List, Settings, Bell, Search, 
+  Filter, Play, ChevronRight, Lock, Eye, CheckCircle, Menu, X,
   Save, MapPin, Linkedin, User, Building2, Upload, Mail, Phone,
-  Globe, ShieldCheck
+  Globe, ShieldCheck, Grid, MoreHorizontal
 } from 'lucide-react';
 import { startups } from '../data/startups';
 import translations from '../data/translations';
-import VideoScreen from '../components/VideoScreen';
 
 const InvestorDashboard = ({ lang = 'fr' }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('feed'); // 'feed', 'list', 'profile'
   const [selectedStartup, setSelectedStartup] = useState(null);
-  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' ou 'profile'
-  
+  const [searchQuery, setSearchQuery] = useState('');
+
   // Données du profil investisseur
   const [profileData, setProfileData] = useState({
     name: 'Jean Dupont',
@@ -29,16 +29,17 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
 
   const t = (key) => translations[lang]?.[key] || translations['fr'][key] || key;
 
-  // Handler pour la sauvegarde
   const handleSave = (e) => {
     e.preventDefault();
     alert("Profil mis à jour !");
   };
 
-  // Reset tab quand on ferme le panel startup
-  const handleClosePanel = () => {
-    setSelectedStartup(null);
-  };
+  // Filtrage des startups pour la liste et le feed
+  const filteredStartups = startups.filter(s => 
+    s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (typeof s.kpis.sector === 'string' && s.kpis.sector.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (typeof s.kpis.sector === 'object' && s.kpis.sector.fr.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans text-slate-900">
@@ -69,33 +70,23 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2 mt-4">{t('inv_sourcing')}</div>
           
           <button 
-            onClick={() => setActiveTab('dashboard')}
-            className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${activeTab === 'dashboard' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200/50' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}
+            onClick={() => setActiveTab('feed')}
+            className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${activeTab === 'feed' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200/50' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}
           >
             <LayoutDashboard size={18} />
-            <span className="text-xs font-bold">Deal Flow</span>
+            <span className="text-xs font-bold">Deal Flow (Feed)</span>
           </button>
 
-          <button className="w-full flex items-center gap-3 p-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-all">
-            <PieChart size={18} />
-            <span className="text-xs font-bold">{t('inv_portfolio')}</span>
+          <button 
+            onClick={() => setActiveTab('list')}
+            className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${activeTab === 'list' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200/50' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}
+          >
+            <List size={18} />
+            <span className="text-xs font-bold">Liste Startups</span>
           </button>
 
-          <button className="w-full flex items-center justify-between p-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-all">
-            <div className="flex items-center gap-3">
-              <Bell size={18} />
-              <span className="text-xs font-bold">{t('inv_notifications')}</span>
-            </div>
-            <span className="px-1.5 py-0.5 bg-rose-500 text-white text-[9px] font-bold rounded">3</span>
-          </button>
-          
           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2 mt-8">Mon Compte</div>
           
-          <button className="w-full flex items-center gap-3 p-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-all">
-            <FileText size={18} />
-            <span className="text-xs font-bold">{t('inv_data_rooms')}</span>
-          </button>
-
           <button 
             onClick={() => setActiveTab('profile')}
             className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${activeTab === 'profile' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200/50' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}
@@ -119,27 +110,34 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
       {/* MAIN CONTENT */}
       <main className="flex-1 lg:ml-64">
         
-        {/* Header commun */}
+        {/* Header */}
         <header className="h-16 lg:h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-20">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-1">
             <button className="lg:hidden p-2 hover:bg-slate-100 rounded-lg" onClick={() => setSidebarOpen(true)}>
               <Menu size={20} className="text-slate-600" />
             </button>
-            <div className="flex items-center gap-4">
-              <h1 className="text-xl font-black text-slate-900">
-                {activeTab === 'dashboard' ? t('inv_deal_flow') : 'Édition du Profil'}
+            <div className="flex items-center gap-4 w-full">
+              <h1 className="text-xl font-black text-slate-900 whitespace-nowrap hidden md:block">
+                {activeTab === 'feed' ? 'Deal Flow' : activeTab === 'list' ? 'Annuaire' : 'Mon Profil'}
               </h1>
+              
+              {/* Search Bar - Visible only on Feed and List tabs */}
+              {activeTab !== 'profile' && (
+                <div className="flex items-center gap-4 text-slate-400 bg-slate-100 px-3 lg:px-4 py-2 rounded-xl w-full max-w-md ml-4">
+                  <Search size={18} className="shrink-0" />
+                  <input 
+                    type="text" 
+                    placeholder="Rechercher une startup, un secteur..." 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="bg-transparent text-sm font-medium w-full focus:outline-none text-slate-900 placeholder:text-slate-400" 
+                  />
+                </div>
+              )}
             </div>
           </div>
-          
-          {activeTab === 'dashboard' && (
-            <div className="flex items-center gap-4 text-slate-400 bg-slate-100 px-3 lg:px-4 py-2 rounded-xl w-full max-w-[200px] lg:max-w-[300px]">
-              <Search size={18} className="shrink-0" />
-              <input type="text" placeholder={t('search_placeholder')} className="bg-transparent text-sm font-medium w-full focus:outline-none text-slate-900" />
-            </div>
-          )}
 
-          <div className="flex gap-2 lg:gap-4">
+          <div className="flex gap-2 lg:gap-4 pl-4">
              <button className="p-2 text-slate-400 hover:text-emerald-600 transition-colors relative">
                <Bell size={20}/>
                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full border border-white"></span>
@@ -147,54 +145,118 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
           </div>
         </header>
 
-        <div className="p-4 lg:p-8 max-w-7xl mx-auto">
+        <div className="p-4 lg:p-8 max-w-[1600px] mx-auto">
           
           {/* =======================
-              ONGLET 1: DASHBOARD
+              ONGLET 1: FEED (VISUAL DEAL FLOW)
              ======================= */}
-          {activeTab === 'dashboard' && (
+          {activeTab === 'feed' && (
+            <div className="animate-fadeIn space-y-8">
+              {/* KPIs Rapides */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-slate-900 text-white p-4 rounded-xl shadow-lg">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Nouveaux Deals</p>
+                    <p className="text-2xl font-black">12</p>
+                </div>
+                <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Matching</p>
+                    <p className="text-2xl font-black text-emerald-600">85%</p>
+                </div>
+              </div>
+
+              {/* Grille de Cartes */}
+              <div>
+                <h2 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
+                    <Grid size={20} /> Récemment ajoutés
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {filteredStartups.map((startup) => (
+                        <div 
+                            key={startup.id} 
+                            onClick={() => setSelectedStartup(startup)}
+                            className="bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl transition-all cursor-pointer group"
+                        >
+                            {/* Image / Thumbnail Zone */}
+                            <div className="relative h-48 bg-slate-900 overflow-hidden">
+                                <div className="absolute inset-0 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-black/30">
+                                    <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/50">
+                                        <Play size={20} fill="currentColor" />
+                                    </div>
+                                </div>
+                                <img src={startup.poster || startup.ceo.photo} alt={startup.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="absolute top-3 left-3 z-10">
+                                    <span className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
+                                      startup.color === 'emerald' ? 'bg-emerald-500 text-white' : 
+                                      startup.color === 'purple' ? 'bg-purple-500 text-white' : 
+                                      'bg-orange-500 text-white'
+                                    }`}>
+                                      {typeof startup.kpis.sector === 'object' ? startup.kpis.sector.fr : startup.kpis.sector}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            {/* Content */}
+                            <div className="p-5">
+                                <div className="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h3 className="font-bold text-slate-900 text-lg">{startup.name}</h3>
+                                        <p className="text-xs text-slate-500 line-clamp-1">{startup.vision.fr || startup.vision}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-[10px] font-bold text-slate-400 uppercase">Valuation</p>
+                                        <p className="font-black text-slate-900">{startup.kpis.valuation}</p>
+                                    </div>
+                                </div>
+                                
+                                <div className="flex items-center gap-3 mt-4 pt-4 border-t border-slate-100">
+                                    <img src={startup.ceo.photo} alt={startup.ceo.name} className="w-8 h-8 rounded-full object-cover" />
+                                    <div className="flex-1">
+                                        <p className="text-xs font-bold text-slate-900">{startup.ceo.name}</p>
+                                        <p className="text-[10px] text-slate-500">{startup.ceo.role.fr || startup.ceo.role}</p>
+                                    </div>
+                                    <button className="p-2 bg-slate-50 text-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors">
+                                        <ChevronRight size={16} />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* =======================
+              ONGLET 2: LISTE (TABLEAU)
+             ======================= */}
+          {activeTab === 'list' && (
             <div className="animate-fadeIn space-y-6">
               
-              {/* KPIs & Filters */}
-              <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4 mb-2">
-                <div>
-                  <p className="text-sm lg:text-base text-slate-500 font-medium">{t('inv_deal_flow_desc')}</p>
-                </div>
-                <div className="flex gap-2 lg:gap-3">
-                  <button className="flex items-center gap-2 px-3 lg:px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs lg:text-sm font-bold text-slate-600 hover:bg-slate-50">
-                    <Filter size={16} /> <span className="hidden sm:inline">{t('inv_filters')}</span>
-                  </button>
-                  <button className="flex items-center gap-2 px-3 lg:px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs lg:text-sm font-bold text-slate-600 hover:bg-slate-50">
-                    <Download size={16} /> <span className="hidden sm:inline">{t('inv_export')}</span>
-                  </button>
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-black text-slate-900">Annuaire Complet</h2>
+                <div className="flex gap-2">
+                    <button className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50">
+                        <Filter size={16} /> Filtres avancés
+                    </button>
                 </div>
               </div>
 
-              {/* KPI CARDS */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
-                <KpiCard label={t('inv_deals_reviewed')} value="124" trend="+12%" />
-                <KpiCard label={t('inv_watchlist')} value="12" active />
-                <KpiCard label={t('inv_data_rooms_open')} value="5" />
-                <KpiCard label={t('inv_connections')} value="2" />
-              </div>
-
-              {/* TABLEAU "FINTECH STYLE" */}
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="bg-slate-50 border-b border-slate-200 text-[10px] uppercase tracking-widest text-slate-500">
-                        <th className="p-5 font-bold text-left">{t('inv_startup')}</th>
-                        <th className="p-5 font-bold text-left">{t('inv_sector')}</th>
-                        <th className="p-5 font-bold text-left">{t('inv_stage')}</th>
-                        <th className="p-5 font-bold text-right">{t('inv_valuation')}</th>
-                        <th className="p-5 font-bold text-right">{t('inv_target')}</th>
-                        <th className="p-5 font-bold text-center">{t('inv_status')}</th>
-                        <th className="p-5 font-bold text-center">{t('inv_action')}</th>
+                        <th className="p-5 font-bold text-left">Startup</th>
+                        <th className="p-5 font-bold text-left">Secteur</th>
+                        <th className="p-5 font-bold text-left">Stade</th>
+                        <th className="p-5 font-bold text-right">Valuation</th>
+                        <th className="p-5 font-bold text-right">Recherche</th>
+                        <th className="p-5 font-bold text-center">Status</th>
+                        <th className="p-5 font-bold text-center">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {startups.map((startup) => (
+                      {filteredStartups.map((startup) => (
                         <tr key={startup.id} className="hover:bg-slate-50/80 transition-colors group cursor-pointer" onClick={() => setSelectedStartup(startup)}>
                           <td className="p-5">
                             <div className="flex items-center gap-3">
@@ -219,7 +281,7 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
                           <td className="p-5 text-sm font-medium text-emerald-600 text-right">{startup.kpis.amount}</td>
                           <td className="p-5 text-center">
                             <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold border border-slate-200">
-                              <Lock size={10} /> {t('inv_data_room')}
+                              <Lock size={10} /> Data Room
                             </span>
                           </td>
                           <td className="p-5 text-center">
@@ -237,12 +299,11 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
           )}
 
           {/* =======================
-              ONGLET 2: ÉDITION PROFIL
+              ONGLET 3: ÉDITION PROFIL (ÉPURÉ)
              ======================= */}
           {activeTab === 'profile' && (
             <form onSubmit={handleSave} className="animate-fadeIn space-y-6">
               
-              {/* Header Actions */}
               <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm sticky top-24 z-10">
                  <div className="flex items-center gap-2 text-slate-500 text-sm font-medium">
                     <ShieldCheck size={18} className="text-emerald-500" />
@@ -269,17 +330,6 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
                     </div>
                     <h3 className="font-bold text-slate-900 text-lg">{profileData.name}</h3>
                     <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mt-1">{profileData.company}</p>
-                    
-                    <div className="w-full mt-6 pt-6 border-t border-slate-100 grid grid-cols-2 gap-4">
-                        <div className="text-center">
-                            <p className="text-xl font-black text-slate-900">124</p>
-                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Startups</p>
-                        </div>
-                        <div className="text-center">
-                            <p className="text-xl font-black text-slate-900">12</p>
-                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Investis</p>
-                        </div>
-                    </div>
                   </div>
 
                   {/* Coordonnées */}
@@ -421,27 +471,57 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
         </div>
       </main>
 
-      {/* SIDE PANEL (Desktop uniquement) - Conservé pour l'onglet Dashboard */}
-      {selectedStartup && activeTab === 'dashboard' && (
+      {/* SIDE PANEL (Desktop uniquement) - Accessible depuis le Feed ou la Liste */}
+      {selectedStartup && (activeTab === 'feed' || activeTab === 'list') && (
         <div 
           className="hidden lg:block fixed inset-0 bg-black/50 z-50 transition-opacity duration-300"
-          onClick={handleClosePanel}
+          onClick={() => setSelectedStartup(null)}
         >
-             {/* ... Le contenu du Panel Startup reste identique, je l'omets pour la clarté si inchangé, 
-                 mais il faudrait le réintégrer tel quel depuis votre code original ... */}
              <div 
-                className="fixed inset-y-0 right-0 w-[800px] xl:w-[900px] bg-slate-100 shadow-2xl z-50 flex h-full"
+                className="fixed inset-y-0 right-0 w-[800px] xl:w-[900px] bg-slate-100 shadow-2xl z-50 flex h-full animate-slideInRight"
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* On garde la structure vidéo/infos du code original ici */}
                  <div className="relative bg-black w-[320px] shrink-0 flex items-center justify-center">
-                    <video className="w-full h-full object-cover" src={selectedStartup.video} controls />
+                    <video 
+                        className="w-full h-full object-cover" 
+                        src={selectedStartup.video} 
+                        poster={selectedStartup.poster}
+                        controls 
+                        autoPlay 
+                    />
                  </div>
                  <div className="flex-1 bg-white p-6 overflow-y-auto">
-                    <button onClick={handleClosePanel} className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full"><X size={20}/></button>
-                    <h2 className="text-2xl font-black mb-2">{selectedStartup.name}</h2>
-                    <p className="text-slate-500 mb-6">{selectedStartup.pitch[lang] || selectedStartup.pitch.fr}</p>
-                    {/* ... autres détails ... */}
+                    <button onClick={() => setSelectedStartup(null)} className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full transition-colors"><X size={20}/></button>
+                    
+                    <div className="mt-8">
+                        <div className="flex items-center gap-2 mb-2">
+                             <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
+                                      selectedStartup.color === 'emerald' ? 'bg-emerald-100 text-emerald-700' : 
+                                      selectedStartup.color === 'purple' ? 'bg-purple-100 text-purple-700' : 
+                                      'bg-orange-100 text-orange-700'
+                                    }`}>
+                                      {typeof selectedStartup.kpis.sector === 'object' ? selectedStartup.kpis.sector.fr : selectedStartup.kpis.sector}
+                             </span>
+                        </div>
+                        <h2 className="text-3xl font-black mb-2 text-slate-900">{selectedStartup.name}</h2>
+                        <p className="text-lg font-medium text-slate-500 mb-6">{selectedStartup.pitch[lang] || selectedStartup.pitch.fr}</p>
+                        
+                        {/* KPIs Grid */}
+                        <div className="grid grid-cols-2 gap-4 mb-8">
+                            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <p className="text-xs font-bold uppercase text-slate-400 mb-1">Valuation</p>
+                                <p className="text-xl font-black text-slate-900">{selectedStartup.kpis.valuation}</p>
+                            </div>
+                            <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                                <p className="text-xs font-bold uppercase text-emerald-600 mb-1">Recherche</p>
+                                <p className="text-xl font-black text-emerald-700">{selectedStartup.kpis.amount}</p>
+                            </div>
+                        </div>
+
+                        <button className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-slate-800 transition-colors">
+                            Entrer en contact
+                        </button>
+                    </div>
                  </div>
             </div>
         </div>
@@ -449,16 +529,5 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
     </div>
   );
 };
-
-// Composants Internes (KPIs)
-const KpiCard = ({ label, value, trend, active }) => (
-  <div className={`p-4 lg:p-6 rounded-xl lg:rounded-2xl border ${active ? 'bg-slate-900 border-slate-900 text-white ring-2 lg:ring-4 ring-slate-100' : 'bg-white border-slate-200 text-slate-900'}`}>
-    <p className={`text-[9px] lg:text-[10px] font-bold uppercase tracking-widest mb-1 lg:mb-2 ${active ? 'text-slate-400' : 'text-slate-500'}`}>{label}</p>
-    <div className="flex items-end justify-between gap-2">
-      <p className="text-2xl lg:text-3xl font-black">{value}</p>
-      {trend && <span className="text-[10px] lg:text-xs font-bold text-emerald-500 bg-emerald-50 px-1.5 lg:px-2 py-0.5 lg:py-1 rounded">{trend}</span>}
-    </div>
-  </div>
-);
 
 export default InvestorDashboard;
