@@ -3,7 +3,7 @@ import {
   LayoutDashboard, BarChart3, FileText, Settings, Bell, 
   Eye, Users, Clock, Heart, Share2, Upload, 
   Image as ImageIcon, Video, FileBarChart, Save, 
-  Menu, X, TrendingUp, CheckCircle, AlertCircle
+  Menu, X, TrendingUp, CheckCircle, MoreHorizontal, ChevronRight, DollarSign
 } from 'lucide-react';
 import translations from '../data/translations';
 
@@ -55,14 +55,14 @@ const StartupDashboard = ({ lang = 'fr' }) => {
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2 mt-4">Tableau de bord V2</div>
+          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2 mt-4">Tableau de bord</div>
           
           <button 
             onClick={() => setActiveTab('performance')}
             className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${activeTab === 'performance' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-500 hover:bg-slate-50'}`}
           >
             <BarChart3 size={18} />
-            <span className="text-xs font-bold">Performance</span>
+            <span className="text-xs font-bold">Vue d'ensemble</span>
           </button>
 
           <button 
@@ -95,118 +95,207 @@ const StartupDashboard = ({ lang = 'fr' }) => {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 lg:ml-64">
+      <main className="flex-1 lg:ml-64 bg-slate-100/50">
         
         {/* Header */}
-        <header className="h-16 lg:h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-20">
+        <header className="h-16 lg:h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-20">
           <div className="flex items-center gap-3">
             <button className="lg:hidden p-2 hover:bg-slate-100 rounded-lg" onClick={() => setSidebarOpen(true)}>
               <Menu size={20} className="text-slate-600" />
             </button>
             <div>
               <h1 className="text-xl font-black text-slate-900">
-                {activeTab === 'performance' ? 'Vue d\'ensemble' : 'Gestion du Profil'}
+                {activeTab === 'performance' ? 'Dashboard' : 'Gestion du Profil'}
               </h1>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <a href="#" className="hidden sm:flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-emerald-600 transition-colors">
-              <Eye size={16} /> Voir mon profil public
-            </a>
-            <button className="bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-lg shadow-slate-900/20 hover:bg-slate-800 transition-colors">
-              Exporter
-            </button>
+          <div className="flex items-center gap-4">
+             <div className="hidden sm:flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span className="text-xs font-bold text-slate-500">En ligne</span>
+             </div>
+             <button className="bg-slate-900 text-white p-2 rounded-lg relative">
+                <Bell size={18} />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full border border-slate-900"></span>
+             </button>
           </div>
         </header>
 
-        <div className="p-4 lg:p-8 max-w-6xl mx-auto">
+        <div className="p-4 lg:p-6 max-w-[1600px] mx-auto">
           
           {/* =======================
-              ONGLET 1: PERFORMANCE
+              ONGLET 1: VUE D'ENSEMBLE (DASHBOARD)
              ======================= */}
           {activeTab === 'performance' && (
-            <div className="space-y-6 animate-fadeIn">
+            <div className="flex flex-col xl:flex-row gap-6 animate-fadeIn">
               
-              {/* KPIs Principaux */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard 
-                  icon={Eye} label="Vues Totales" value="3,420" trend="+18%" 
-                  color="blue" 
-                />
-                <StatCard 
-                  icon={Clock} label="Durée Moyenne" value="1m 08s" sub="Vidéo de 1m 30s" 
-                  color="orange" 
-                />
-                <StatCard 
-                  icon={Heart} label="Likes & Intérêts" value="156" trend="+24%" 
-                  color="rose" 
-                />
-                <StatCard 
-                  icon={FileText} label="Data Room" value="42" sub="Accès demandés" 
-                  color="emerald" 
-                />
-              </div>
-
-              {/* Graphique Principal */}
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <div className="flex items-center justify-between mb-8">
-                  <div>
-                    <h3 className="text-lg font-black text-slate-900">Engagement Visuel</h3>
-                    <p className="text-sm text-slate-500">Performance de votre pitch vidéo sur 7 jours</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
-                      <TrendingUp size={12} /> Tendance haussière
-                    </span>
-                  </div>
-                </div>
+              {/* COLONNE GAUCHE (GRAPHIQUES + TABLEAU) */}
+              <div className="flex-1 space-y-6">
                 
-                {/* Simulation de Graphique à Barres */}
-                <div className="h-64 flex items-end justify-between gap-4 px-2">
-                  {[45, 60, 35, 75, 50, 95, 80].map((h, i) => (
-                    <div key={i} className="w-full flex flex-col justify-end group cursor-pointer">
-                      <div className="relative w-full bg-slate-100 rounded-t-xl overflow-hidden h-full">
-                         <div 
-                           style={{height: `${h}%`}} 
-                           className="absolute bottom-0 w-full bg-slate-900 transition-all duration-500 group-hover:bg-emerald-500"
-                         ></div>
-                      </div>
-                      <p className="text-center text-[10px] font-bold text-slate-400 mt-3 uppercase">
-                        {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'][i]}
-                      </p>
+                {/* LIGNE 1 : GRAPHIQUES */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  
+                  {/* Graphique Performance */}
+                  <div className="bg-slate-900 text-white p-6 rounded-2xl shadow-xl relative overflow-hidden group">
+                     {/* Background Glow */}
+                     <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                     
+                     <div className="flex justify-between items-start mb-6 relative z-10">
+                        <div>
+                           <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Performance Charts</p>
+                           <h3 className="text-2xl font-black flex items-center gap-2">
+                              $5,400 <span className="text-xs font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">+18.77%</span>
+                           </h3>
+                        </div>
+                        <div className="flex gap-2">
+                           <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                           <span className="text-[10px] text-slate-400 font-bold">Mois</span>
+                        </div>
+                     </div>
+                     
+                     {/* Courbe Simulé (SVG) */}
+                     <div className="h-40 w-full relative z-10">
+                        <svg viewBox="0 0 300 100" className="w-full h-full overflow-visible">
+                           <path d="M0,80 C50,80 50,40 100,40 C150,40 150,60 200,60 C250,60 250,20 300,10" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" className="drop-shadow-lg" />
+                           <path d="M0,80 C50,80 50,40 100,40 C150,40 150,60 200,60 C250,60 250,20 300,10 V100 H0 Z" fill="url(#gradient)" opacity="0.2" />
+                           <defs>
+                              <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                 <stop offset="0%" stopColor="#10b981" />
+                                 <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+                              </linearGradient>
+                           </defs>
+                        </svg>
+                        <div className="flex justify-between mt-2 text-[10px] font-bold text-slate-500 uppercase">
+                           <span>Jan</span><span>Fév</span><span>Mar</span><span>Avr</span><span>Mai</span><span>Juin</span>
+                        </div>
+                     </div>
+                  </div>
+
+                  {/* Graphique Engagement/Compliance */}
+                  <div className="bg-slate-900 text-white p-6 rounded-2xl shadow-xl relative overflow-hidden">
+                     <div className="flex justify-between items-start mb-6">
+                        <div>
+                           <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Engagement</p>
+                           <h3 className="text-2xl font-black flex items-center gap-2">
+                              84.5% <span className="text-xs font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">+13%</span>
+                           </h3>
+                        </div>
+                        <div className="flex gap-2">
+                           <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                           <span className="text-[10px] text-slate-400 font-bold">Actif</span>
+                        </div>
+                     </div>
+                     
+                     {/* Bar Chart Simulé */}
+                     <div className="h-40 flex items-end justify-between gap-3 px-2">
+                        {[40, 65, 30, 80, 55, 90, 45, 70].map((h, i) => (
+                           <div key={i} className="w-full bg-slate-800 rounded-t-md relative group h-full flex flex-col justify-end">
+                              <div style={{height: `${h}%`}} className="w-full bg-emerald-500 rounded-t-md transition-all group-hover:bg-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.4)]"></div>
+                           </div>
+                        ))}
+                     </div>
+                     <div className="flex justify-between mt-4 text-[10px] font-bold text-slate-500 uppercase">
+                        <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+                     </div>
+                  </div>
+                </div>
+
+                {/* LISTE INVESTISSEURS */}
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                  <div className="p-6 border-b border-slate-100 flex justify-between items-center">
+                     <h3 className="font-bold text-slate-900">Liste des Investisseurs</h3>
+                     <button className="text-xs font-bold text-emerald-600 hover:text-emerald-700">Voir tout</button>
+                  </div>
+                  <div className="overflow-x-auto">
+                     <table className="w-full text-left">
+                        <thead>
+                           <tr className="bg-slate-50 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                              <th className="p-4 pl-6">Nom</th>
+                              <th className="p-4">Offre</th>
+                              <th className="p-4">Ticket</th>
+                              <th className="p-4">Intérêt</th>
+                              <th className="p-4 text-right pr-6">Action</th>
+                           </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100">
+                           <InvestorRow name="David Monson" img="https://i.pravatar.cc/150?u=1" offer="$3,500,000" ticket="$250,000" growth="+13.5%" />
+                           <InvestorRow name="John Maren" img="https://i.pravatar.cc/150?u=2" offer="$3,200,000" ticket="$250,000" growth="+11.2%" />
+                           <InvestorRow name="Joe Danelli" img="https://i.pravatar.cc/150?u=3" offer="$2,000,000" ticket="$250,000" growth="+11.75%" />
+                           <InvestorRow name="Kahley Jorkan" img="https://i.pravatar.cc/150?u=4" offer="$2,000,000" ticket="$300,000" growth="+17.0%" />
+                           <InvestorRow name="Mike Torson" img="https://i.pravatar.cc/150?u=5" offer="$1,800,000" ticket="$150,000" growth="+9.4%" />
+                        </tbody>
+                     </table>
+                  </div>
+                </div>
+              </div>
+
+              {/* COLONNE DROITE (PROFIL WIDGET) */}
+              <div className="w-full xl:w-80 shrink-0 space-y-6">
+                 
+                 {/* Profil Card */}
+                 <div className="bg-slate-900 text-slate-300 rounded-2xl p-6 shadow-xl text-center relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-emerald-900/50 to-transparent"></div>
+                    
+                    <div className="relative z-10 mb-4">
+                       <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="Profile" className="w-20 h-20 rounded-full mx-auto border-4 border-slate-800 object-cover shadow-lg" />
+                       <h3 className="text-white font-bold text-lg mt-3">Clara Dubuis</h3>
+                       <p className="text-xs font-medium text-slate-400">ZenSpace CEO</p>
                     </div>
-                  ))}
-                </div>
+
+                    <div className="space-y-4 text-sm">
+                       <div className="flex justify-between items-center py-2 border-b border-slate-800">
+                          <span className="text-slate-500">Profile status</span>
+                          <span className="text-white font-bold">Vérifié</span>
+                       </div>
+                       <div className="flex justify-between items-center py-2 border-b border-slate-800">
+                          <span className="text-slate-500">Inscription</span>
+                          <span className="text-white font-bold">Mai 26, 2024</span>
+                       </div>
+                       <div className="flex justify-between items-center py-2 border-b border-slate-800">
+                          <span className="text-slate-500">Opportunités</span>
+                          <span className="text-emerald-400 font-bold">$50.00</span>
+                       </div>
+                       <div className="flex justify-between items-center py-2 border-b border-slate-800">
+                          <span className="text-slate-500">Vues totales</span>
+                          <span className="text-white font-bold">49</span>
+                       </div>
+                       <div className="flex justify-between items-center py-2">
+                          <span className="text-slate-500">Investisseurs</span>
+                          <span className="text-white font-bold">34</span>
+                       </div>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-slate-800">
+                       <button className="w-full flex justify-between items-center text-xs font-bold text-slate-400 hover:text-white transition-colors">
+                          <span>Paramètres avancés</span>
+                          <ChevronRight size={14} />
+                       </button>
+                    </div>
+                 </div>
+
+                 {/* Autre Widget (ex: Événements ou Paiements) */}
+                 <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                    <h4 className="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wider">Derniers événements</h4>
+                    <div className="space-y-4">
+                       <div className="flex gap-3 items-start">
+                          <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs shrink-0">12</div>
+                          <div>
+                             <p className="text-xs font-bold text-slate-900">Pitch Session Live</p>
+                             <p className="text-[10px] text-slate-500">Demain à 14:00</p>
+                          </div>
+                       </div>
+                       <div className="flex gap-3 items-start">
+                          <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs shrink-0">15</div>
+                          <div>
+                             <p className="text-xs font-bold text-slate-900">Appel Investisseur</p>
+                             <p className="text-[10px] text-slate-500">15 Mars à 10:30</p>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+
               </div>
 
-              {/* Détails complémentaires */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                   <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                     <Users size={18} className="text-slate-400"/> Investisseurs Récents
-                   </h3>
-                   <div className="space-y-4">
-                     <InvestorRow name="Marc Simoncini" type="Business Angel" time="2h" />
-                     <InvestorRow name="Kima Ventures" type="VC Fund" time="5h" />
-                     <InvestorRow name="Sarah L." type="Family Office" time="1j" />
-                   </div>
-                </div>
-
-                <div className="bg-emerald-900 text-white p-6 rounded-2xl shadow-xl flex flex-col justify-between overflow-hidden relative">
-                   <div className="relative z-10">
-                     <h3 className="text-xl font-black mb-2">Boostez votre visibilité</h3>
-                     <p className="text-emerald-100 text-sm mb-6 max-w-xs">
-                       Votre profil performe bien. Passez en avant pour toucher 2x plus d'investisseurs qualifiés.
-                     </p>
-                     <button className="bg-white text-emerald-900 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider hover:bg-emerald-50 transition-colors">
-                       Voir les options
-                     </button>
-                   </div>
-                   {/* Decorative bubbles */}
-                   <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500 rounded-full blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2"></div>
-                   <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-500 rounded-full blur-2xl opacity-20 translate-y-1/2 -translate-x-1/2"></div>
-                </div>
-              </div>
             </div>
           )}
 
@@ -365,38 +454,25 @@ const StartupDashboard = ({ lang = 'fr' }) => {
 };
 
 // Composants UI Internes
-const StatCard = ({ icon: Icon, label, value, trend, sub, color }) => {
-  const colors = {
-    blue: "bg-blue-50 text-blue-600",
-    purple: "bg-purple-50 text-purple-600",
-    orange: "bg-orange-50 text-orange-600",
-    emerald: "bg-emerald-50 text-emerald-600",
-    rose: "bg-rose-50 text-rose-600"
-  };
-  return (
-    <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex justify-between items-start mb-4">
-        <div className={`p-3 rounded-xl ${colors[color]}`}><Icon size={20} /></div>
-        {trend && <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">{trend}</span>}
+const InvestorRow = ({ name, img, offer, ticket, growth }) => (
+  <tr className="hover:bg-slate-50/80 transition-colors group cursor-pointer border-b border-slate-50 last:border-0">
+    <td className="p-4 pl-6">
+      <div className="flex items-center gap-3">
+        <img src={img} alt="" className="w-9 h-9 rounded-full object-cover border border-slate-200" />
+        <span className="text-sm font-bold text-slate-900">{name}</span>
       </div>
-      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
-      <p className="text-2xl font-black text-slate-900">{value}</p>
-      {sub && <p className="text-[10px] font-medium text-slate-400 mt-1">{sub}</p>}
-    </div>
-  );
-};
-
-const InvestorRow = ({ name, type, time }) => (
-  <div className="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-xl transition-colors cursor-pointer group">
-    <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 font-bold text-xs group-hover:bg-white group-hover:shadow-sm transition-all">
-      {name.substring(0,2).toUpperCase()}
-    </div>
-    <div className="flex-1">
-      <p className="text-sm font-bold text-slate-900">{name}</p>
-      <p className="text-[10px] text-slate-500 uppercase font-bold">{type}</p>
-    </div>
-    <span className="text-xs text-slate-400 font-medium">il y a {time}</span>
-  </div>
+    </td>
+    <td className="p-4 text-sm font-bold text-slate-600">{offer}</td>
+    <td className="p-4 text-sm font-medium text-slate-500">{ticket}</td>
+    <td className="p-4">
+       <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">{growth}</span>
+    </td>
+    <td className="p-4 pr-6 text-right">
+       <button className="text-slate-400 hover:text-emerald-600 p-2 hover:bg-emerald-50 rounded-lg transition-colors border border-slate-200">
+          <span className="text-xs font-bold px-2">Voir</span>
+       </button>
+    </td>
+  </tr>
 );
 
 export default StartupDashboard;
