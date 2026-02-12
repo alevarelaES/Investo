@@ -3,7 +3,8 @@ import {
   LayoutDashboard, List, Settings, Bell, Search, 
   Filter, Play, ChevronRight, Lock, Eye, CheckCircle, Menu, X,
   Save, MapPin, Linkedin, User, Building2, Upload, Mail, Phone,
-  Globe, ShieldCheck, Grid, MoreHorizontal
+  Globe, ShieldCheck, Grid, MoreHorizontal, TrendingUp, DollarSign,
+  PieChart, Download, Heart, Star, Bookmark, Briefcase
 } from 'lucide-react';
 import { startups } from '../data/startups';
 import translations from '../data/translations';
@@ -14,7 +15,7 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
   const [selectedStartup, setSelectedStartup] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Données du profil investisseur
+  // Données du profil investisseur (inchangées)
   const [profileData, setProfileData] = useState({
     name: 'Jean Dupont',
     company: 'Family Office Dupont',
@@ -34,7 +35,7 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
     alert("Profil mis à jour !");
   };
 
-  // Filtrage des startups pour la liste et le feed
+  // Filtrage des startups
   const filteredStartups = startups.filter(s => 
     s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (typeof s.kpis.sector === 'string' && s.kpis.sector.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -74,7 +75,7 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
             className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${activeTab === 'feed' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200/50' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}
           >
             <LayoutDashboard size={18} />
-            <span className="text-xs font-bold">Deal Flow (Feed)</span>
+            <span className="text-xs font-bold">Deal Flow</span>
           </button>
 
           <button 
@@ -82,7 +83,7 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
             className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${activeTab === 'list' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200/50' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}
           >
             <List size={18} />
-            <span className="text-xs font-bold">Liste Startups</span>
+            <span className="text-xs font-bold">Annuaire Startups</span>
           </button>
 
           <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 px-2 mt-8">Mon Compte</div>
@@ -118,12 +119,12 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
             </button>
             <div className="flex items-center gap-4 w-full">
               <h1 className="text-xl font-black text-slate-900 whitespace-nowrap hidden md:block">
-                {activeTab === 'feed' ? 'Deal Flow' : activeTab === 'list' ? 'Annuaire' : 'Mon Profil'}
+                {activeTab === 'feed' ? 'Opportunités' : activeTab === 'list' ? 'Annuaire' : 'Mon Profil'}
               </h1>
               
               {/* Search Bar - Visible only on Feed and List tabs */}
               {activeTab !== 'profile' && (
-                <div className="flex items-center gap-4 text-slate-400 bg-slate-100 px-3 lg:px-4 py-2 rounded-xl w-full max-w-md ml-4">
+                <div className="flex items-center gap-4 text-slate-400 bg-slate-100 px-3 lg:px-4 py-2 rounded-xl w-full max-w-md ml-4 focus-within:ring-2 focus-within:ring-emerald-500/20 transition-all">
                   <Search size={18} className="shrink-0" />
                   <input 
                     type="text" 
@@ -148,90 +149,140 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
         <div className="p-4 lg:p-8 max-w-[1600px] mx-auto">
           
           {/* =======================
-              ONGLET 1: FEED (VISUAL DEAL FLOW)
+              ONGLET 1: FEED (CARDS DÉTAILLÉES) - NOUVEAU STYLE
              ======================= */}
           {activeTab === 'feed' && (
             <div className="animate-fadeIn space-y-8">
-              {/* KPIs Rapides */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-slate-900 text-white p-4 rounded-xl shadow-lg">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Nouveaux Deals</p>
-                    <p className="text-2xl font-black">12</p>
-                </div>
-                <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Matching</p>
-                    <p className="text-2xl font-black text-emerald-600">85%</p>
-                </div>
+              
+              {/* Filtres Rapides (Tags) */}
+              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                 <button className="px-4 py-2 bg-slate-900 text-white rounded-full text-xs font-bold whitespace-nowrap">Tout voir</button>
+                 <button className="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-full text-xs font-bold whitespace-nowrap hover:bg-slate-50">🔥 Trending</button>
+                 <button className="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-full text-xs font-bold whitespace-nowrap hover:bg-slate-50">Fintech</button>
+                 <button className="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-full text-xs font-bold whitespace-nowrap hover:bg-slate-50">Impact</button>
+                 <button className="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-full text-xs font-bold whitespace-nowrap hover:bg-slate-50">SaaS B2B</button>
               </div>
 
-              {/* Grille de Cartes */}
-              <div>
-                <h2 className="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
-                    <Grid size={20} /> Récemment ajoutés
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {filteredStartups.map((startup) => (
-                        <div 
-                            key={startup.id} 
-                            onClick={() => setSelectedStartup(startup)}
-                            className="bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl transition-all cursor-pointer group"
-                        >
-                            {/* Image / Thumbnail Zone */}
-                            <div className="relative h-48 bg-slate-900 overflow-hidden">
-                                <div className="absolute inset-0 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-black/30">
-                                    <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/50">
-                                        <Play size={20} fill="currentColor" />
-                                    </div>
-                                </div>
-                                <img src={startup.poster || startup.ceo.photo} alt={startup.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                <div className="absolute top-3 left-3 z-10">
-                                    <span className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${
-                                      startup.color === 'emerald' ? 'bg-emerald-500 text-white' : 
-                                      startup.color === 'purple' ? 'bg-purple-500 text-white' : 
-                                      'bg-orange-500 text-white'
-                                    }`}>
-                                      {typeof startup.kpis.sector === 'object' ? startup.kpis.sector.fr : startup.kpis.sector}
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            {/* Content */}
-                            <div className="p-5">
-                                <div className="flex justify-between items-start mb-2">
-                                    <div>
-                                        <h3 className="font-bold text-slate-900 text-lg">{startup.name}</h3>
-                                        <p className="text-xs text-slate-500 line-clamp-1">{startup.vision.fr || startup.vision}</p>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="text-[10px] font-bold text-slate-400 uppercase">Valuation</p>
-                                        <p className="font-black text-slate-900">{startup.kpis.valuation}</p>
-                                    </div>
-                                </div>
-                                
-                                <div className="flex items-center gap-3 mt-4 pt-4 border-t border-slate-100">
-                                    <img src={startup.ceo.photo} alt={startup.ceo.name} className="w-8 h-8 rounded-full object-cover" />
-                                    <div className="flex-1">
-                                        <p className="text-xs font-bold text-slate-900">{startup.ceo.name}</p>
-                                        <p className="text-[10px] text-slate-500">{startup.ceo.role.fr || startup.ceo.role}</p>
-                                    </div>
-                                    <button className="p-2 bg-slate-50 text-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors">
-                                        <ChevronRight size={16} />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+              {/* Grille de Cartes "Riches" */}
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {filteredStartups.map((startup, index) => (
+                      <div 
+                          key={startup.id} 
+                          onClick={() => setSelectedStartup(startup)}
+                          className="bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:translate-y-[-4px] transition-all cursor-pointer group flex flex-col"
+                      >
+                          {/* Header: Vidéo Thumbnail + Badges */}
+                          <div className="relative h-48 bg-slate-900 shrink-0">
+                              <img 
+                                src={startup.poster || startup.ceo.photo} 
+                                alt={startup.name} 
+                                className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500" 
+                              />
+                              
+                              {/* Badge Match Score */}
+                              <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-black text-slate-900 flex items-center gap-1.5 shadow-lg">
+                                  <div className="bg-emerald-100 p-0.5 rounded-full">
+                                    <Star size={10} className="text-emerald-600 fill-emerald-600" />
+                                  </div>
+                                  <span>{98 - index * 3}% Match</span>
+                              </div>
+
+                              {/* Play Button Overlay */}
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/50 group-hover:scale-110 transition-transform shadow-2xl">
+                                      <Play size={20} fill="currentColor" className="ml-1" />
+                                  </div>
+                              </div>
+
+                              {/* Tags Flottants */}
+                              <div className="absolute bottom-3 left-3 flex gap-2">
+                                  <span className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-white shadow-sm ${
+                                    startup.color === 'emerald' ? 'bg-emerald-600' : 
+                                    startup.color === 'purple' ? 'bg-purple-600' : 
+                                    'bg-orange-600'
+                                  }`}>
+                                    {typeof startup.kpis.sector === 'object' ? startup.kpis.sector.fr : startup.kpis.sector}
+                                  </span>
+                                  <span className="px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-slate-900/80 text-white backdrop-blur-sm">
+                                    {startup.kpis.stage}
+                                  </span>
+                              </div>
+                          </div>
+                          
+                          {/* Body: Infos Utiles */}
+                          <div className="p-5 flex-1 flex flex-col">
+                              {/* Titre & Vision */}
+                              <div className="mb-4">
+                                  <div className="flex justify-between items-start mb-1">
+                                    <h3 className="font-black text-slate-900 text-lg group-hover:text-emerald-700 transition-colors">{startup.name}</h3>
+                                    <button className="text-slate-300 hover:text-emerald-600 transition-colors"><Bookmark size={18} /></button>
+                                  </div>
+                                  <p className="text-sm text-slate-500 font-medium line-clamp-2 leading-relaxed">
+                                    {startup.vision.fr || startup.vision}
+                                  </p>
+                              </div>
+                              
+                              {/* Barre de Progression (Simulée) */}
+                              <div className="mb-5">
+                                  <div className="flex justify-between text-[10px] font-bold uppercase tracking-wider mb-1.5">
+                                     <span className="text-slate-400">Soft Circle</span>
+                                     <span className="text-emerald-600">{(65 + index * 5)}%</span>
+                                  </div>
+                                  <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                                     <div 
+                                        className="h-full bg-emerald-500 rounded-full" 
+                                        style={{ width: `${65 + index * 5}%` }}
+                                     ></div>
+                                  </div>
+                              </div>
+
+                              {/* KPIs Grid - Infos Utiles */}
+                              <div className="grid grid-cols-3 gap-2 py-4 border-t border-b border-slate-50 mb-5 bg-slate-50/50 -mx-5 px-5">
+                                  <div className="text-center md:text-left">
+                                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Valuation</p>
+                                      <p className="text-xs lg:text-sm font-black text-slate-900">{startup.kpis.valuation}</p>
+                                  </div>
+                                  <div className="text-center md:text-left border-l border-slate-200 pl-2">
+                                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Objectif</p>
+                                      <p className="text-xs lg:text-sm font-black text-emerald-600">{startup.kpis.amount}</p>
+                                  </div>
+                                  <div className="text-center md:text-left border-l border-slate-200 pl-2">
+                                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Ticket Min</p>
+                                      <p className="text-xs lg:text-sm font-black text-slate-900">{startup.minTicket}</p>
+                                  </div>
+                              </div>
+
+                              {/* Footer: CEO & Actions */}
+                              <div className="mt-auto flex items-center justify-between gap-3">
+                                  <div className="flex items-center gap-2">
+                                      <img src={startup.ceo.photo} alt={startup.ceo.name} className="w-8 h-8 rounded-full object-cover border border-slate-100" />
+                                      <div className="hidden sm:block">
+                                          <p className="text-[10px] font-bold text-slate-900">{startup.ceo.name}</p>
+                                          <p className="text-[9px] text-slate-400 truncate max-w-[80px]">Founder</p>
+                                      </div>
+                                  </div>
+                                  
+                                  <div className="flex gap-2">
+                                      <button className="px-3 py-2 bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 border border-slate-200 hover:border-emerald-200">
+                                          <Eye size={14} /> <span className="hidden xl:inline">Détails</span>
+                                      </button>
+                                      <button className="px-3 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition-colors shadow-lg shadow-slate-900/20">
+                                          Investir
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  ))}
               </div>
             </div>
           )}
 
           {/* =======================
-              ONGLET 2: LISTE (TABLEAU)
+              ONGLET 2: LISTE (TABLEAU) - INCHANGÉ
              ======================= */}
           {activeTab === 'list' && (
             <div className="animate-fadeIn space-y-6">
-              
               <div className="flex justify-between items-center">
                 <h2 className="text-lg font-black text-slate-900">Annuaire Complet</h2>
                 <div className="flex gap-2">
@@ -299,7 +350,7 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
           )}
 
           {/* =======================
-              ONGLET 3: ÉDITION PROFIL (ÉPURÉ)
+              ONGLET 3: PROFIL - INCHANGÉ
              ======================= */}
           {activeTab === 'profile' && (
             <form onSubmit={handleSave} className="animate-fadeIn space-y-6">
@@ -502,6 +553,9 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
                                     }`}>
                                       {typeof selectedStartup.kpis.sector === 'object' ? selectedStartup.kpis.sector.fr : selectedStartup.kpis.sector}
                              </span>
+                             <span className="px-2 py-1 rounded bg-slate-100 text-slate-500 text-[10px] font-bold uppercase tracking-wider">
+                                {selectedStartup.kpis.stage}
+                             </span>
                         </div>
                         <h2 className="text-3xl font-black mb-2 text-slate-900">{selectedStartup.name}</h2>
                         <p className="text-lg font-medium text-slate-500 mb-6">{selectedStartup.pitch[lang] || selectedStartup.pitch.fr}</p>
@@ -516,11 +570,35 @@ const InvestorDashboard = ({ lang = 'fr' }) => {
                                 <p className="text-xs font-bold uppercase text-emerald-600 mb-1">Recherche</p>
                                 <p className="text-xl font-black text-emerald-700">{selectedStartup.kpis.amount}</p>
                             </div>
+                            <div className="p-4 bg-white rounded-xl border border-slate-200">
+                                <p className="text-xs font-bold uppercase text-slate-400 mb-1">Ticket Minimum</p>
+                                <p className="text-xl font-black text-slate-900">{selectedStartup.minTicket}</p>
+                            </div>
+                            <div className="p-4 bg-white rounded-xl border border-slate-200">
+                                <p className="text-xs font-bold uppercase text-slate-400 mb-1">Déjà sécurisé</p>
+                                <p className="text-xl font-black text-emerald-600">65%</p>
+                            </div>
                         </div>
 
-                        <button className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-slate-800 transition-colors">
-                            Entrer en contact
-                        </button>
+                        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 mb-8">
+                            <div className="flex items-center gap-3 mb-2">
+                                <img src={selectedStartup.ceo.photo} alt={selectedStartup.ceo.name} className="w-10 h-10 rounded-full object-cover" />
+                                <div>
+                                    <p className="font-bold text-slate-900">{selectedStartup.ceo.name}</p>
+                                    <p className="text-xs text-slate-500">{selectedStartup.ceo.role.fr || selectedStartup.ceo.role}</p>
+                                </div>
+                            </div>
+                            <p className="text-sm text-slate-600 italic">"{selectedStartup.ceo.bio.fr || selectedStartup.ceo.bio}"</p>
+                        </div>
+
+                        <div className="flex gap-3">
+                           <button className="flex-1 bg-slate-900 text-white py-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-slate-800 transition-colors shadow-xl shadow-slate-900/10">
+                              Investir maintenant
+                           </button>
+                           <button className="px-6 py-4 border-2 border-slate-200 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-slate-50 transition-colors text-slate-600">
+                              Booker un call
+                           </button>
+                        </div>
                     </div>
                  </div>
             </div>
